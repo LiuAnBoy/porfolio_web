@@ -12,6 +12,11 @@ import type { User } from "@/services/user/types";
 const CACHE_REVALIDATE_SECONDS = 60 * 5;
 
 /**
+ * Initial load target count.
+ */
+const INITIAL_LOAD_COUNT = 15;
+
+/**
  * Strip HTML tags from string.
  */
 export const stripHtml = (html: string): string => {
@@ -23,9 +28,9 @@ export const stripHtml = (html: string): string => {
  */
 export interface InitialProjectsData {
   projects: Project[];
-  page: number;
-  total: number;
-  limit: number;
+  featuredCount: number;
+  nonFeaturedPage: number;
+  nonFeaturedTotal: number;
 }
 
 /**
@@ -47,22 +52,60 @@ export const getUser = unstable_cache(
 );
 
 /**
- * Cached function to get initial projects (first page).
- * Data is cached across requests and revalidates every 5 minutes.
+ * Cached function to get initial projects.
+ * Fetches all featured projects first, then fills up to INITIAL_LOAD_COUNT with non-featured.
  */
 export const getInitialProjects = unstable_cache(
   async (): Promise<InitialProjectsData | null> => {
     try {
-      const response = await getProjects({
+      // Step 1: Fetch all featured projects
+      const featuredResponse = await getProjects({
         isVisible: true,
+        isFeatured: true,
         page: 1,
-        limit: 12,
+        limit: 100, // Get all featured
       });
+
+      const featuredProjects = featuredResponse.data;
+      const featuredCount = featuredProjects.length;
+
+      // Step 2: Calculate how many non-featured we need
+      const nonFeaturedNeeded = Math.max(0, INITIAL_LOAD_COUNT - featuredCount);
+
+      let nonFeaturedProjects: Project[] = [];
+      let nonFeaturedPage = 0;
+      let nonFeaturedTotal = 0;
+
+      if (nonFeaturedNeeded > 0) {
+        const nonFeaturedResponse = await getProjects({
+          isVisible: true,
+          isFeatured: false,
+          page: 1,
+          limit: nonFeaturedNeeded,
+        });
+
+        nonFeaturedProjects = nonFeaturedResponse.data;
+        nonFeaturedPage = nonFeaturedResponse.page;
+        nonFeaturedTotal = nonFeaturedResponse.total;
+      } else {
+        // Still need to know total non-featured count
+        const nonFeaturedResponse = await getProjects({
+          isVisible: true,
+          isFeatured: false,
+          page: 1,
+          limit: 1,
+        });
+        nonFeaturedTotal = nonFeaturedResponse.total;
+      }
+
+      // Step 3: Combine - featured first, then non-featured
+      const projects = [...featuredProjects, ...nonFeaturedProjects];
+
       return {
-        projects: response.data,
-        page: response.page,
-        total: response.total,
-        limit: response.limit,
+        projects,
+        featuredCount,
+        nonFeaturedPage,
+        nonFeaturedTotal,
       };
     } catch (error) {
       console.error("Failed to fetch projects:", error);
