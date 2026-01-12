@@ -2,12 +2,12 @@
 
 import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useCallback, useEffect, useRef } from "react";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { getProjects } from "@/services/projects/api";
 import type { Project, ProjectType } from "@/services/projects/types";
 import { useScrollContainer } from "@/shared/contexts";
+import { useProjectsStore } from "@/stores";
 
 import ProjectDrawer from "./ProjectDrawer";
 import ProjectFilters from "./ProjectFilters";
@@ -58,23 +58,27 @@ interface ProjectsPageProps {
  * Projects page client component with filters, grid and drawer.
  */
 const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
-  const [projects, setProjects] = useState<Project[]>(
-    initialData?.projects ?? [],
-  );
-  const [featuredCount, setFeaturedCount] = useState(
-    initialData?.featuredCount ?? 0,
-  );
-  const [nonFeaturedTotal, setNonFeaturedTotal] = useState(
-    initialData?.nonFeaturedTotal ?? 0,
-  );
+  // Zustand store
+  const store = useProjectsStore();
+
+  // Local state for UI
   const [isLoading, setIsLoading] = useState(!initialData);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
-
-  const [selectedType, setSelectedType] = useState<ProjectType | undefined>(
-    undefined,
-  );
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Use SSR data for initial render, then switch to store after hydration
+  const projects = isHydrated && store.projects.length > 0
+    ? store.projects
+    : (initialData?.projects ?? []);
+  const featuredCount = isHydrated && store.projects.length > 0
+    ? store.featuredCount
+    : (initialData?.featuredCount ?? 0);
+  const nonFeaturedTotal = isHydrated && store.projects.length > 0
+    ? store.nonFeaturedTotal
+    : (initialData?.nonFeaturedTotal ?? 0);
+  const selectedType = store.selectedType;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const { setScrollContainerRef } = useScrollContainer();
@@ -84,6 +88,31 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
     setScrollContainerRef(containerRef);
     return () => setScrollContainerRef(null);
   }, [setScrollContainerRef]);
+
+  // Handle hydration and restore state from store
+  useEffect(() => {
+    setIsHydrated(true);
+
+    // If store has cached data, restore scroll position
+    if (store.projects.length > 0 && containerRef.current) {
+      containerRef.current.scrollTop = store.scrollPosition;
+    } else if (initialData) {
+      // First visit: sync SSR data to store
+      store.setProjects(initialData.projects);
+      store.setFeaturedCount(initialData.featuredCount);
+      store.setNonFeaturedTotal(initialData.nonFeaturedTotal);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Save scroll position on unmount
+  useEffect(() => {
+    const container = containerRef.current;
+    return () => {
+      if (container) {
+        store.setScrollPosition(container.scrollTop);
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Calculate non-featured loaded and if there are more to load
   const nonFeaturedLoaded = projects.length - featuredCount;
@@ -134,13 +163,16 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
         newNonFeaturedTotal = nonFeaturedResponse.total;
       }
 
-      setFeaturedCount(newFeaturedCount);
-      setNonFeaturedTotal(newNonFeaturedTotal);
-      setProjects([...featuredProjects, ...nonFeaturedProjects]);
+      const allProjects = [...featuredProjects, ...nonFeaturedProjects];
+
+      // Update store
+      store.setProjects(allProjects);
+      store.setFeaturedCount(newFeaturedCount);
+      store.setNonFeaturedTotal(newNonFeaturedTotal);
     } catch (error) {
       console.error("Failed to fetch projects:", error);
     }
-  }, []);
+  }, [store]);
 
   /**
    * Load next page of non-featured projects.
@@ -161,29 +193,32 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
         limit: PAGE_LIMIT,
       });
 
-      // Filter out any items we already have (in case of overlap)
-      const existingIds = new Set(projects.map((p) => p.id));
-      const newProjects = response.data.filter((p) => !existingIds.has(p.id));
-
-      setProjects((prev) => [...prev, ...newProjects]);
+      // Add to store (store handles deduplication)
+      store.addProjects(response.data);
     } catch (error) {
       console.error("Failed to fetch next page:", error);
     }
     setIsFetchingNextPage(false);
-  }, [isFetchingNextPage, hasNextPage, nonFeaturedLoaded, selectedType, projects]);
+  }, [isFetchingNextPage, hasNextPage, nonFeaturedLoaded, selectedType, store]);
 
   /**
    * Handle filter type change.
    */
   const handleTypeChange = useCallback(
     async (type: ProjectType | undefined) => {
-      setSelectedType(type);
+      store.setSelectedType(type);
+      store.setScrollPosition(0);
       setIsLoading(true);
-      setProjects([]);
+      store.setProjects([]);
       await fetchInitialProjects(type);
       setIsLoading(false);
+
+      // Reset scroll position
+      if (containerRef.current) {
+        containerRef.current.scrollTop = 0;
+      }
     },
-    [fetchInitialProjects],
+    [fetchInitialProjects, store],
   );
 
   const handleProjectClick = (project: Project) => {
@@ -199,10 +234,10 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
    * Fetch initial data if not provided via SSR.
    */
   useEffect(() => {
-    if (!initialData) {
+    if (!initialData && !store.projects.length) {
       fetchInitialProjects().then(() => setIsLoading(false));
     }
-  }, [initialData, fetchInitialProjects]);
+  }, [initialData, store.projects.length, fetchInitialProjects]);
 
   return (
     <PageContainer ref={containerRef}>
