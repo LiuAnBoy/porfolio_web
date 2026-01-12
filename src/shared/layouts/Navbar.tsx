@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Slide,
   Stack,
   Toolbar,
   Typography,
@@ -23,6 +24,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import type { Social } from "@/services/user/types";
+import { useScrollContainer } from "@/shared/contexts";
+import { useHideOnScroll } from "@/shared/hooks";
 import { SocialIcons } from "@/shared/components";
 import { NAV_ITEMS } from "@/shared/constants/navigation";
 
@@ -230,6 +233,8 @@ const Navbar = ({ socials }: NavbarProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { scrollContainerRef } = useScrollContainer();
+  const hidden = useHideOnScroll(scrollContainerRef);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -241,14 +246,15 @@ const Navbar = ({ socials }: NavbarProps) => {
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        elevation={0}
-        sx={{
-          backgroundColor: "transparent",
-          px: { xs: 1, md: 3 },
-        }}
-      >
+      <Slide appear={false} direction="down" in={!hidden}>
+        <AppBar
+          position="fixed"
+          elevation={0}
+          sx={{
+            backgroundColor: "transparent",
+            px: { xs: 1, md: 3 },
+          }}
+        >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           {/* Logo / Icon */}
           <Link
@@ -314,7 +320,8 @@ const Navbar = ({ socials }: NavbarProps) => {
             </IconButton>
           )}
         </Toolbar>
-      </AppBar>
+        </AppBar>
+      </Slide>
 
       {/* Mobile Drawer */}
       <StyledDrawer

@@ -2,8 +2,10 @@
 
 import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useEffect, useRef } from "react";
 
 import type { User } from "@/services/user/types";
+import { useScrollContainer } from "@/shared/contexts";
 
 import ExperienceList from "./ExperienceList";
 import ProfileSection from "./ProfileSection";
@@ -47,9 +49,18 @@ const ErrorContainer = styled(Box)({
  * Profile page content - Client component for UI rendering.
  */
 export default function ProfilePageContent({ user }: ProfilePageContentProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { setScrollContainerRef } = useScrollContainer();
+
+  // Register scroll container for navbar hide-on-scroll
+  useEffect(() => {
+    setScrollContainerRef(containerRef);
+    return () => setScrollContainerRef(null);
+  }, [setScrollContainerRef]);
+
   if (!user) {
     return (
-      <PageContainer>
+      <PageContainer ref={containerRef}>
         <Container maxWidth="md">
           <ErrorContainer>
             <Typography
@@ -68,7 +79,7 @@ export default function ProfilePageContent({ user }: ProfilePageContentProps) {
   }
 
   return (
-    <PageContainer>
+    <PageContainer ref={containerRef}>
       <Container maxWidth="md">
         <PageHeader>
           <PageTitle>Brief Introduction</PageTitle>

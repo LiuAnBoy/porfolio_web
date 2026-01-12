@@ -7,6 +7,8 @@ import { type ReactNode } from "react";
 
 import { getUser, stripHtml } from "@/lib/getData";
 import MuiProvider from "@/providers/MuiProvider";
+import { ScrollToTop } from "@/shared/components";
+import { ScrollContainerProvider } from "@/shared/contexts";
 import { Navbar } from "@/shared/layouts";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
@@ -71,8 +73,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <MuiProvider>
-          <Navbar socials={socials} />
-          <main style={{ height: "100%" }}>{children}</main>
+          <ScrollContainerProvider>
+            <Navbar socials={socials} />
+            <main style={{ height: "100%" }}>{children}</main>
+            <ScrollToTop />
+          </ScrollContainerProvider>
         </MuiProvider>
         <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
       </body>

@@ -2,17 +2,19 @@
 
 import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useState } from "react";
 
 import { getProjects } from "@/services/projects/api";
 import type { Project, ProjectType } from "@/services/projects/types";
+import { useScrollContainer } from "@/shared/contexts";
 
 import ProjectDrawer from "./ProjectDrawer";
 import ProjectFilters from "./ProjectFilters";
 import ProjectGrid from "./ProjectGrid";
 
 const INITIAL_LOAD_COUNT = 15;
-const PAGE_LIMIT = 12;
+const PAGE_LIMIT = 9;
 
 const PageContainer = styled(Box)({
   height: "100%",
@@ -73,6 +75,15 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
   );
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { setScrollContainerRef } = useScrollContainer();
+
+  // Register scroll container for navbar hide-on-scroll
+  useEffect(() => {
+    setScrollContainerRef(containerRef);
+    return () => setScrollContainerRef(null);
+  }, [setScrollContainerRef]);
 
   // Calculate non-featured loaded and if there are more to load
   const nonFeaturedLoaded = projects.length - featuredCount;
@@ -194,7 +205,7 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
   }, [initialData, fetchInitialProjects]);
 
   return (
-    <PageContainer>
+    <PageContainer ref={containerRef}>
       <Container maxWidth="lg">
         <PageHeader>
           <PageTitle>Projects</PageTitle>
