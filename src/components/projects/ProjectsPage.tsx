@@ -43,7 +43,7 @@ const PageDescription = styled(Typography)({
 interface InitialData {
   projects: Project[];
   featuredCount: number;
-  nonFeaturedPage: number;
+  nonFeaturedLoaded: number;
   nonFeaturedTotal: number;
 }
 
@@ -58,9 +58,8 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
   const [projects, setProjects] = useState<Project[]>(
     initialData?.projects ?? [],
   );
-  const [featuredCount] = useState(initialData?.featuredCount ?? 0);
-  const [nonFeaturedPage, setNonFeaturedPage] = useState(
-    initialData?.nonFeaturedPage ?? 0,
+  const [featuredCount, setFeaturedCount] = useState(
+    initialData?.featuredCount ?? 0,
   );
   const [nonFeaturedTotal, setNonFeaturedTotal] = useState(
     initialData?.nonFeaturedTotal ?? 0,
@@ -74,69 +73,62 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Calculate if there are more non-featured projects to load
+  // Calculate non-featured loaded and if there are more to load
   const nonFeaturedLoaded = projects.length - featuredCount;
   const hasNextPage = nonFeaturedLoaded < nonFeaturedTotal;
 
   /**
    * Fetch initial projects (featured + non-featured).
    */
-  const fetchInitialProjects = useCallback(
-    async (type?: ProjectType) => {
-      try {
-        // Step 1: Fetch all featured projects
-        const featuredResponse = await getProjects({
+  const fetchInitialProjects = useCallback(async (type?: ProjectType) => {
+    try {
+      // Step 1: Fetch all featured projects
+      const featuredResponse = await getProjects({
+        isVisible: true,
+        isFeatured: true,
+        type,
+        page: 1,
+        limit: 100,
+      });
+
+      const featuredProjects = featuredResponse.data;
+      const newFeaturedCount = featuredProjects.length;
+
+      // Step 2: Calculate how many non-featured we need
+      const nonFeaturedNeeded = Math.max(0, INITIAL_LOAD_COUNT - newFeaturedCount);
+
+      let nonFeaturedProjects: Project[] = [];
+      let newNonFeaturedTotal = 0;
+
+      if (nonFeaturedNeeded > 0) {
+        const nonFeaturedResponse = await getProjects({
           isVisible: true,
-          isFeatured: true,
+          isFeatured: false,
           type,
           page: 1,
-          limit: 100,
+          limit: PAGE_LIMIT,
         });
 
-        const featuredProjects = featuredResponse.data;
-        const newFeaturedCount = featuredProjects.length;
-
-        // Step 2: Calculate how many non-featured we need
-        const nonFeaturedNeeded = Math.max(
-          0,
-          INITIAL_LOAD_COUNT - newFeaturedCount,
-        );
-
-        let nonFeaturedProjects: Project[] = [];
-        let newNonFeaturedTotal = 0;
-
-        if (nonFeaturedNeeded > 0) {
-          const nonFeaturedResponse = await getProjects({
-            isVisible: true,
-            isFeatured: false,
-            type,
-            page: 1,
-            limit: nonFeaturedNeeded,
-          });
-
-          nonFeaturedProjects = nonFeaturedResponse.data;
-          setNonFeaturedPage(nonFeaturedResponse.page);
-          newNonFeaturedTotal = nonFeaturedResponse.total;
-        } else {
-          const nonFeaturedResponse = await getProjects({
-            isVisible: true,
-            isFeatured: false,
-            type,
-            page: 1,
-            limit: 1,
-          });
-          newNonFeaturedTotal = nonFeaturedResponse.total;
-          setNonFeaturedPage(0);
-        }
-
-        setNonFeaturedTotal(newNonFeaturedTotal);
-        setProjects([...featuredProjects, ...nonFeaturedProjects]);
-      } catch (error) {
-        console.error("Failed to fetch projects:", error);
+        nonFeaturedProjects = nonFeaturedResponse.data.slice(0, nonFeaturedNeeded);
+        newNonFeaturedTotal = nonFeaturedResponse.total;
+      } else {
+        const nonFeaturedResponse = await getProjects({
+          isVisible: true,
+          isFeatured: false,
+          type,
+          page: 1,
+          limit: 1,
+        });
+        newNonFeaturedTotal = nonFeaturedResponse.total;
       }
-    },
-    [],
-  );
+
+      setFeaturedCount(newFeaturedCount);
+      setNonFeaturedTotal(newNonFeaturedTotal);
+      setProjects([...featuredProjects, ...nonFeaturedProjects]);
+    } catch (error) {
+      console.error("Failed to fetch projects:", error);
+    }
+  }, []);
 
   /**
    * Load next page of non-featured projects.
@@ -146,21 +138,27 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
 
     setIsFetchingNextPage(true);
     try {
+      // Calculate next page based on how many non-featured we've loaded
+      const nextPage = Math.floor(nonFeaturedLoaded / PAGE_LIMIT) + 1;
+
       const response = await getProjects({
         isVisible: true,
         isFeatured: false,
         type: selectedType,
-        page: nonFeaturedPage + 1,
+        page: nextPage,
         limit: PAGE_LIMIT,
       });
 
-      setProjects((prev) => [...prev, ...response.data]);
-      setNonFeaturedPage(response.page);
+      // Filter out any items we already have (in case of overlap)
+      const existingIds = new Set(projects.map((p) => p.id));
+      const newProjects = response.data.filter((p) => !existingIds.has(p.id));
+
+      setProjects((prev) => [...prev, ...newProjects]);
     } catch (error) {
       console.error("Failed to fetch next page:", error);
     }
     setIsFetchingNextPage(false);
-  }, [isFetchingNextPage, hasNextPage, nonFeaturedPage, selectedType]);
+  }, [isFetchingNextPage, hasNextPage, nonFeaturedLoaded, selectedType, projects]);
 
   /**
    * Handle filter type change.

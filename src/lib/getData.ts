@@ -17,6 +17,11 @@ const CACHE_REVALIDATE_SECONDS = 60 * 5;
 const INITIAL_LOAD_COUNT = 15;
 
 /**
+ * Page limit for infinite scroll.
+ */
+const PAGE_LIMIT = 12;
+
+/**
  * Strip HTML tags from string.
  */
 export const stripHtml = (html: string): string => {
@@ -29,7 +34,7 @@ export const stripHtml = (html: string): string => {
 export interface InitialProjectsData {
   projects: Project[];
   featuredCount: number;
-  nonFeaturedPage: number;
+  nonFeaturedLoaded: number;
   nonFeaturedTotal: number;
 }
 
@@ -73,19 +78,22 @@ export const getInitialProjects = unstable_cache(
       const nonFeaturedNeeded = Math.max(0, INITIAL_LOAD_COUNT - featuredCount);
 
       let nonFeaturedProjects: Project[] = [];
-      let nonFeaturedPage = 0;
       let nonFeaturedTotal = 0;
 
       if (nonFeaturedNeeded > 0) {
+        // Use PAGE_LIMIT for consistent pagination
         const nonFeaturedResponse = await getProjects({
           isVisible: true,
           isFeatured: false,
           page: 1,
-          limit: nonFeaturedNeeded,
+          limit: PAGE_LIMIT,
         });
 
-        nonFeaturedProjects = nonFeaturedResponse.data;
-        nonFeaturedPage = nonFeaturedResponse.page;
+        // Take only what we need for initial display
+        nonFeaturedProjects = nonFeaturedResponse.data.slice(
+          0,
+          nonFeaturedNeeded,
+        );
         nonFeaturedTotal = nonFeaturedResponse.total;
       } else {
         // Still need to know total non-featured count
@@ -104,7 +112,7 @@ export const getInitialProjects = unstable_cache(
       return {
         projects,
         featuredCount,
-        nonFeaturedPage,
+        nonFeaturedLoaded: nonFeaturedProjects.length,
         nonFeaturedTotal,
       };
     } catch (error) {
