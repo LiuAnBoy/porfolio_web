@@ -72,7 +72,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <MuiProvider>
           <Navbar socials={socials} />
-          <main>{children}</main>
+          <main style={{ height: "100%" }}>{children}</main>
         </MuiProvider>
         <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
       </body>

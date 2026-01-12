@@ -13,10 +13,11 @@ interface ProfilePageContentProps {
 }
 
 const PageContainer = styled(Box)({
-  minHeight: "100vh",
+  height: "100%",
   backgroundColor: "#0a0a0a",
   paddingTop: 80,
   paddingBottom: 60,
+  overflowY: "auto",
   "@media (max-width: 767px)": {
     paddingTop: 72,
   },
