@@ -23,7 +23,11 @@ export const metadata: Metadata = {
  * Projects page - SSR with cached data.
  */
 export default async function Projects() {
-  const initialData = await getInitialProjects();
-
-  return <ProjectsPage initialData={initialData} />;
+  try {
+    const initialData = await getInitialProjects();
+    return <ProjectsPage initialData={initialData} />;
+  } catch (error) {
+    console.error("Failed to load projects:", error);
+    return <ProjectsPage initialData={null} />;
+  }
 }
