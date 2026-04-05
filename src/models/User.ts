@@ -1,19 +1,7 @@
 import dayjs from "dayjs";
 import mongoose, { Document, Model, Schema, Types } from "mongoose";
 
-/**
- * Social platform enum
- */
-export const SOCIAL_PLATFORM = {
-  GITHUB: "GITHUB",
-  LINKEDIN: "LINKEDIN",
-  LINE: "LINE",
-  TELEGRAM: "TELEGRAM",
-  WECHAT: "WECHAT",
-} as const;
-
-export type SocialPlatform =
-  (typeof SOCIAL_PLATFORM)[keyof typeof SOCIAL_PLATFORM];
+import { SOCIAL_PLATFORM, SocialPlatform } from "@/types/user";
 
 /** Social sub-document interface (Mongoose schema level) */
 export interface ISocial {

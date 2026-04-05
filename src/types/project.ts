@@ -43,6 +43,14 @@ export interface ProjectData {
 }
 
 /**
+ * Project data for public API (userId and timestamps excluded)
+ */
+export type PublicProjectData = Omit<
+  ProjectData,
+  "userId" | "createdAt" | "updatedAt"
+>;
+
+/**
  * Project payload for create/update
  */
 export interface ProjectPayload {

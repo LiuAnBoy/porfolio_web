@@ -62,6 +62,14 @@ export interface ExperienceWithPositions {
 }
 
 /**
+ * Experience data for public API (userId and timestamps excluded)
+ */
+export type PublicExperienceData = Omit<
+  ExperienceWithPositions,
+  "userId" | "createdAt" | "updatedAt"
+>;
+
+/**
  * Experience payload for create/update
  */
 export interface ExperiencePayload {
@@ -85,6 +93,14 @@ export interface UserData {
   createdAt: number;
   updatedAt: number | null;
 }
+
+/**
+ * User data for public API (email and timestamps excluded)
+ */
+export type PublicUserData = Omit<
+  UserData,
+  "email" | "createdAt" | "updatedAt"
+>;
 
 /**
  * User with experiences (API response)

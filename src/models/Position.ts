@@ -12,7 +12,7 @@ export interface IPosition {
   description: string;
   sn: number;
   createdAt: number;
-  updatedAt: number;
+  updatedAt: number | null;
 }
 
 /** Position document interface */
