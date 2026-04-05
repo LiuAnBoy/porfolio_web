@@ -24,10 +24,10 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import type { Social } from "@/services/user/types";
-import { useScrollContainer } from "@/shared/contexts";
-import { useHideOnScroll } from "@/shared/hooks";
 import { SocialIcons } from "@/shared/components";
 import { NAV_ITEMS } from "@/shared/constants/navigation";
+import { useScrollContainer } from "@/shared/contexts";
+import { useHideOnScroll } from "@/shared/hooks";
 
 /**
  * Border drawing animations - clockwise from top-right.
@@ -255,71 +255,71 @@ const Navbar = ({ socials }: NavbarProps) => {
             px: { xs: 1, md: 3 },
           }}
         >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
-          {/* Logo / Icon */}
-          <Link
-            href="/"
-            style={{ display: "flex", alignItems: "center", gap: 8 }}
-          >
-            <Image src="/images/logo.png" alt="Logo" width={32} height={32} />
-            <Stack direction="column">
-              <Typography
-                component="span"
-                sx={{
-                  display: "block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                  lineHeight: "1",
-                }}
-              >
-                An&apos;s
-              </Typography>
-              <Typography
-                component="span"
-                sx={{
-                  display: "block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                  lineHeight: "1",
-                }}
-              >
-                Portfolio
-              </Typography>
-            </Stack>
-          </Link>
-
-          {/* Desktop Navigation Links */}
-          {!isMobile && (
-            <Box component="nav" sx={{ display: "flex", gap: 2 }}>
-              {NAV_ITEMS.map(({ href, label }) => {
-                const isActive = pathname === href;
-                return (
-                  <NavLink
-                    key={href}
-                    href={href}
-                    label={label}
-                    isActive={isActive}
-                  />
-                );
-              })}
-            </Box>
-          )}
-
-          {/* Mobile Menu Button */}
-          {isMobile && (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={handleDrawerToggle}
-              sx={{
-                color: "rgba(255, 255, 255, 0.9)",
-              }}
+          <Toolbar sx={{ justifyContent: "space-between" }}>
+            {/* Logo / Icon */}
+            <Link
+              href="/"
+              style={{ display: "flex", alignItems: "center", gap: 8 }}
             >
-              <MenuIcon />
-            </IconButton>
-          )}
-        </Toolbar>
+              <Image src="/images/logo.png" alt="Logo" width={32} height={32} />
+              <Stack direction="column">
+                <Typography
+                  component="span"
+                  sx={{
+                    display: "block",
+                    fontWeight: 600,
+                    fontSize: "1rem",
+                    lineHeight: "1",
+                  }}
+                >
+                  An&apos;s
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    display: "block",
+                    fontWeight: 600,
+                    fontSize: "1rem",
+                    lineHeight: "1",
+                  }}
+                >
+                  Portfolio
+                </Typography>
+              </Stack>
+            </Link>
+
+            {/* Desktop Navigation Links */}
+            {!isMobile && (
+              <Box component="nav" sx={{ display: "flex", gap: 2 }}>
+                {NAV_ITEMS.map(({ href, label }) => {
+                  const isActive = pathname === href;
+                  return (
+                    <NavLink
+                      key={href}
+                      href={href}
+                      label={label}
+                      isActive={isActive}
+                    />
+                  );
+                })}
+              </Box>
+            )}
+
+            {/* Mobile Menu Button */}
+            {isMobile && (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerToggle}
+                sx={{
+                  color: "rgba(255, 255, 255, 0.9)",
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+          </Toolbar>
         </AppBar>
       </Slide>
 

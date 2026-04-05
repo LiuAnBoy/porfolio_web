@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { getProjects } from "@/services/projects/api";
 import type { Project, ProjectType } from "@/services/projects/types";
 import { useScrollContainer } from "@/shared/contexts";
-import { useProjectsStore } from "@/stores";
+import { useProjectsStore } from "@/modules/public/projects/stores";
 
 import ProjectDrawer from "./ProjectDrawer";
 import ProjectFilters from "./ProjectFilters";
@@ -69,15 +69,18 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
   const [isHydrated, setIsHydrated] = useState(false);
 
   // Use SSR data for initial render, then switch to store after hydration
-  const projects = isHydrated && store.projects.length > 0
-    ? store.projects
-    : (initialData?.projects ?? []);
-  const featuredCount = isHydrated && store.projects.length > 0
-    ? store.featuredCount
-    : (initialData?.featuredCount ?? 0);
-  const nonFeaturedTotal = isHydrated && store.projects.length > 0
-    ? store.nonFeaturedTotal
-    : (initialData?.nonFeaturedTotal ?? 0);
+  const projects =
+    isHydrated && store.projects.length > 0
+      ? store.projects
+      : (initialData?.projects ?? []);
+  const featuredCount =
+    isHydrated && store.projects.length > 0
+      ? store.featuredCount
+      : (initialData?.featuredCount ?? 0);
+  const nonFeaturedTotal =
+    isHydrated && store.projects.length > 0
+      ? store.nonFeaturedTotal
+      : (initialData?.nonFeaturedTotal ?? 0);
   const selectedType = store.selectedType;
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -121,58 +124,67 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
   /**
    * Fetch initial projects (featured + non-featured).
    */
-  const fetchInitialProjects = useCallback(async (type?: ProjectType) => {
-    try {
-      // Step 1: Fetch all featured projects
-      const featuredResponse = await getProjects({
-        isVisible: true,
-        isFeatured: true,
-        type,
-        page: 1,
-        limit: 100,
-      });
-
-      const featuredProjects = featuredResponse.data;
-      const newFeaturedCount = featuredProjects.length;
-
-      // Step 2: Calculate how many non-featured we need
-      const nonFeaturedNeeded = Math.max(0, INITIAL_LOAD_COUNT - newFeaturedCount);
-
-      let nonFeaturedProjects: Project[] = [];
-      let newNonFeaturedTotal = 0;
-
-      if (nonFeaturedNeeded > 0) {
-        const nonFeaturedResponse = await getProjects({
+  const fetchInitialProjects = useCallback(
+    async (type?: ProjectType) => {
+      try {
+        // Step 1: Fetch all featured projects
+        const featuredResponse = await getProjects({
           isVisible: true,
-          isFeatured: false,
+          isFeatured: true,
           type,
           page: 1,
-          limit: PAGE_LIMIT,
+          limit: 100,
         });
 
-        nonFeaturedProjects = nonFeaturedResponse.data.slice(0, nonFeaturedNeeded);
-        newNonFeaturedTotal = nonFeaturedResponse.total;
-      } else {
-        const nonFeaturedResponse = await getProjects({
-          isVisible: true,
-          isFeatured: false,
-          type,
-          page: 1,
-          limit: 1,
-        });
-        newNonFeaturedTotal = nonFeaturedResponse.total;
+        const featuredProjects = featuredResponse.data;
+        const newFeaturedCount = featuredProjects.length;
+
+        // Step 2: Calculate how many non-featured we need
+        const nonFeaturedNeeded = Math.max(
+          0,
+          INITIAL_LOAD_COUNT - newFeaturedCount,
+        );
+
+        let nonFeaturedProjects: Project[] = [];
+        let newNonFeaturedTotal = 0;
+
+        if (nonFeaturedNeeded > 0) {
+          const nonFeaturedResponse = await getProjects({
+            isVisible: true,
+            isFeatured: false,
+            type,
+            page: 1,
+            limit: PAGE_LIMIT,
+          });
+
+          nonFeaturedProjects = nonFeaturedResponse.data.slice(
+            0,
+            nonFeaturedNeeded,
+          );
+          newNonFeaturedTotal = nonFeaturedResponse.total;
+        } else {
+          const nonFeaturedResponse = await getProjects({
+            isVisible: true,
+            isFeatured: false,
+            type,
+            page: 1,
+            limit: 1,
+          });
+          newNonFeaturedTotal = nonFeaturedResponse.total;
+        }
+
+        const allProjects = [...featuredProjects, ...nonFeaturedProjects];
+
+        // Update store
+        store.setProjects(allProjects);
+        store.setFeaturedCount(newFeaturedCount);
+        store.setNonFeaturedTotal(newNonFeaturedTotal);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
       }
-
-      const allProjects = [...featuredProjects, ...nonFeaturedProjects];
-
-      // Update store
-      store.setProjects(allProjects);
-      store.setFeaturedCount(newFeaturedCount);
-      store.setNonFeaturedTotal(newNonFeaturedTotal);
-    } catch (error) {
-      console.error("Failed to fetch projects:", error);
-    }
-  }, [store]);
+    },
+    [store],
+  );
 
   /**
    * Load next page of non-featured projects.

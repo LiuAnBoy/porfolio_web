@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { ProfilePageContent } from "@/components/about";
 import { getUser, stripHtml } from "@/lib/getData";
+import { ProfilePageContent } from "@/modules/public/about/components";
 
 /**
  * Generate dynamic metadata for profile page.

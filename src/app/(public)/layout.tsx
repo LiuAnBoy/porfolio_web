@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Footer } from "@/shared/layouts";
+import { Footer } from "@/shared/components/layouts/public";
 
 /**
  * Layout for main pages (profile, projects) with footer.

@@ -7,8 +7,8 @@ import { type ReactNode } from "react";
 import { getUser, stripHtml } from "@/lib/getData";
 import MuiProvider from "@/providers/MuiProvider";
 import { ScrollToTop } from "@/shared/components";
+import { Navbar } from "@/shared/components/layouts/public";
 import { ScrollContainerProvider } from "@/shared/contexts";
-import { Navbar } from "@/shared/layouts";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, type RefObject } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 
 interface UseHideOnScrollOptions {
   threshold?: number;

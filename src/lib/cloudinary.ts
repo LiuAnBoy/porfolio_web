@@ -25,7 +25,11 @@ function getCloudinary() {
     );
   }
 
-  cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
+  cloudinary.config({
+    cloud_name: cloudName,
+    api_key: apiKey,
+    api_secret: apiSecret,
+  });
   return cloudinary;
 }
 

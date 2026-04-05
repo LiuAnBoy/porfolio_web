@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { ProjectsPage } from "@/components/projects";
 import { getInitialProjects } from "@/lib/getData";
+import { ProjectsPage } from "@/modules/public/projects/components";
 
 const PROJECTS_DESCRIPTION =
   "A showcase of web development projects featuring React, Next.js, TypeScript, and modern frontend technologies.";
