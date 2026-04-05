@@ -7,7 +7,6 @@ import { type ReactNode } from "react";
 import { getUser, stripHtml } from "@/lib/getData";
 import MuiProvider from "@/providers/MuiProvider";
 import { ScrollToTop } from "@/shared/components";
-import { Navbar } from "@/shared/components/layouts/public";
 import { ScrollContainerProvider } from "@/shared/contexts";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
@@ -54,16 +53,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  // Fetch user data using cached function
-  const user = await getUser();
-  const socials = user?.socials ?? [];
-
   return (
     <html lang="en">
       <body>
         <MuiProvider>
           <ScrollContainerProvider>
-            <Navbar socials={socials} />
             <main style={{ height: "100%" }}>{children}</main>
             <ScrollToTop />
           </ScrollContainerProvider>

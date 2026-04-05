@@ -7,5 +7,8 @@ import type { DashboardInitData } from "@/types";
  * @returns Promise resolving to DashboardInitData
  */
 export async function getDashboardInit(): Promise<DashboardInitData> {
-  return http.get<DashboardInitData>("/v1/admin/init");
+  const res = await http.get<{ success: boolean; data: DashboardInitData }>(
+    "/v1/admin/init",
+  );
+  return res.data;
 }

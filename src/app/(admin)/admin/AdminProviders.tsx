@@ -2,11 +2,13 @@
 
 import { HydrationBoundary } from "@tanstack/react-query";
 import type { DehydratedState } from "@tanstack/react-query";
+import { ThemeProvider } from "@mui/material/styles";
 import { SnackbarProvider } from "notistack";
 import type { ReactNode } from "react";
 
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { AdminLayout } from "@/shared/components/layouts/admin";
+import { adminTheme } from "@/styles/adminTheme";
 
 /** Props for the AdminProviders component. */
 interface AdminProvidersProps {
@@ -32,12 +34,14 @@ export function AdminProviders({
   userEmail,
 }: AdminProvidersProps) {
   return (
-    <ReactQueryProvider>
-      <HydrationBoundary state={dehydratedState}>
-        <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
-          <AdminLayout userEmail={userEmail}>{children}</AdminLayout>
-        </SnackbarProvider>
-      </HydrationBoundary>
-    </ReactQueryProvider>
+    <ThemeProvider theme={adminTheme}>
+      <ReactQueryProvider>
+        <HydrationBoundary state={dehydratedState}>
+          <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+            <AdminLayout userEmail={userEmail}>{children}</AdminLayout>
+          </SnackbarProvider>
+        </HydrationBoundary>
+      </ReactQueryProvider>
+    </ThemeProvider>
   );
 }
