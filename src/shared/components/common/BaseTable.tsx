@@ -131,7 +131,6 @@ export function BaseTable<T>({
               </TableRow>
             ) : (
               data.map((row, rowIndex) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <TableRow
                   key={
                     getRowKey
