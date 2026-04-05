@@ -63,7 +63,7 @@ export interface ImageData {
  */
 export interface ImageListParams {
   page?: number;
-  limit?: number;
+  page_size?: number;
   isPending?: boolean | null;
   model?: ImageUsageModel | null;
 }

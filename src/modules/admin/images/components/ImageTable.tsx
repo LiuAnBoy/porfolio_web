@@ -51,7 +51,7 @@ export function ImageTable() {
   /** Build query params from local filter state */
   const params: ImageListParams = {
     page: page + 1,
-    limit: rowsPerPage,
+    page_size: rowsPerPage,
     ...(pendingFilter !== "all" && {
       isPending: pendingFilter === "pending",
     }),
@@ -59,8 +59,8 @@ export function ImageTable() {
   };
 
   const { data: result, isLoading, isError } = useImageList(params);
-  const images = result?.data ?? [];
-  const total = result?.total ?? 0;
+  const images = result?.payload ?? [];
+  const total = result?.total_count ?? 0;
 
   const deleteMutation = useDeleteImage();
 
@@ -162,9 +162,12 @@ export function ImageTable() {
     if (!deleteId) return;
     try {
       await deleteMutation.mutateAsync(deleteId);
-      notify.success("Image deleted");
-    } catch {
-      notify.error("Failed to delete image");
+      notify.success("圖片刪除成功");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? "圖片刪除失敗");
     } finally {
       setDeleteId(null);
     }

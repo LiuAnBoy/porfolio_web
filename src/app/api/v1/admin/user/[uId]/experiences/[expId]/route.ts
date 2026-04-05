@@ -36,7 +36,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -47,7 +47,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 
     if (!experience) {
       return NextResponse.json(
-        { success: false, message: "Experience not found" },
+        { success: false, message: "找不到工作經歷" },
         { status: 404 },
       );
     }
@@ -64,20 +64,17 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const { _id, companyIcon, ...rest } = experience;
 
     return NextResponse.json({
-      success: true,
-      data: {
-        id: _id.toString(),
-        companyIcon: transformImage(
-          companyIcon as { _id: unknown; url: string } | null,
-        ),
-        ...rest,
-        positions: transformedPositions,
-      },
+      id: _id.toString(),
+      companyIcon: transformImage(
+        companyIcon as { _id: unknown; url: string } | null,
+      ),
+      ...rest,
+      positions: transformedPositions,
     });
   } catch (error) {
     console.error("Get experience error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get experience" },
+      { success: false, message: "取得工作經歷失敗" },
       { status: 500 },
     );
   }
@@ -95,7 +92,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "Forbidden" },
+        { success: false, message: "無權限" },
         { status: 403 },
       );
     }
@@ -103,7 +100,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -111,7 +108,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const experience = await Experience.findOne({ _id: expId, userId: uId });
     if (!experience) {
       return NextResponse.json(
-        { success: false, message: "Experience not found" },
+        { success: false, message: "找不到工作經歷" },
         { status: 404 },
       );
     }
@@ -219,7 +216,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Update experience error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to update experience" },
+      { success: false, message: "更新工作經歷失敗" },
       { status: 500 },
     );
   }
@@ -237,7 +234,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "Forbidden" },
+        { success: false, message: "無權限" },
         { status: 403 },
       );
     }
@@ -245,7 +242,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -253,7 +250,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const experience = await Experience.findOne({ _id: expId, userId: uId });
     if (!experience) {
       return NextResponse.json(
-        { success: false, message: "Experience not found" },
+        { success: false, message: "找不到工作經歷" },
         { status: 404 },
       );
     }
@@ -290,7 +287,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Delete experience error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to delete experience" },
+      { success: false, message: "刪除工作經歷失敗" },
       { status: 500 },
     );
   }

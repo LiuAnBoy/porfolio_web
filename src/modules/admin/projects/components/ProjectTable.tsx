@@ -40,8 +40,8 @@ export function ProjectTable() {
   const { notify } = useNotification();
 
   const { data: result, isLoading, isError } = useProjectList();
-  const projects = result?.data ?? [];
-  const total = result?.total ?? 0;
+  const projects = result?.payload ?? [];
+  const total = result?.total_count ?? 0;
 
   if (isError) {
     return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
@@ -214,8 +214,11 @@ export function ProjectTable() {
     try {
       await deleteMutation.mutateAsync(deleteId);
       notify.success("專案刪除成功");
-    } catch {
-      notify.error("專案刪除失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? "專案刪除失敗");
     } finally {
       setDeleteId(null);
       setDeleteTitle("");

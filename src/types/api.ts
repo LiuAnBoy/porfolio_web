@@ -1,22 +1,19 @@
 /**
- * Generic API response wrapper
+ * Generic mutation response (POST/PATCH/DELETE)
  */
-export interface ApiResponse<T> {
+export interface ApiMutationResponse {
   success: boolean;
-  data?: T;
   message?: string;
 }
 
 /**
- * Paginated API response
+ * Paginated list response
  */
 export interface ApiListResponse<T> {
-  success: boolean;
-  data: T[];
+  payload: T[];
+  total_count: number;
+  page_size: number;
   page: number;
-  limit: number;
-  total: number;
-  message?: string;
 }
 
 /**
@@ -25,4 +22,12 @@ export interface ApiListResponse<T> {
 export interface ImageUploadValue {
   imageId: string;
   url: string;
+}
+
+/**
+ * Upload API success response
+ */
+export interface ImageUploadResponse {
+  success: boolean;
+  payload: ImageUploadValue;
 }

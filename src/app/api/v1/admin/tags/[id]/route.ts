@@ -22,20 +22,17 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 
     if (!tag) {
       return NextResponse.json(
-        { success: false, message: "Tag not found" },
+        { success: false, message: "找不到標籤" },
         { status: 404 },
       );
     }
 
     const { _id, ...rest } = tag;
-    return NextResponse.json({
-      success: true,
-      data: { id: _id.toString(), ...rest },
-    });
+    return NextResponse.json({ id: _id.toString(), ...rest });
   } catch (error) {
     console.error("Get tag error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get tag" },
+      { success: false, message: "取得標籤失敗" },
       { status: 500 },
     );
   }
@@ -55,7 +52,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const tag = await Tag.findById(id);
     if (!tag) {
       return NextResponse.json(
-        { success: false, message: "Tag not found" },
+        { success: false, message: "找不到標籤" },
         { status: 404 },
       );
     }
@@ -70,7 +67,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
       if (existingTag) {
         return NextResponse.json(
-          { success: false, message: "Tag with this label already exists" },
+          { success: false, message: "相同名稱的標籤已存在" },
           { status: 409 },
         );
       }
@@ -84,7 +81,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Update tag error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to update tag" },
+      { success: false, message: "更新標籤失敗" },
       { status: 500 },
     );
   }
@@ -103,7 +100,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const tag = await Tag.findById(id);
     if (!tag) {
       return NextResponse.json(
-        { success: false, message: "Tag not found" },
+        { success: false, message: "找不到標籤" },
         { status: 404 },
       );
     }
@@ -114,7 +111,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Delete tag error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to delete tag" },
+      { success: false, message: "刪除標籤失敗" },
       { status: 500 },
     );
   }

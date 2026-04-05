@@ -200,8 +200,11 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
         notify.success("專案建立成功");
       }
       router.push("/admin/projects");
-    } catch {
-      notify.error(isEdit ? "專案更新失敗" : "專案建立失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? (isEdit ? "專案更新失敗" : "專案建立失敗"));
     }
   });
 

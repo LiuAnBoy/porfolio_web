@@ -118,8 +118,11 @@ export function ProfileTab({ user }: ProfileTabProps) {
         },
       });
       notify.success("個人資料更新成功");
-    } catch {
-      notify.error("個人資料更新失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? "個人資料更新失敗");
     }
   });
 

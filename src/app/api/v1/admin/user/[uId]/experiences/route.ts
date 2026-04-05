@@ -34,7 +34,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -83,11 +83,11 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       };
     });
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Get experiences error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get experiences" },
+      { success: false, message: "取得工作經歷列表失敗" },
       { status: 500 },
     );
   }
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "Forbidden" },
+        { success: false, message: "無權限" },
         { status: 403 },
       );
     }
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -123,14 +123,14 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     if (!company) {
       return NextResponse.json(
-        { success: false, message: "Company name is required" },
+        { success: false, message: "公司名稱為必填欄位" },
         { status: 400 },
       );
     }
 
     if (!positions || !Array.isArray(positions) || positions.length === 0) {
       return NextResponse.json(
-        { success: false, message: "At least one position is required" },
+        { success: false, message: "至少需要一個職位" },
         { status: 400 },
       );
     }
@@ -186,7 +186,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Create experience error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to create experience" },
+      { success: false, message: "建立工作經歷失敗" },
       { status: 500 },
     );
   }

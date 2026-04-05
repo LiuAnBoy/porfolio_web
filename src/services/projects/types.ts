@@ -29,14 +29,12 @@ export interface GetProjectsParams {
   tags?: string;
   stacks?: string;
   page?: number;
-  limit?: number;
+  page_size?: number;
 }
 
 export interface GetProjectsResponse {
-  success: boolean;
-  data: Project[];
+  payload: Project[];
+  total_count: number;
+  page_size: number;
   page: number;
-  limit: number;
-  total: number;
-  message?: string;
 }

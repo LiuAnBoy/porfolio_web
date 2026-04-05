@@ -79,5 +79,5 @@ export interface ProjectListParams {
   tags?: string;
   stacks?: string;
   page?: number;
-  limit?: number;
+  page_size?: number;
 }

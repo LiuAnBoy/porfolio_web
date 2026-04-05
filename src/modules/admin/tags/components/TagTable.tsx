@@ -95,8 +95,11 @@ export function TagTable() {
     try {
       await deleteMutation.mutateAsync(deleteId);
       notify.success("標籤刪除成功");
-    } catch {
-      notify.error("標籤刪除失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? "標籤刪除失敗");
     } finally {
       setDeleteId(null);
       setDeleteLabel("");

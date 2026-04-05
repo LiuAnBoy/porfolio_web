@@ -34,7 +34,10 @@ export async function GET(request: NextRequest) {
     const tagsParam = searchParams.get("tags");
     const stacksParam = searchParams.get("stacks");
     const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const page_size = Math.min(
+      parseInt(searchParams.get("page_size") || "20", 10),
+      100,
+    );
 
     const query: Record<string, unknown> = {};
 
@@ -66,7 +69,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * page_size;
     const [projects, total] = await Promise.all([
       Project.find(query)
         .populate("tags", "label slug")
@@ -75,7 +78,7 @@ export async function GET(request: NextRequest) {
         .populate("gallery", "_id url")
         .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(limit)
+        .limit(page_size)
         .lean(),
       Project.countDocuments(query),
     ]);
@@ -118,11 +121,16 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return NextResponse.json({ success: true, data, page, limit, total });
+    return NextResponse.json({
+      payload: data,
+      total_count: total,
+      page_size,
+      page,
+    });
   } catch (error) {
     console.error("Get projects error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get projects" },
+      { success: false, message: "取得專案列表失敗" },
       { status: 500 },
     );
   }
@@ -155,14 +163,14 @@ export async function POST(request: NextRequest) {
 
     if (!title) {
       return NextResponse.json(
-        { success: false, message: "Title is required" },
+        { success: false, message: "標題為必填欄位" },
         { status: 400 },
       );
     }
 
     if (!description) {
       return NextResponse.json(
-        { success: false, message: "Description is required" },
+        { success: false, message: "描述為必填欄位" },
         { status: 400 },
       );
     }
@@ -171,7 +179,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "Valid type is required (WEB, APP, HYBRID)",
+          message: "請提供有效的專案類型（WEB、APP、HYBRID）",
         },
         { status: 400 },
       );
@@ -181,7 +189,7 @@ export async function POST(request: NextRequest) {
       const tagCount = await Tag.countDocuments({ _id: { $in: tags } });
       if (tagCount !== tags.length) {
         return NextResponse.json(
-          { success: false, message: "One or more tags not found" },
+          { success: false, message: "部分標籤不存在" },
           { status: 400 },
         );
       }
@@ -191,7 +199,7 @@ export async function POST(request: NextRequest) {
       const stackCount = await Stack.countDocuments({ _id: { $in: stacks } });
       if (stackCount !== stacks.length) {
         return NextResponse.json(
-          { success: false, message: "One or more stacks not found" },
+          { success: false, message: "部分技術棧不存在" },
           { status: 400 },
         );
       }
@@ -255,20 +263,11 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    const projectData = project!.toObject();
-
-    return NextResponse.json({
-      success: true,
-      data: {
-        id: projectData._id.toString(),
-        ...projectData,
-        userId: projectData.userId.toString(),
-      },
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Create project error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to create project" },
+      { success: false, message: "建立專案失敗" },
       { status: 500 },
     );
   }

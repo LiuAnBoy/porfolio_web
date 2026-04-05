@@ -21,13 +21,13 @@ export async function getUser(id: string): Promise<UserData> {
  *
  * @param id - User ID
  * @param payload - User update payload
- * @returns Promise resolving to the updated UserData
+ * @returns Promise resolving to void
  */
 export async function updateUser(
   id: string,
   payload: UserPayload,
-): Promise<UserData> {
-  return http.patch<UserData>(`/v1/admin/user/${id}`, payload);
+): Promise<void> {
+  return http.patch<void>(`/v1/admin/user/${id}`, payload);
 }
 
 /**
@@ -49,16 +49,13 @@ export async function getExperiences(
  *
  * @param userId - User ID
  * @param payload - Experience creation payload
- * @returns Promise resolving to the created ExperienceWithPositions
+ * @returns Promise resolving to void
  */
 export async function createExperience(
   userId: string,
   payload: ExperiencePayload,
-): Promise<ExperienceWithPositions> {
-  return http.post<ExperienceWithPositions>(
-    `/v1/admin/user/${userId}/experiences`,
-    payload,
-  );
+): Promise<void> {
+  return http.post<void>(`/v1/admin/user/${userId}/experiences`, payload);
 }
 
 /**
@@ -67,14 +64,14 @@ export async function createExperience(
  * @param userId - User ID
  * @param expId - Experience ID
  * @param payload - Experience update payload
- * @returns Promise resolving to the updated ExperienceWithPositions
+ * @returns Promise resolving to void
  */
 export async function updateExperience(
   userId: string,
   expId: string,
   payload: ExperiencePayload,
-): Promise<ExperienceWithPositions> {
-  return http.patch<ExperienceWithPositions>(
+): Promise<void> {
+  return http.patch<void>(
     `/v1/admin/user/${userId}/experiences/${expId}`,
     payload,
   );

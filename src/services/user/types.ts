@@ -40,9 +40,3 @@ export interface User {
   socials: Social[];
   experiences: Experience[];
 }
-
-export interface GetUserProfileResponse {
-  success: boolean;
-  data: User;
-  message?: string;
-}

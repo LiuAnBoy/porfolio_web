@@ -15,14 +15,13 @@ export async function GET() {
 
     const tags = await Tag.find().sort({ createdAt: -1 }).lean();
 
-    return NextResponse.json({
-      success: true,
-      data: tags.map(({ _id, ...rest }) => ({ id: _id.toString(), ...rest })),
-    });
+    return NextResponse.json(
+      tags.map(({ _id, ...rest }) => ({ id: _id.toString(), ...rest })),
+    );
   } catch (error) {
     console.error("Get tags error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get tags" },
+      { success: false, message: "取得標籤列表失敗" },
       { status: 500 },
     );
   }
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     if (!label) {
       return NextResponse.json(
-        { success: false, message: "Label is required" },
+        { success: false, message: "標籤名稱為必填欄位" },
         { status: 400 },
       );
     }
@@ -52,22 +51,18 @@ export async function POST(request: NextRequest) {
 
     if (existingTag) {
       return NextResponse.json(
-        { success: false, message: "Tag already exists" },
+        { success: false, message: "標籤已存在" },
         { status: 409 },
       );
     }
 
-    const tag = await Tag.create({ label });
-    const { _id, ...rest } = tag.toObject();
+    await Tag.create({ label });
 
-    return NextResponse.json({
-      success: true,
-      data: { id: _id.toString(), ...rest },
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Create tag error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to create tag" },
+      { success: false, message: "建立標籤失敗" },
       { status: 500 },
     );
   }

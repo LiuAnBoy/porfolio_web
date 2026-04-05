@@ -35,7 +35,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId).populate("avatar", "_id url").lean();
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -43,17 +43,14 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const { _id, avatar, ...rest } = user;
 
     return NextResponse.json({
-      success: true,
-      data: {
-        id: _id.toString(),
-        avatar: transformImage(avatar as { _id: unknown; url: string } | null),
-        ...rest,
-      },
+      id: _id.toString(),
+      avatar: transformImage(avatar as { _id: unknown; url: string } | null),
+      ...rest,
     });
   } catch (error) {
     console.error("Get user error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get user" },
+      { success: false, message: "取得使用者資料失敗" },
       { status: 500 },
     );
   }
@@ -71,7 +68,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "Forbidden" },
+        { success: false, message: "無權限" },
         { status: 403 },
       );
     }
@@ -81,7 +78,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -92,7 +89,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       for (const social of socials) {
         if (!Object.values(SOCIAL_PLATFORM).includes(social.platform)) {
           return NextResponse.json(
-            { success: false, message: `Invalid platform: ${social.platform}` },
+            {
+              success: false,
+              message: `無效的社群平台：${social.platform}`,
+            },
             { status: 400 },
           );
         }
@@ -154,7 +154,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Update user error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to update user" },
+      { success: false, message: "更新使用者資料失敗" },
       { status: 500 },
     );
   }

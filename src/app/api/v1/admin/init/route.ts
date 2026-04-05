@@ -80,11 +80,11 @@ export async function GET() {
       })),
     };
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json(data);
   } catch (error) {
     console.error("Get init data error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get init data" },
+      { success: false, message: "初始化資料取得失敗" },
       { status: 500 },
     );
   }

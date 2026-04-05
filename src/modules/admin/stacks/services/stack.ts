@@ -14,10 +14,10 @@ export async function getStackList(): Promise<StackData[]> {
  * Create a new stack.
  *
  * @param payload - Stack creation payload
- * @returns Promise resolving to the created StackData
+ * @returns Promise resolving to void
  */
-export async function createStack(payload: StackPayload): Promise<StackData> {
-  return http.post<StackData>("/v1/admin/stacks", payload);
+export async function createStack(payload: StackPayload): Promise<void> {
+  return http.post<void>("/v1/admin/stacks", payload);
 }
 
 /**
@@ -25,13 +25,13 @@ export async function createStack(payload: StackPayload): Promise<StackData> {
  *
  * @param id - Stack ID
  * @param payload - Stack update payload
- * @returns Promise resolving to the updated StackData
+ * @returns Promise resolving to void
  */
 export async function updateStack(
   id: string,
   payload: StackPayload,
-): Promise<StackData> {
-  return http.patch<StackData>(`/v1/admin/stacks/${id}`, payload);
+): Promise<void> {
+  return http.patch<void>(`/v1/admin/stacks/${id}`, payload);
 }
 
 /**

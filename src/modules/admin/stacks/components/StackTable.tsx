@@ -95,8 +95,11 @@ export function StackTable() {
     try {
       await deleteMutation.mutateAsync(deleteId);
       notify.success("技術棧刪除成功");
-    } catch {
-      notify.error("技術棧刪除失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? "技術棧刪除失敗");
     } finally {
       setDeleteId(null);
       setDeleteLabel("");

@@ -187,8 +187,11 @@ export function ExperienceModal({
         notify.success("經歷建立成功");
       }
       handleClose();
-    } catch {
-      notify.error(isEdit ? "經歷更新失敗" : "經歷建立失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? (isEdit ? "經歷更新失敗" : "經歷建立失敗"));
     }
   });
 

@@ -3,8 +3,10 @@ import type { ImageData, ImageListParams } from "@/types";
 
 /** Response shape for paginated image list */
 interface ImageListResponse {
-  data: ImageData[];
-  total: number;
+  payload: ImageData[];
+  total_count: number;
+  page_size: number;
+  page: number;
 }
 
 /**
@@ -24,13 +26,13 @@ export async function getImageList(
  *
  * @param id - Image ID
  * @param payload - Fields to update
- * @returns Promise resolving to the updated ImageData
+ * @returns Promise resolving to void
  */
 export async function updateImage(
   id: string,
   payload: { alt?: string },
-): Promise<ImageData> {
-  return http.patch<ImageData>(`/v1/admin/images/${id}`, payload);
+): Promise<void> {
+  return http.patch<void>(`/v1/admin/images/${id}`, payload);
 }
 
 /**

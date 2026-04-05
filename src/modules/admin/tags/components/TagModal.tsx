@@ -85,8 +85,11 @@ export function TagModal({ open, onClose, editData }: TagModalProps) {
         notify.success("標籤建立成功");
       }
       handleClose();
-    } catch {
-      notify.error(isEdit ? "標籤更新失敗" : "標籤建立失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? (isEdit ? "標籤更新失敗" : "標籤建立失敗"));
     }
   });
 

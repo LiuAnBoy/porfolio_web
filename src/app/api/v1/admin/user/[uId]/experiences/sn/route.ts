@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "Forbidden" },
+        { success: false, message: "無權限" },
         { status: 403 },
       );
     }
@@ -36,14 +36,14 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
 
     if (!Array.isArray(body) || body.length === 0) {
       return NextResponse.json(
-        { success: false, message: "Invalid request body" },
+        { success: false, message: "請求格式錯誤" },
         { status: 400 },
       );
     }
@@ -62,7 +62,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Update experience order error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to update experience order" },
+      { success: false, message: "更新工作經歷排序失敗" },
       { status: 500 },
     );
   }

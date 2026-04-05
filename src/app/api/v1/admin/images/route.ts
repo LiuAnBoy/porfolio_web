@@ -17,7 +17,10 @@ export async function GET(request: NextRequest) {
     const isPending = searchParams.get("isPending");
     const model = searchParams.get("model");
     const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "20", 10);
+    const page_size = Math.min(
+      parseInt(searchParams.get("page_size") || "20", 10),
+      100,
+    );
 
     const query: Record<string, unknown> = {};
 
@@ -29,9 +32,13 @@ export async function GET(request: NextRequest) {
       query["usage.model"] = model.toUpperCase();
     }
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * page_size;
     const [images, total] = await Promise.all([
-      Image.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      Image.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(page_size)
+        .lean(),
       Image.countDocuments(query),
     ]);
 
@@ -51,11 +58,16 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return NextResponse.json({ success: true, data, page, limit, total });
+    return NextResponse.json({
+      payload: data,
+      total_count: total,
+      page_size,
+      page,
+    });
   } catch (error) {
     console.error("Get images error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get images" },
+      { success: false, message: "取得圖片列表失敗" },
       { status: 500 },
     );
   }

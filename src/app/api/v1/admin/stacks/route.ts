@@ -15,14 +15,13 @@ export async function GET() {
 
     const stacks = await Stack.find().sort({ createdAt: -1 }).lean();
 
-    return NextResponse.json({
-      success: true,
-      data: stacks.map(({ _id, ...rest }) => ({ id: _id.toString(), ...rest })),
-    });
+    return NextResponse.json(
+      stacks.map(({ _id, ...rest }) => ({ id: _id.toString(), ...rest })),
+    );
   } catch (error) {
     console.error("Get stacks error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get stacks" },
+      { success: false, message: "取得技術棧列表失敗" },
       { status: 500 },
     );
   }
@@ -41,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     if (!label) {
       return NextResponse.json(
-        { success: false, message: "Label is required" },
+        { success: false, message: "技術棧名稱為必填欄位" },
         { status: 400 },
       );
     }
@@ -52,22 +51,18 @@ export async function POST(request: NextRequest) {
 
     if (existingStack) {
       return NextResponse.json(
-        { success: false, message: "Stack already exists" },
+        { success: false, message: "技術棧已存在" },
         { status: 409 },
       );
     }
 
-    const stack = await Stack.create({ label });
-    const { _id, ...rest } = stack.toObject();
+    await Stack.create({ label });
 
-    return NextResponse.json({
-      success: true,
-      data: { id: _id.toString(), ...rest },
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Create stack error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to create stack" },
+      { success: false, message: "建立技術棧失敗" },
       { status: 500 },
     );
   }

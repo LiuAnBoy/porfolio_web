@@ -22,20 +22,17 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 
     if (!stack) {
       return NextResponse.json(
-        { success: false, message: "Stack not found" },
+        { success: false, message: "找不到技術棧" },
         { status: 404 },
       );
     }
 
     const { _id, ...rest } = stack;
-    return NextResponse.json({
-      success: true,
-      data: { id: _id.toString(), ...rest },
-    });
+    return NextResponse.json({ id: _id.toString(), ...rest });
   } catch (error) {
     console.error("Get stack error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get stack" },
+      { success: false, message: "取得技術棧失敗" },
       { status: 500 },
     );
   }
@@ -55,7 +52,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const stack = await Stack.findById(id);
     if (!stack) {
       return NextResponse.json(
-        { success: false, message: "Stack not found" },
+        { success: false, message: "找不到技術棧" },
         { status: 404 },
       );
     }
@@ -70,7 +67,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
       if (existingStack) {
         return NextResponse.json(
-          { success: false, message: "Stack with this label already exists" },
+          { success: false, message: "相同名稱的技術棧已存在" },
           { status: 409 },
         );
       }
@@ -84,7 +81,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Update stack error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to update stack" },
+      { success: false, message: "更新技術棧失敗" },
       { status: 500 },
     );
   }
@@ -103,7 +100,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const stack = await Stack.findById(id);
     if (!stack) {
       return NextResponse.json(
-        { success: false, message: "Stack not found" },
+        { success: false, message: "找不到技術棧" },
         { status: 404 },
       );
     }
@@ -114,7 +111,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Delete stack error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to delete stack" },
+      { success: false, message: "刪除技術棧失敗" },
       { status: 500 },
     );
   }

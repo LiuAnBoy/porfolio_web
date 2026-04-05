@@ -133,10 +133,10 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
           isFeatured: true,
           type,
           page: 1,
-          limit: 100,
+          page_size: 100,
         });
 
-        const featuredProjects = featuredResponse.data;
+        const featuredProjects = featuredResponse.payload;
         const newFeaturedCount = featuredProjects.length;
 
         // Step 2: Calculate how many non-featured we need
@@ -154,23 +154,23 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
             isFeatured: false,
             type,
             page: 1,
-            limit: PAGE_LIMIT,
+            page_size: PAGE_LIMIT,
           });
 
-          nonFeaturedProjects = nonFeaturedResponse.data.slice(
+          nonFeaturedProjects = nonFeaturedResponse.payload.slice(
             0,
             nonFeaturedNeeded,
           );
-          newNonFeaturedTotal = nonFeaturedResponse.total;
+          newNonFeaturedTotal = nonFeaturedResponse.total_count;
         } else {
           const nonFeaturedResponse = await getProjects({
             isVisible: true,
             isFeatured: false,
             type,
             page: 1,
-            limit: 1,
+            page_size: 1,
           });
-          newNonFeaturedTotal = nonFeaturedResponse.total;
+          newNonFeaturedTotal = nonFeaturedResponse.total_count;
         }
 
         const allProjects = [...featuredProjects, ...nonFeaturedProjects];
@@ -202,11 +202,11 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
         isFeatured: false,
         type: selectedType,
         page: nextPage,
-        limit: PAGE_LIMIT,
+        page_size: PAGE_LIMIT,
       });
 
       // Add to store (store handles deduplication)
-      store.addProjects(response.data);
+      store.addProjects(response.payload);
     } catch (error) {
       console.error("Failed to fetch next page:", error);
     }

@@ -42,7 +42,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 
     if (!project) {
       return NextResponse.json(
-        { success: false, message: "Project not found" },
+        { success: false, message: "找不到專案" },
         { status: 404 },
       );
     }
@@ -50,45 +50,42 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const { _id, userId, tags, stacks, cover, gallery, ...rest } = project;
 
     return NextResponse.json({
-      success: true,
-      data: {
-        id: _id.toString(),
-        userId: userId.toString(),
-        tags: (
-          tags as unknown as Array<{
-            _id: unknown;
-            label: string;
-            slug: string;
-          }>
-        ).map((tag) => ({
-          id: String(tag._id),
-          label: tag.label,
-          slug: tag.slug,
-        })),
-        stacks: (
-          stacks as unknown as Array<{
-            _id: unknown;
-            label: string;
-            slug: string;
-          }>
-        ).map((stack) => ({
-          id: String(stack._id),
-          label: stack.label,
-          slug: stack.slug,
-        })),
-        cover: transformImage(
-          cover as unknown as { _id: unknown; url: string } | null,
-        ),
-        gallery: (
-          (gallery || []) as unknown as Array<{ _id: unknown; url: string }>
-        ).map((item) => transformImage(item)!),
-        ...rest,
-      },
+      id: _id.toString(),
+      userId: userId.toString(),
+      tags: (
+        tags as unknown as Array<{
+          _id: unknown;
+          label: string;
+          slug: string;
+        }>
+      ).map((tag) => ({
+        id: String(tag._id),
+        label: tag.label,
+        slug: tag.slug,
+      })),
+      stacks: (
+        stacks as unknown as Array<{
+          _id: unknown;
+          label: string;
+          slug: string;
+        }>
+      ).map((stack) => ({
+        id: String(stack._id),
+        label: stack.label,
+        slug: stack.slug,
+      })),
+      cover: transformImage(
+        cover as unknown as { _id: unknown; url: string } | null,
+      ),
+      gallery: (
+        (gallery || []) as unknown as Array<{ _id: unknown; url: string }>
+      ).map((item) => transformImage(item)!),
+      ...rest,
     });
   } catch (error) {
     console.error("Get project error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get project" },
+      { success: false, message: "取得專案失敗" },
       { status: 500 },
     );
   }
@@ -108,14 +105,14 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const project = await Project.findById(id);
     if (!project) {
       return NextResponse.json(
-        { success: false, message: "Project not found" },
+        { success: false, message: "找不到專案" },
         { status: 404 },
       );
     }
 
     if (project.userId.toString() !== userId) {
       return NextResponse.json(
-        { success: false, message: "Forbidden" },
+        { success: false, message: "無權限" },
         { status: 403 },
       );
     }
@@ -139,7 +136,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json(
         {
           success: false,
-          message: "Valid type is required (WEB, APP, HYBRID)",
+          message: "請提供有效的專案類型（WEB、APP、HYBRID）",
         },
         { status: 400 },
       );
@@ -149,7 +146,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       const tagCount = await Tag.countDocuments({ _id: { $in: tags } });
       if (tagCount !== tags.length) {
         return NextResponse.json(
-          { success: false, message: "One or more tags not found" },
+          { success: false, message: "部分標籤不存在" },
           { status: 400 },
         );
       }
@@ -159,7 +156,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       const stackCount = await Stack.countDocuments({ _id: { $in: stacks } });
       if (stackCount !== stacks.length) {
         return NextResponse.json(
-          { success: false, message: "One or more stacks not found" },
+          { success: false, message: "部分技術棧不存在" },
           { status: 400 },
         );
       }
@@ -292,7 +289,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Update project error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to update project" },
+      { success: false, message: "更新專案失敗" },
       { status: 500 },
     );
   }
@@ -312,14 +309,14 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const project = await Project.findById(id);
     if (!project) {
       return NextResponse.json(
-        { success: false, message: "Project not found" },
+        { success: false, message: "找不到專案" },
         { status: 404 },
       );
     }
 
     if (project.userId.toString() !== userId) {
       return NextResponse.json(
-        { success: false, message: "Forbidden" },
+        { success: false, message: "無權限" },
         { status: 403 },
       );
     }
@@ -355,7 +352,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Delete project error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to delete project" },
+      { success: false, message: "刪除專案失敗" },
       { status: 500 },
     );
   }

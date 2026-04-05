@@ -79,7 +79,12 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
     reorderMutation.mutate(
       { userId, payload: { sn: ids } },
       {
-        onError: () => notify.error("排序更新失敗"),
+        onError: (error: unknown) => {
+          const apiMessage = (
+            error as { response?: { data?: { message?: string } } }
+          ).response?.data?.message;
+          notify.error(apiMessage ?? "排序更新失敗");
+        },
       },
     );
   };
@@ -165,8 +170,11 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
         expId: deleteTarget.id,
       });
       notify.success("經歷刪除成功");
-    } catch {
-      notify.error("經歷刪除失敗");
+    } catch (error) {
+      const apiMessage = (
+        error as { response?: { data?: { message?: string } } }
+      ).response?.data?.message;
+      notify.error(apiMessage ?? "經歷刪除失敗");
     } finally {
       setDeleteTarget(null);
     }

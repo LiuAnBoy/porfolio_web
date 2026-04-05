@@ -3,8 +3,10 @@ import type { ProjectData, ProjectListParams, ProjectPayload } from "@/types";
 
 /** Response shape for paginated project list */
 interface ProjectListResponse {
-  data: ProjectData[];
-  total: number;
+  payload: ProjectData[];
+  total_count: number;
+  page_size: number;
+  page: number;
 }
 
 /**
@@ -33,12 +35,10 @@ export async function getProjectDetail(id: string): Promise<ProjectData> {
  * Create a new project.
  *
  * @param payload - Project creation payload
- * @returns Promise resolving to the created ProjectData
+ * @returns Promise resolving to void
  */
-export async function createProject(
-  payload: ProjectPayload,
-): Promise<ProjectData> {
-  return http.post<ProjectData>("/v1/admin/projects", payload);
+export async function createProject(payload: ProjectPayload): Promise<void> {
+  return http.post<void>("/v1/admin/projects", payload);
 }
 
 /**
@@ -46,13 +46,13 @@ export async function createProject(
  *
  * @param id - Project ID
  * @param payload - Project update payload
- * @returns Promise resolving to the updated ProjectData
+ * @returns Promise resolving to void
  */
 export async function updateProject(
   id: string,
   payload: Partial<ProjectPayload>,
-): Promise<ProjectData> {
-  return http.patch<ProjectData>(`/v1/admin/projects/${id}`, payload);
+): Promise<void> {
+  return http.patch<void>(`/v1/admin/projects/${id}`, payload);
 }
 
 /**

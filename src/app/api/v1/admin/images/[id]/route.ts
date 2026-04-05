@@ -28,7 +28,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const image = await Image.findById(id).lean();
     if (!image) {
       return NextResponse.json(
-        { success: false, message: "Image not found" },
+        { success: false, message: "找不到圖片" },
         { status: 404 },
       );
     }
@@ -36,23 +36,20 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const { _id, usage, ...rest } = image;
 
     return NextResponse.json({
-      success: true,
-      data: {
-        id: _id.toString(),
-        usage: usage
-          ? {
-              type: usage.type,
-              refId: usage.refId.toString(),
-              model: usage.model,
-            }
-          : null,
-        ...rest,
-      },
+      id: _id.toString(),
+      usage: usage
+        ? {
+            type: usage.type,
+            refId: usage.refId.toString(),
+            model: usage.model,
+          }
+        : null,
+      ...rest,
     });
   } catch (error) {
     console.error("Get image error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to get image" },
+      { success: false, message: "取得圖片失敗" },
       { status: 500 },
     );
   }
@@ -71,7 +68,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const image = await Image.findById(id);
     if (!image) {
       return NextResponse.json(
-        { success: false, message: "Image not found" },
+        { success: false, message: "找不到圖片" },
         { status: 404 },
       );
     }
@@ -81,14 +78,14 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (!file) {
       return NextResponse.json(
-        { success: false, message: "No file provided" },
+        { success: false, message: "未提供檔案" },
         { status: 400 },
       );
     }
 
     if (!file.type.startsWith("image/")) {
       return NextResponse.json(
-        { success: false, message: "File must be an image" },
+        { success: false, message: "檔案必須是圖片格式" },
         { status: 400 },
       );
     }
@@ -116,7 +113,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Update image error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to update image" },
+      { success: false, message: "更新圖片失敗" },
       { status: 500 },
     );
   }
@@ -135,7 +132,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const image = await Image.findById(id);
     if (!image) {
       return NextResponse.json(
-        { success: false, message: "Image not found" },
+        { success: false, message: "找不到圖片" },
         { status: 404 },
       );
     }
@@ -147,7 +144,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error("Delete image error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to delete image" },
+      { success: false, message: "刪除圖片失敗" },
       { status: 500 },
     );
   }

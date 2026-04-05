@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
     if (!type || type !== "image") {
       return NextResponse.json(
-        { success: false, message: "Invalid type provided" },
+        { success: false, message: "請提供有效的上傳類型" },
         { status: 400 },
       );
     }
@@ -41,14 +41,14 @@ export async function POST(request: NextRequest) {
 
     if (!file) {
       return NextResponse.json(
-        { success: false, message: "No file provided" },
+        { success: false, message: "未提供檔案" },
         { status: 400 },
       );
     }
 
     if (!file.type.startsWith("image/")) {
       return NextResponse.json(
-        { success: false, message: "File must be an image" },
+        { success: false, message: "檔案必須是圖片格式" },
         { status: 400 },
       );
     }
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: {
+      payload: {
         imageId: image._id.toString(),
         url: image.url,
       },
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to upload file" },
+      { success: false, message: "上傳失敗" },
       { status: 500 },
     );
   }

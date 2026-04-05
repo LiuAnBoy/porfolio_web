@@ -21,7 +21,10 @@ export async function GET(request: NextRequest) {
     const tagsParam = searchParams.get("tags");
     const stacksParam = searchParams.get("stacks");
     const page = parseInt(searchParams.get("page") || "1", 10);
-    const limit = parseInt(searchParams.get("limit") || "10", 10);
+    const page_size = Math.min(
+      parseInt(searchParams.get("page_size") || "20", 10),
+      100,
+    );
 
     const query: Record<string, unknown> = {};
 
@@ -53,7 +56,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * page_size;
     const [projects, total] = await Promise.all([
       Project.find(query)
         .populate("tags", "label slug")
@@ -62,7 +65,7 @@ export async function GET(request: NextRequest) {
         .populate("gallery", "url")
         .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(limit)
+        .limit(page_size)
         .lean(),
       Project.countDocuments(query),
     ]);
@@ -123,11 +126,11 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return jsonWithCors({ success: true, data, page, limit, total });
+    return jsonWithCors({ payload: data, total_count: total, page_size, page });
   } catch (error) {
     console.error("Get public projects error:", error);
     return jsonWithCors(
-      { success: false, message: "Failed to get projects" },
+      { success: false, message: "取得專案列表失敗" },
       { status: 500 },
     );
   }

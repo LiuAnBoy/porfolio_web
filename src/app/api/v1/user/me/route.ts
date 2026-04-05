@@ -19,7 +19,7 @@ export async function GET() {
 
     if (!user) {
       return jsonWithCors(
-        { success: false, message: "User not found" },
+        { success: false, message: "找不到使用者" },
         { status: 404 },
       );
     }
@@ -86,22 +86,19 @@ export async function GET() {
     const { _id, email, avatar, name, title, bio, socials } = user;
 
     return jsonWithCors({
-      success: true,
-      data: {
-        id: _id.toString(),
-        avatar: (avatar as unknown as { url: string } | null)?.url || null,
-        email,
-        name,
-        title,
-        bio,
-        socials,
-        experiences: experiencesData,
-      },
+      id: _id.toString(),
+      avatar: (avatar as unknown as { url: string } | null)?.url || null,
+      email,
+      name,
+      title,
+      bio,
+      socials,
+      experiences: experiencesData,
     });
   } catch (error) {
     console.error("Get user error:", error);
     return jsonWithCors(
-      { success: false, message: "Failed to get user" },
+      { success: false, message: "取得使用者資料失敗" },
       { status: 500 },
     );
   }

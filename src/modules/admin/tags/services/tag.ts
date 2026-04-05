@@ -14,10 +14,10 @@ export async function getTagList(): Promise<TagData[]> {
  * Create a new tag.
  *
  * @param payload - Tag creation payload
- * @returns Promise resolving to the created TagData
+ * @returns Promise resolving to void
  */
-export async function createTag(payload: TagPayload): Promise<TagData> {
-  return http.post<TagData>("/v1/admin/tags", payload);
+export async function createTag(payload: TagPayload): Promise<void> {
+  return http.post<void>("/v1/admin/tags", payload);
 }
 
 /**
@@ -25,13 +25,13 @@ export async function createTag(payload: TagPayload): Promise<TagData> {
  *
  * @param id - Tag ID
  * @param payload - Tag update payload
- * @returns Promise resolving to the updated TagData
+ * @returns Promise resolving to void
  */
 export async function updateTag(
   id: string,
   payload: TagPayload,
-): Promise<TagData> {
-  return http.patch<TagData>(`/v1/admin/tags/${id}`, payload);
+): Promise<void> {
+  return http.patch<void>(`/v1/admin/tags/${id}`, payload);
 }
 
 /**
