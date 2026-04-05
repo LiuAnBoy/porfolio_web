@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import http from "@/services/client";
 
@@ -27,14 +27,17 @@ export function useDeleteImage(): {
    * @returns Promise that resolves when the image is deleted
    * @throws Error if the deletion fails
    */
-  const deleteImage = async (imageId: string): Promise<void> => {
+  const deleteImage = useCallback(async (imageId: string): Promise<void> => {
     setIsDeleting(true);
     try {
       await http.del(`/v1/admin/images/${imageId}`);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      throw error;
     } finally {
       setIsDeleting(false);
     }
-  };
+  }, []);
 
   return { deleteImage, isDeleting };
 }

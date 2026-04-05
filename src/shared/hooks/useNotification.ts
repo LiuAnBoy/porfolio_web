@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { useSnackbar } from "notistack";
 
 /** Methods for displaying notifications at different severity levels */
@@ -27,14 +29,18 @@ interface NotifyMethods {
 export function useNotification(): { notify: NotifyMethods } {
   const { enqueueSnackbar } = useSnackbar();
 
-  const notify: NotifyMethods = {
-    success: (message: string) =>
-      enqueueSnackbar(message, { variant: "success" }),
-    error: (message: string) => enqueueSnackbar(message, { variant: "error" }),
-    warning: (message: string) =>
-      enqueueSnackbar(message, { variant: "warning" }),
-    info: (message: string) => enqueueSnackbar(message, { variant: "info" }),
-  };
+  const notify = useMemo<NotifyMethods>(
+    () => ({
+      success: (message: string) =>
+        enqueueSnackbar(message, { variant: "success" }),
+      error: (message: string) =>
+        enqueueSnackbar(message, { variant: "error" }),
+      warning: (message: string) =>
+        enqueueSnackbar(message, { variant: "warning" }),
+      info: (message: string) => enqueueSnackbar(message, { variant: "info" }),
+    }),
+    [enqueueSnackbar],
+  );
 
   return { notify };
 }

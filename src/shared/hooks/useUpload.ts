@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import http from "@/services/client";
 
@@ -51,27 +51,34 @@ export function useUpload(options: UseUploadOptions): {
    * @returns Promise resolving to the uploaded image data
    * @throws Error if the upload fails
    */
-  const upload = async (file: File): Promise<ImageValue> => {
-    setIsUploading(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("module", module);
+  const upload = useCallback(
+    async (file: File): Promise<ImageValue> => {
+      setIsUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("module", module);
 
-      const image = await http.post<ImageValue>("/v1/admin/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+        const image = await http.post<ImageValue>(
+          "/v1/admin/upload",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          },
+        );
 
-      onSuccess?.(image);
-      return image;
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error(String(err));
-      onError?.(error);
-      throw error;
-    } finally {
-      setIsUploading(false);
-    }
-  };
+        onSuccess?.(image);
+        return image;
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        onError?.(error);
+        throw error;
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [module, onSuccess, onError],
+  );
 
   return { upload, isUploading };
 }
