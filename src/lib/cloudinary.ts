@@ -1,24 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
 
-const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
-const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
-const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
-
-if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
-  throw new Error(
-    "Missing Cloudinary environment variables: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are required",
-  );
-}
-
-/**
- * Configure Cloudinary with environment variables
- */
-cloudinary.config({
-  cloud_name: CLOUDINARY_CLOUD_NAME,
-  api_key: CLOUDINARY_API_KEY,
-  api_secret: CLOUDINARY_API_SECRET,
-});
-
 export interface CloudinaryUploadResult {
   publicId: string;
   url: string;
@@ -27,6 +8,25 @@ export interface CloudinaryUploadResult {
   width: number;
   height: number;
   bytes: number;
+}
+
+/**
+ * Validate and configure Cloudinary. Throws at runtime if env vars are missing.
+ * Called lazily so build-time page collection does not fail.
+ */
+function getCloudinary() {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+  if (!cloudName || !apiKey || !apiSecret) {
+    throw new Error(
+      "Missing Cloudinary environment variables: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are required",
+    );
+  }
+
+  cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
+  return cloudinary;
 }
 
 /**
@@ -40,14 +40,12 @@ export async function uploadImage(
   folder: string = "portfolio",
   mimeType: string = "image/png",
 ): Promise<CloudinaryUploadResult> {
-  const result = await cloudinary.uploader.upload(
+  const cld = getCloudinary();
+  const result = await cld.uploader.upload(
     typeof file === "string"
       ? file
       : `data:${mimeType};base64,${file.toString("base64")}`,
-    {
-      folder,
-      resource_type: "image",
-    },
+    { folder, resource_type: "image" },
   );
 
   return {
@@ -65,7 +63,8 @@ export async function uploadImage(
  * Delete image from Cloudinary
  */
 export async function deleteImage(publicId: string): Promise<void> {
-  const result = await cloudinary.uploader.destroy(publicId);
+  const cld = getCloudinary();
+  const result = await cld.uploader.destroy(publicId);
   if (result.result !== "ok") {
     throw new Error(`Failed to delete image from Cloudinary: ${result.result}`);
   }
@@ -75,14 +74,16 @@ export async function deleteImage(publicId: string): Promise<void> {
  * Delete multiple images from Cloudinary
  */
 export async function deleteImages(publicIds: string[]): Promise<void> {
-  await cloudinary.api.delete_resources(publicIds);
+  const cld = getCloudinary();
+  await cld.api.delete_resources(publicIds);
 }
 
 /**
  * Get image info from Cloudinary
  */
 export async function getImageInfo(publicId: string) {
-  return await cloudinary.api.resource(publicId);
+  const cld = getCloudinary();
+  return await cld.api.resource(publicId);
 }
 
 export default cloudinary;
