@@ -12,10 +12,6 @@ declare global {
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
-}
-
 let cached = global.mongooseCache;
 
 if (!cached) {
@@ -27,6 +23,10 @@ if (!cached) {
  * Uses cached connection in development to prevent multiple connections
  */
 export async function connectDB(): Promise<Mongoose> {
+  if (!MONGODB_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable");
+  }
+
   if (cached.conn) {
     return cached.conn;
   }

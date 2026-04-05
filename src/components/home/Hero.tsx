@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import { theme } from "@/shared/styles/theme";
+import { theme } from "@/styles/theme";
 
 /**
  * Generate floating path data based on position.
