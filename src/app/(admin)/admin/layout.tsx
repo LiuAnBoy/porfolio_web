@@ -41,6 +41,7 @@ export default async function AdminRootLayout({
     <AdminProviders
       dehydratedState={dehydratedState}
       userEmail={session.user?.email ?? undefined}
+      session={session}
     >
       {children}
     </AdminProviders>

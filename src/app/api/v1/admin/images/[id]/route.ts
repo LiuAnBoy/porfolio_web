@@ -95,7 +95,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const newHash = generateHash(buffer);
 
     if (newHash === image.hash) {
-      return new NextResponse(null, { status: 204 });
+      return NextResponse.json({ success: true });
     }
 
     await deleteImage(image.publicId);

@@ -3,6 +3,8 @@
 import { HydrationBoundary } from "@tanstack/react-query";
 import type { DehydratedState } from "@tanstack/react-query";
 import { ThemeProvider } from "@mui/material/styles";
+import { SessionProvider } from "next-auth/react";
+import type { Session } from "next-auth";
 import { SnackbarProvider } from "notistack";
 import type { ReactNode } from "react";
 
@@ -18,11 +20,13 @@ interface AdminProvidersProps {
   dehydratedState: DehydratedState;
   /** Email address of the authenticated user passed to the layout header. */
   userEmail?: string;
+  /** Server-side session passed to SessionProvider to avoid an extra round-trip. */
+  session: Session | null;
 }
 
 /**
  * Client-side provider stack for the admin route group.
- * Wraps children with React Query, Notistack, and the AdminLayout shell.
+ * Wraps children with React Query, Notistack, SessionProvider, and the AdminLayout shell.
  * This component must be a client component because {@link SnackbarProvider}
  * and {@link ReactQueryProvider} require browser context.
  *
@@ -32,16 +36,19 @@ export function AdminProviders({
   children,
   dehydratedState,
   userEmail,
+  session,
 }: AdminProvidersProps) {
   return (
-    <ThemeProvider theme={adminTheme}>
-      <ReactQueryProvider>
-        <HydrationBoundary state={dehydratedState}>
-          <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
-            <AdminLayout userEmail={userEmail}>{children}</AdminLayout>
-          </SnackbarProvider>
-        </HydrationBoundary>
-      </ReactQueryProvider>
-    </ThemeProvider>
+    <SessionProvider session={session}>
+      <ThemeProvider theme={adminTheme}>
+        <ReactQueryProvider>
+          <HydrationBoundary state={dehydratedState}>
+            <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
+              <AdminLayout userEmail={userEmail}>{children}</AdminLayout>
+            </SnackbarProvider>
+          </HydrationBoundary>
+        </ReactQueryProvider>
+      </ThemeProvider>
+    </SessionProvider>
   );
 }

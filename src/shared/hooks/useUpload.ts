@@ -60,7 +60,7 @@ export function useUpload(options: UseUploadOptions): {
 
         const response = await http.post<{
           success: boolean;
-          data: ImageValue;
+          payload: ImageValue;
         }>(
           `/v1/admin/upload?type=image&module=${encodeURIComponent(module)}`,
           formData,
@@ -69,8 +69,8 @@ export function useUpload(options: UseUploadOptions): {
           },
         );
 
-        onSuccess?.(response.data);
-        return response.data;
+        onSuccess?.(response.payload);
+        return response.payload;
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
         onError?.(error);
