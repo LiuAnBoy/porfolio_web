@@ -1,54 +1,98 @@
 # An's Portfolio
 
-Personal portfolio website built with Next.js and Material UI.
+Personal portfolio website with an admin dashboard, built with Next.js 15 App Router, MUI v7, and MongoDB.
+
+---
 
 ## Tech Stack
 
-- **Framework**: Next.js 16 (App Router)
-- **UI Library**: Material UI v7
-- **Animation**: Framer Motion
-- **Language**: TypeScript
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| UI | Material UI v7 |
+| Auth | NextAuth v5 (session cookies) |
+| Database | MongoDB + Mongoose |
+| Storage | Cloudinary |
+| State | TanStack Query v5 |
+| Animation | Framer Motion |
+| Language | TypeScript |
+
+---
 
 ## Features
 
-- Server-side rendering with data caching
-- Responsive design (mobile, tablet, desktop)
-- Animated hero section with floating paths
-- Projects page with infinite scroll
+**Public site**
+- Server-side rendered portfolio with data caching
+- Projects page with infinite scroll and filtering
 - Profile page with experience timeline
-- Dynamic metadata for SEO
+- Responsive design (mobile → desktop)
+
+**Admin dashboard** (`/admin`)
+- Full CRUD for projects, tags, stacks
+- Image library with drag-and-drop upload (Cloudinary)
+- User profile and work experience management
+- Protected by NextAuth session
+
+---
 
 ## Getting Started
 
 ```bash
-# Install dependencies
 pnpm install
-
-# Run development server
 pnpm dev
-
-# Build for production
-pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the site.
+Open [http://localhost:3000](http://localhost:3000) for the public site.  
+Open [http://localhost:3000/admin](http://localhost:3000/admin) for the dashboard.
+
+---
+
+## Environment Variables
+
+Copy `.env.example` to `.env` and fill in:
+
+```
+MONGODB_URI=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+ADMIN_EMAIL=
+ADMIN_PASSWORD=
+```
+
+---
 
 ## Project Structure
 
 ```
 src/
-├── app/              # Next.js App Router pages
-├── components/       # Feature components
-├── lib/              # Data fetching utilities
-├── providers/        # React context providers
-├── services/         # API services
-└── shared/           # Shared components, layouts, styles
+├── app/
+│   ├── (public)/          # Public-facing pages
+│   ├── (admin)/admin/     # Admin dashboard pages
+│   └── api/v1/            # API routes
+├── modules/
+│   ├── public/            # Public page modules (hero, projects, profile)
+│   └── admin/             # Admin modules (dashboard, projects, tags, stacks, images, user)
+├── shared/
+│   ├── components/        # Shared UI components and layouts
+│   ├── hooks/             # Shared hooks (useUpload, useNotification, etc.)
+│   └── contexts/          # Shared contexts
+├── models/                # Mongoose models
+├── lib/                   # Server utilities (mongodb, auth, cloudinary)
+├── services/              # Client-side API service functions
+├── types/                 # Shared TypeScript types
+└── providers/             # React providers
 ```
 
-## Environment Variables
+---
 
-Create a `.env` file with:
+## Documentation
 
-```
-NEXT_PUBLIC_API_URL=your_api_url
-```
+| Doc | Description |
+|-----|-------------|
+| [docs/api/README.md](./docs/api/README.md) | API route overview and conventions |
+| [docs/database/README.md](./docs/database/README.md) | Database schema and relationships |
+| [docs/api-design.md](./docs/api-design.md) | API response format standards |
+| [CLAUDE.md](./CLAUDE.md) | AI assistant context and project notes |

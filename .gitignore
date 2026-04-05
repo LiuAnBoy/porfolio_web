@@ -45,8 +45,6 @@ next-env.d.ts
 # export files
 export_files/
 
-# doc
-docs/
 
 # MCP
 .serena/
