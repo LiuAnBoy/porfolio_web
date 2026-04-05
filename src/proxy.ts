@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { checkRateLimit } from "@/lib/rate-limit";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
