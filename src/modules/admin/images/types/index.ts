@@ -3,5 +3,5 @@ export type {
   ImageListParams,
   ImageUsageData,
   ImageUsageModel,
-} from "@/types";
-export { IMAGE_USAGE_MODEL } from "@/types";
+} from '@/types';
+export { IMAGE_USAGE_MODEL } from '@/types';

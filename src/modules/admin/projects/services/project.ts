@@ -1,5 +1,5 @@
-import http from "@/services/client";
-import type { ProjectData, ProjectListParams, ProjectPayload } from "@/types";
+import http from '@/services/client';
+import type { ProjectData, ProjectListParams, ProjectPayload } from '@/types';
 
 /** Response shape for paginated project list */
 interface ProjectListResponse {
@@ -18,7 +18,7 @@ interface ProjectListResponse {
 export async function getProjectList(
   params?: ProjectListParams,
 ): Promise<ProjectListResponse> {
-  return http.get<ProjectListResponse>("/v1/admin/projects", { params });
+  return http.get<ProjectListResponse>('/v1/admin/projects', { params });
 }
 
 /**
@@ -38,7 +38,7 @@ export async function getProjectDetail(id: string): Promise<ProjectData> {
  * @returns Promise resolving to void
  */
 export async function createProject(payload: ProjectPayload): Promise<void> {
-  return http.post<void>("/v1/admin/projects", payload);
+  return http.post<void>('/v1/admin/projects', payload);
 }
 
 /**

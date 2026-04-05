@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { connectDB } from "@/lib/mongodb";
-import { withTransaction } from "@/lib/transaction";
-import { Experience, User } from "@/models";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { connectDB } from '@/lib/mongodb';
+import { withTransaction } from '@/lib/transaction';
+import { Experience, User } from '@/models';
 
 interface RouteParams {
   params: Promise<{ uId: string }>;
@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "無權限" },
+        { success: false, message: '無權限' },
         { status: 403 },
       );
     }
@@ -36,14 +36,14 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
 
     if (!Array.isArray(body) || body.length === 0) {
       return NextResponse.json(
-        { success: false, message: "請求格式錯誤" },
+        { success: false, message: '請求格式錯誤' },
         { status: 400 },
       );
     }
@@ -60,9 +60,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Update experience order error:", error);
+    console.error('Update experience order error:', error);
     return NextResponse.json(
-      { success: false, message: "更新工作經歷排序失敗" },
+      { success: false, message: '更新工作經歷排序失敗' },
       { status: 500 },
     );
   }

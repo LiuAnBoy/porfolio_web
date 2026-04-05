@@ -4,5 +4,5 @@ export type {
   ProjectListParams,
   ProjectPayload,
   ProjectType,
-} from "@/types";
-export { PROJECT_TYPE_OPTIONS } from "@/types";
+} from '@/types';
+export { PROJECT_TYPE_OPTIONS } from '@/types';

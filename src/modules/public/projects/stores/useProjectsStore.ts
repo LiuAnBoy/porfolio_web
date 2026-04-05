@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
-import type { Project, ProjectType } from "@/services/projects/types";
+import type { Project, ProjectType } from '@/services/projects/types';
 
 interface ProjectsState {
   projects: Project[];
@@ -62,7 +62,7 @@ export const useProjectsStore = create<ProjectsStore>()(
       reset: () => set(initialState),
     }),
     {
-      name: "projects-cache",
+      name: 'projects-cache',
       storage: createJSONStorage(() => sessionStorage),
     },
   ),

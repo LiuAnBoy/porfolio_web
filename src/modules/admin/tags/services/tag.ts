@@ -1,5 +1,5 @@
-import http from "@/services/client";
-import type { TagData, TagPayload } from "@/types";
+import http from '@/services/client';
+import type { TagData, TagPayload } from '@/types';
 
 /**
  * Fetch all tags.
@@ -7,7 +7,7 @@ import type { TagData, TagPayload } from "@/types";
  * @returns Promise resolving to an array of TagData
  */
 export async function getTagList(): Promise<TagData[]> {
-  return http.get<TagData[]>("/v1/admin/tags");
+  return http.get<TagData[]>('/v1/admin/tags');
 }
 
 /**
@@ -17,7 +17,7 @@ export async function getTagList(): Promise<TagData[]> {
  * @returns Promise resolving to void
  */
 export async function createTag(payload: TagPayload): Promise<void> {
-  return http.post<void>("/v1/admin/tags", payload);
+  return http.post<void>('/v1/admin/tags', payload);
 }
 
 /**

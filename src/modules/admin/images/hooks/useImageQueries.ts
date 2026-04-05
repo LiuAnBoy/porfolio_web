@@ -1,8 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import type { ImageListParams } from "@/types";
+import type { ImageListParams } from '@/types';
 
-import { deleteImage, getImageList, updateImage } from "../services/image";
+import { deleteImage, getImageList, updateImage } from '../services/image';
 
 /**
  * Build the query key for the image list.
@@ -10,7 +10,7 @@ import { deleteImage, getImageList, updateImage } from "../services/image";
  * @param params - Current filter/pagination params
  * @returns Tuple query key
  */
-const imageQueryKey = (params: ImageListParams) => ["images", params] as const;
+const imageQueryKey = (params: ImageListParams) => ['images', params] as const;
 
 /**
  * React Query hook to fetch the paginated image list.
@@ -37,7 +37,7 @@ export function useUpdateImage() {
     mutationFn: ({ id, payload }: { id: string; payload: { alt?: string } }) =>
       updateImage(id, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["images"] });
+      queryClient.invalidateQueries({ queryKey: ['images'] });
     },
   });
 }
@@ -53,7 +53,7 @@ export function useDeleteImage() {
   return useMutation({
     mutationFn: (id: string) => deleteImage(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["images"] });
+      queryClient.invalidateQueries({ queryKey: ['images'] });
     },
   });
 }

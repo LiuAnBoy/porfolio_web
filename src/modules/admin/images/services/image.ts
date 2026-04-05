@@ -1,5 +1,5 @@
-import http from "@/services/client";
-import type { ImageData, ImageListParams } from "@/types";
+import http from '@/services/client';
+import type { ImageData, ImageListParams } from '@/types';
 
 /** Response shape for paginated image list */
 interface ImageListResponse {
@@ -18,7 +18,7 @@ interface ImageListResponse {
 export async function getImageList(
   params: ImageListParams,
 ): Promise<ImageListResponse> {
-  return http.get<ImageListResponse>("/v1/admin/images", { params });
+  return http.get<ImageListResponse>('/v1/admin/images', { params });
 }
 
 /**

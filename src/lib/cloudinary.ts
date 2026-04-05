@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
 
 export interface CloudinaryUploadResult {
   publicId: string;
@@ -21,7 +21,7 @@ function getCloudinary() {
 
   if (!cloudName || !apiKey || !apiSecret) {
     throw new Error(
-      "Missing Cloudinary environment variables: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are required",
+      'Missing Cloudinary environment variables: CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET are required',
     );
   }
 
@@ -41,15 +41,15 @@ function getCloudinary() {
  */
 export async function uploadImage(
   file: Buffer | string,
-  folder: string = "portfolio",
-  mimeType: string = "image/png",
+  folder: string = 'portfolio',
+  mimeType: string = 'image/png',
 ): Promise<CloudinaryUploadResult> {
   const cld = getCloudinary();
   const result = await cld.uploader.upload(
-    typeof file === "string"
+    typeof file === 'string'
       ? file
-      : `data:${mimeType};base64,${file.toString("base64")}`,
-    { folder, resource_type: "image" },
+      : `data:${mimeType};base64,${file.toString('base64')}`,
+    { folder, resource_type: 'image' },
   );
 
   return {
@@ -69,7 +69,7 @@ export async function uploadImage(
 export async function deleteImage(publicId: string): Promise<void> {
   const cld = getCloudinary();
   const result = await cld.uploader.destroy(publicId);
-  if (result.result !== "ok") {
+  if (result.result !== 'ok') {
     throw new Error(`Failed to delete image from Cloudinary: ${result.result}`);
   }
 }

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import FormatBoldIcon from "@mui/icons-material/FormatBold";
-import FormatItalicIcon from "@mui/icons-material/FormatItalic";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import FormatStrikethroughIcon from "@mui/icons-material/FormatStrikethrough";
-import InsertLinkIcon from "@mui/icons-material/InsertLink";
-import RedoIcon from "@mui/icons-material/Redo";
-import TitleIcon from "@mui/icons-material/Title";
-import UndoIcon from "@mui/icons-material/Undo";
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import FormatStrikethroughIcon from '@mui/icons-material/FormatStrikethrough';
+import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import RedoIcon from '@mui/icons-material/Redo';
+import TitleIcon from '@mui/icons-material/Title';
+import UndoIcon from '@mui/icons-material/Undo';
 import {
   Box,
   Button,
@@ -20,12 +20,12 @@ import {
   IconButton,
   TextField,
   Tooltip,
-} from "@mui/material";
-import Link from "@tiptap/extension-link";
-import Placeholder from "@tiptap/extension-placeholder";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { useEffect, useState } from "react";
+} from '@mui/material';
+import Link from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { useEffect, useState } from 'react';
 
 /** Props for RichTextEditor component */
 interface RichTextEditorProps {
@@ -58,9 +58,9 @@ export function RichTextEditor({
       StarterKit,
       Link.configure({
         openOnClick: false,
-        HTMLAttributes: { rel: "noopener noreferrer", target: "_blank" },
+        HTMLAttributes: { rel: 'noopener noreferrer', target: '_blank' },
       }),
-      Placeholder.configure({ placeholder: placeholder ?? "" }),
+      Placeholder.configure({ placeholder: placeholder ?? '' }),
     ],
     content: value,
     onUpdate({ editor: e }) {
@@ -78,13 +78,13 @@ export function RichTextEditor({
   }, [editor, value]);
 
   const [linkDialogOpen, setLinkDialogOpen] = useState(false);
-  const [linkUrl, setLinkUrl] = useState("");
+  const [linkUrl, setLinkUrl] = useState('');
 
   if (!editor) return null;
 
   const handleLinkClick = () => {
     const existing =
-      (editor.getAttributes("link").href as string | undefined) ?? "";
+      (editor.getAttributes('link').href as string | undefined) ?? '';
     setLinkUrl(existing);
     setLinkDialogOpen(true);
   };
@@ -94,44 +94,44 @@ export function RichTextEditor({
       editor
         .chain()
         .focus()
-        .extendMarkRange("link")
+        .extendMarkRange('link')
         .setLink({ href: linkUrl })
         .run();
     } else {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
     }
     setLinkDialogOpen(false);
-    setLinkUrl("");
+    setLinkUrl('');
   };
 
   return (
     <Box
       sx={{
-        border: "1px solid",
-        borderColor: "divider",
+        border: '1px solid',
+        borderColor: 'divider',
         borderRadius: 1,
-        overflow: "hidden",
+        overflow: 'hidden',
       }}
     >
       {/* Toolbar */}
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
           gap: 0.5,
           px: 1,
           py: 0.5,
-          borderBottom: "1px solid",
-          borderColor: "divider",
-          backgroundColor: "background.paper",
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          backgroundColor: 'background.paper',
         }}
       >
         <Tooltip title="Bold">
           <IconButton
             size="small"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            color={editor.isActive("bold") ? "primary" : "default"}
+            color={editor.isActive('bold') ? 'primary' : 'default'}
           >
             <FormatBoldIcon fontSize="small" />
           </IconButton>
@@ -141,7 +141,7 @@ export function RichTextEditor({
           <IconButton
             size="small"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            color={editor.isActive("italic") ? "primary" : "default"}
+            color={editor.isActive('italic') ? 'primary' : 'default'}
           >
             <FormatItalicIcon fontSize="small" />
           </IconButton>
@@ -151,7 +151,7 @@ export function RichTextEditor({
           <IconButton
             size="small"
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            color={editor.isActive("strike") ? "primary" : "default"}
+            color={editor.isActive('strike') ? 'primary' : 'default'}
           >
             <FormatStrikethroughIcon fontSize="small" />
           </IconButton>
@@ -161,7 +161,7 @@ export function RichTextEditor({
           <IconButton
             size="small"
             onClick={handleLinkClick}
-            color={editor.isActive("link") ? "primary" : "default"}
+            color={editor.isActive('link') ? 'primary' : 'default'}
           >
             <InsertLinkIcon fontSize="small" />
           </IconButton>
@@ -176,7 +176,7 @@ export function RichTextEditor({
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
             color={
-              editor.isActive("heading", { level: 2 }) ? "primary" : "default"
+              editor.isActive('heading', { level: 2 }) ? 'primary' : 'default'
             }
           >
             <TitleIcon fontSize="small" />
@@ -187,7 +187,7 @@ export function RichTextEditor({
           <IconButton
             size="small"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            color={editor.isActive("bulletList") ? "primary" : "default"}
+            color={editor.isActive('bulletList') ? 'primary' : 'default'}
           >
             <FormatListBulletedIcon fontSize="small" />
           </IconButton>
@@ -197,7 +197,7 @@ export function RichTextEditor({
           <IconButton
             size="small"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            color={editor.isActive("orderedList") ? "primary" : "default"}
+            color={editor.isActive('orderedList') ? 'primary' : 'default'}
           >
             <FormatListNumberedIcon fontSize="small" />
           </IconButton>
@@ -236,19 +236,19 @@ export function RichTextEditor({
           px: 2,
           py: 1.5,
           minHeight: 160,
-          "& .tiptap": {
-            outline: "none",
+          '& .tiptap': {
+            outline: 'none',
             minHeight: 120,
-            "& p.is-editor-empty:first-of-type::before": {
-              content: "attr(data-placeholder)",
-              color: "text.disabled",
-              pointerEvents: "none",
-              float: "left",
+            '& p.is-editor-empty:first-of-type::before': {
+              content: 'attr(data-placeholder)',
+              color: 'text.disabled',
+              pointerEvents: 'none',
+              float: 'left',
               height: 0,
             },
-            "& h2": { my: 1 },
-            "& ul, & ol": { pl: 3 },
-            "& a": { color: "primary.main" },
+            '& h2': { my: 1 },
+            '& ul, & ol': { pl: 3 },
+            '& a': { color: 'primary.main' },
           },
         }}
       >
@@ -271,7 +271,7 @@ export function RichTextEditor({
             value={linkUrl}
             onChange={(e) => setLinkUrl(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") handleLinkConfirm();
+              if (e.key === 'Enter') handleLinkConfirm();
             }}
             sx={{ mt: 1 }}
           />

@@ -1,19 +1,19 @@
-import crypto from "crypto";
-import dayjs from "dayjs";
-import { NextRequest, NextResponse } from "next/server";
+import crypto from 'crypto';
+import dayjs from 'dayjs';
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { uploadImage } from "@/lib/cloudinary";
-import { connectDB } from "@/lib/mongodb";
-import { Image } from "@/models";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { uploadImage } from '@/lib/cloudinary';
+import { connectDB } from '@/lib/mongodb';
+import { Image } from '@/models';
 
 function generateHash(buffer: Buffer): string {
-  return crypto.createHash("md5").update(buffer).digest("hex");
+  return crypto.createHash('md5').update(buffer).digest('hex');
 }
 
 function getUploadFolder(moduleName?: string): string {
-  const isDev = process.env.NODE_ENV === "development";
-  const baseFolder = isDev ? "portfolio-dev" : "portfolio";
+  const isDev = process.env.NODE_ENV === 'development';
+  const baseFolder = isDev ? 'portfolio-dev' : 'portfolio';
 
   return moduleName ? `${baseFolder}/${moduleName}` : baseFolder;
 }
@@ -26,29 +26,29 @@ export async function POST(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get("type");
-    const moduleName = searchParams.get("module");
+    const type = searchParams.get('type');
+    const moduleName = searchParams.get('module');
 
-    if (!type || type !== "image") {
+    if (!type || type !== 'image') {
       return NextResponse.json(
-        { success: false, message: "請提供有效的上傳類型" },
+        { success: false, message: '請提供有效的上傳類型' },
         { status: 400 },
       );
     }
 
     const formData = await request.formData();
-    const file = formData.get("file") as File | null;
+    const file = formData.get('file') as File | null;
 
     if (!file) {
       return NextResponse.json(
-        { success: false, message: "未提供檔案" },
+        { success: false, message: '未提供檔案' },
         { status: 400 },
       );
     }
 
-    if (!file.type.startsWith("image/")) {
+    if (!file.type.startsWith('image/')) {
       return NextResponse.json(
-        { success: false, message: "檔案必須是圖片格式" },
+        { success: false, message: '檔案必須是圖片格式' },
         { status: 400 },
       );
     }
@@ -79,9 +79,9 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Upload error:", error);
+    console.error('Upload error:', error);
     return NextResponse.json(
-      { success: false, message: "上傳失敗" },
+      { success: false, message: '上傳失敗' },
       { status: 500 },
     );
   }

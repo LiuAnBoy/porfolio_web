@@ -1,14 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   createStack,
   deleteStack,
   getStackList,
   updateStack,
-} from "../services/stack";
+} from '../services/stack';
 
 /** Query key for the stack list */
-const STACK_QUERY_KEY = ["stacks"] as const;
+const STACK_QUERY_KEY = ['stacks'] as const;
 
 /**
  * React Query hook to fetch the stack list.

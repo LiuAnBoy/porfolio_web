@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Button,
@@ -13,16 +13,16 @@ import {
   Select,
   TextField,
   Typography,
-} from "@mui/material";
-import { useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+} from '@mui/material';
+import { useEffect } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
-import { FileUpload, RichTextEditor } from "@/shared/components/common";
-import { ImageValue, useNotification } from "@/shared/hooks";
-import type { ISocial, SocialPlatform, UserData } from "@/types";
-import { SOCIAL_PLATFORM } from "@/types";
+import { FileUpload, RichTextEditor } from '@/shared/components/common';
+import { ImageValue, useNotification } from '@/shared/hooks';
+import type { ISocial, SocialPlatform, UserData } from '@/types';
+import { SOCIAL_PLATFORM } from '@/types';
 
-import { useUpdateUser } from "../hooks/useUserQueries";
+import { useUpdateUser } from '../hooks/useUserQueries';
 
 /** Props for ProfileTab component */
 interface ProfileTabProps {
@@ -42,11 +42,11 @@ interface ProfileFormValues {
 
 /** Available social platform options */
 const PLATFORM_OPTIONS: { label: string; value: SocialPlatform }[] = [
-  { label: "GitHub", value: SOCIAL_PLATFORM.GITHUB },
-  { label: "LinkedIn", value: SOCIAL_PLATFORM.LINKEDIN },
-  { label: "LINE", value: SOCIAL_PLATFORM.LINE },
-  { label: "Telegram", value: SOCIAL_PLATFORM.TELEGRAM },
-  { label: "WeChat", value: SOCIAL_PLATFORM.WECHAT },
+  { label: 'GitHub', value: SOCIAL_PLATFORM.GITHUB },
+  { label: 'LinkedIn', value: SOCIAL_PLATFORM.LINKEDIN },
+  { label: 'LINE', value: SOCIAL_PLATFORM.LINE },
+  { label: 'Telegram', value: SOCIAL_PLATFORM.TELEGRAM },
+  { label: 'WeChat', value: SOCIAL_PLATFORM.WECHAT },
 ];
 
 /**
@@ -90,7 +90,7 @@ export function ProfileTab({ user }: ProfileTabProps) {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "socials",
+    name: 'socials',
   });
 
   /** Re-populate form when user data changes */
@@ -117,12 +117,12 @@ export function ProfileTab({ user }: ProfileTabProps) {
           socials: values.socials,
         },
       });
-      notify.success("個人資料更新成功");
+      notify.success('個人資料更新成功');
     } catch (error) {
       const apiMessage = (
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
-      notify.error(apiMessage ?? "個人資料更新失敗");
+      notify.error(apiMessage ?? '個人資料更新失敗');
     }
   });
 
@@ -130,7 +130,7 @@ export function ProfileTab({ user }: ProfileTabProps) {
     <Box
       component="form"
       onSubmit={onSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 3, maxWidth: 700 }}
+      sx={{ display: 'flex', flexDirection: 'column', gap: 3, maxWidth: 700 }}
     >
       {/* Avatar */}
       <Box>
@@ -159,7 +159,7 @@ export function ProfileTab({ user }: ProfileTabProps) {
 
       {/* Name */}
       <TextField
-        {...register("name", { required: "Name is required" })}
+        {...register('name', { required: 'Name is required' })}
         label="Name"
         fullWidth
         error={Boolean(errors.name)}
@@ -168,14 +168,14 @@ export function ProfileTab({ user }: ProfileTabProps) {
 
       {/* Email (readonly) */}
       <TextField
-        {...register("email")}
+        {...register('email')}
         label="Email"
         fullWidth
         slotProps={{ input: { readOnly: true } }}
       />
 
       {/* Title */}
-      <TextField {...register("title")} label="Title" fullWidth />
+      <TextField {...register('title')} label="Title" fullWidth />
 
       {/* Bio */}
       <Box>
@@ -199,9 +199,9 @@ export function ProfileTab({ user }: ProfileTabProps) {
       <Box>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
             mb: 1,
           }}
         >
@@ -210,7 +210,7 @@ export function ProfileTab({ user }: ProfileTabProps) {
             size="small"
             startIcon={<AddIcon />}
             onClick={() =>
-              append({ platform: SOCIAL_PLATFORM.GITHUB, url: "" })
+              append({ platform: SOCIAL_PLATFORM.GITHUB, url: '' })
             }
           >
             Add
@@ -220,7 +220,7 @@ export function ProfileTab({ user }: ProfileTabProps) {
         {fields.map((field, index) => (
           <Box
             key={field.id}
-            sx={{ display: "flex", gap: 1, mb: 1.5, alignItems: "flex-start" }}
+            sx={{ display: 'flex', gap: 1, mb: 1.5, alignItems: 'flex-start' }}
           >
             <Controller
               name={`socials.${index}.platform`}
@@ -240,7 +240,7 @@ export function ProfileTab({ user }: ProfileTabProps) {
             />
             <TextField
               {...register(`socials.${index}.url`, {
-                required: "URL is required",
+                required: 'URL is required',
               })}
               label="URL"
               size="small"

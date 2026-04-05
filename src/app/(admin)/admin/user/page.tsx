@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { UserPage } from "@/modules/admin/user/components/UserPage";
+import { UserPage } from '@/modules/admin/user/components/UserPage';
 
 export const metadata: Metadata = {
-  title: "個人設定",
-  robots: "noindex, nofollow",
+  title: '個人設定',
+  robots: 'noindex, nofollow',
 };
 
 /**

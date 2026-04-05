@@ -1,4 +1,4 @@
-export type ProjectType = "WEB" | "APP" | "HYBRID";
+export type ProjectType = 'WEB' | 'APP' | 'HYBRID';
 
 export interface ProjectRef {
   id: string;

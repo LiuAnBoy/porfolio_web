@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { ProjectForm } from "@/modules/admin/projects/components/ProjectForm";
+import { ProjectForm } from '@/modules/admin/projects/components/ProjectForm';
 
 export const metadata: Metadata = {
-  title: "編輯專案",
-  robots: "noindex, nofollow",
+  title: '編輯專案',
+  robots: 'noindex, nofollow',
 };
 
 /** Route params for the edit project page */

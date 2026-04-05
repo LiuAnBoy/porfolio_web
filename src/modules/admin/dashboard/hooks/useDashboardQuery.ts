@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from '@tanstack/react-query';
 
-import { getDashboardInit } from "../services/dashboard";
+import { getDashboardInit } from '../services/dashboard';
 
 /**
  * React Query hook for fetching dashboard init data.
@@ -8,5 +8,5 @@ import { getDashboardInit } from "../services/dashboard";
  * @returns Query result containing DashboardInitData
  */
 export function useDashboardQuery() {
-  return useQuery({ queryKey: ["dashboard"], queryFn: getDashboardInit });
+  return useQuery({ queryKey: ['dashboard'], queryFn: getDashboardInit });
 }

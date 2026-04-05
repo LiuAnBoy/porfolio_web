@@ -7,5 +7,5 @@ export type {
   SocialPlatform,
   UserData,
   UserPayload,
-} from "@/types";
-export { SOCIAL_PLATFORM } from "@/types";
+} from '@/types';
+export { SOCIAL_PLATFORM } from '@/types';

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import {
   Box,
   Button,
@@ -10,9 +10,9 @@ import {
   IconButton,
   Switch,
   Typography,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+} from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 import {
   BaseTable,
@@ -20,16 +20,16 @@ import {
   ConfirmDialog,
   PageHeader,
   StatusChip,
-} from "@/shared/components/common";
-import { useNotification } from "@/shared/hooks";
-import type { ProjectData } from "@/types";
+} from '@/shared/components/common';
+import { useNotification } from '@/shared/hooks';
+import type { ProjectData } from '@/types';
 
 import {
   useDeleteProject,
   useProjectList,
   useToggleFeatured,
   useToggleVisible,
-} from "../hooks/useProjectQueries";
+} from '../hooks/useProjectQueries';
 
 /**
  * Project management table with CRUD operations.
@@ -51,7 +51,7 @@ export function ProjectTable() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [deleteTitle, setDeleteTitle] = useState("");
+  const [deleteTitle, setDeleteTitle] = useState('');
 
   if (isError) {
     return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
@@ -64,8 +64,8 @@ export function ProjectTable() {
 
   const columns: ColumnDef<ProjectData>[] = [
     {
-      key: "cover",
-      label: "Cover",
+      key: 'cover',
+      label: 'Cover',
       width: 80,
       render: (row) =>
         row.cover ? (
@@ -76,7 +76,7 @@ export function ProjectTable() {
             style={{
               width: 56,
               height: 40,
-              objectFit: "cover",
+              objectFit: 'cover',
               borderRadius: 4,
             }}
           />
@@ -86,10 +86,10 @@ export function ProjectTable() {
               width: 56,
               height: 40,
               borderRadius: 1,
-              backgroundColor: "action.hover",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              backgroundColor: 'action.hover',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <Typography variant="caption" color="text.disabled">
@@ -99,22 +99,22 @@ export function ProjectTable() {
         ),
     },
     {
-      key: "title",
-      label: "Title",
+      key: 'title',
+      label: 'Title',
       render: (row) => row.title,
     },
     {
-      key: "type",
-      label: "Type",
+      key: 'type',
+      label: 'Type',
       width: 100,
       render: (row) => <StatusChip label={row.type} color="primary" />,
     },
     {
-      key: "tags",
-      label: "Tags",
+      key: 'tags',
+      label: 'Tags',
       width: 200,
       render: (row) => (
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {row.tags.slice(0, 3).map((tag) => (
             <Chip
               key={tag.id}
@@ -130,11 +130,11 @@ export function ProjectTable() {
       ),
     },
     {
-      key: "stacks",
-      label: "Stacks",
+      key: 'stacks',
+      label: 'Stacks',
       width: 200,
       render: (row) => (
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {row.stacks.slice(0, 3).map((stack) => (
             <Chip
               key={stack.id}
@@ -150,10 +150,10 @@ export function ProjectTable() {
       ),
     },
     {
-      key: "featured",
-      label: "Featured",
+      key: 'featured',
+      label: 'Featured',
       width: 80,
-      align: "center",
+      align: 'center',
       render: (row) => (
         <Switch
           size="small"
@@ -165,10 +165,10 @@ export function ProjectTable() {
       ),
     },
     {
-      key: "visible",
-      label: "Visible",
+      key: 'visible',
+      label: 'Visible',
       width: 80,
-      align: "center",
+      align: 'center',
       render: (row) => (
         <Switch
           size="small"
@@ -180,9 +180,9 @@ export function ProjectTable() {
       ),
     },
     {
-      key: "actions",
-      label: "Actions",
-      align: "right",
+      key: 'actions',
+      label: 'Actions',
+      align: 'right',
       width: 100,
       render: (row) => (
         <>
@@ -213,15 +213,15 @@ export function ProjectTable() {
     if (!deleteId) return;
     try {
       await deleteMutation.mutateAsync(deleteId);
-      notify.success("專案刪除成功");
+      notify.success('專案刪除成功');
     } catch (error) {
       const apiMessage = (
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
-      notify.error(apiMessage ?? "專案刪除失敗");
+      notify.error(apiMessage ?? '專案刪除失敗');
     } finally {
       setDeleteId(null);
-      setDeleteTitle("");
+      setDeleteTitle('');
     }
   };
 
@@ -233,7 +233,7 @@ export function ProjectTable() {
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={() => router.push("/admin/projects/create")}
+            onClick={() => router.push('/admin/projects/create')}
           >
             新增
           </Button>
@@ -260,7 +260,7 @@ export function ProjectTable() {
         open={Boolean(deleteId)}
         onClose={() => {
           setDeleteId(null);
-          setDeleteTitle("");
+          setDeleteTitle('');
         }}
         onConfirm={handleDeleteConfirm}
         message={`確定要刪除專案「${deleteTitle}」嗎？此操作無法復原。`}

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Box, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
-import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import { Box, CircularProgress, Tab, Tabs, Typography } from '@mui/material';
+import { useSession } from 'next-auth/react';
+import React, { useState } from 'react';
 
-import { PageHeader } from "@/shared/components/common";
+import { PageHeader } from '@/shared/components/common';
 
-import { useUser } from "../hooks/useUserQueries";
-import { ExperienceTab } from "./ExperienceTab";
-import { ProfileTab } from "./ProfileTab";
+import { useUser } from '../hooks/useUserQueries';
+import { ExperienceTab } from './ExperienceTab';
+import { ProfileTab } from './ProfileTab';
 
 /** Tab panel wrapper */
 interface TabPanelProps {
@@ -39,15 +39,15 @@ function TabPanel({ value, index, children }: TabPanelProps) {
  */
 export function UserPage() {
   const { data: session, status: sessionStatus } = useSession();
-  const userId = (session?.user as { id?: string } | undefined)?.id ?? "";
+  const userId = (session?.user as { id?: string } | undefined)?.id ?? '';
 
   const { data: user, isLoading, isError } = useUser(userId);
 
   const [tabIndex, setTabIndex] = useState(0);
 
-  if (sessionStatus === "loading" || isLoading) {
+  if (sessionStatus === 'loading' || isLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
         <CircularProgress />
       </Box>
     );
@@ -72,7 +72,7 @@ export function UserPage() {
       <Tabs
         value={tabIndex}
         onChange={(_, newValue: number) => setTabIndex(newValue)}
-        sx={{ borderBottom: 1, borderColor: "divider" }}
+        sx={{ borderBottom: 1, borderColor: 'divider' }}
       >
         <Tab label="個人資料" />
         <Tab label="工作經歷" />

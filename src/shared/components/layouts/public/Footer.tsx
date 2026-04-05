@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { Box, Container, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Box, Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const FooterContainer = styled("footer")({
-  backgroundColor: "#0a0a0a",
-  borderTop: "1px solid rgba(255, 255, 255, 0.06)",
-  padding: "32px 0",
+const FooterContainer = styled('footer')({
+  backgroundColor: '#0a0a0a',
+  borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+  padding: '32px 0',
 });
 
 const FooterContent = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   gap: 8,
 });
 
 const Copyright = styled(Typography)({
-  color: "rgba(255, 255, 255, 0.4)",
-  fontSize: "0.875rem",
+  color: 'rgba(255, 255, 255, 0.4)',
+  fontSize: '0.875rem',
 });
 
 const Tagline = styled(Typography)({
-  color: "rgba(255, 255, 255, 0.25)",
-  fontSize: "0.75rem",
+  color: 'rgba(255, 255, 255, 0.25)',
+  fontSize: '0.75rem',
 });
 
 /**

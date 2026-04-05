@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { deleteImage } from "@/lib/cloudinary";
-import { connectDB } from "@/lib/mongodb";
-import { withTransaction } from "@/lib/transaction";
-import { Image, User } from "@/models";
-import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE, SOCIAL_PLATFORM } from "@/types";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { deleteImage } from '@/lib/cloudinary';
+import { connectDB } from '@/lib/mongodb';
+import { withTransaction } from '@/lib/transaction';
+import { Image, User } from '@/models';
+import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE, SOCIAL_PLATFORM } from '@/types';
 
 interface RouteParams {
   params: Promise<{ uId: string }>;
@@ -32,10 +32,10 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     await connectDB();
     const { uId } = await params;
 
-    const user = await User.findById(uId).populate("avatar", "_id url").lean();
+    const user = await User.findById(uId).populate('avatar', '_id url').lean();
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
@@ -48,9 +48,9 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       ...rest,
     });
   } catch (error) {
-    console.error("Get user error:", error);
+    console.error('Get user error:', error);
     return NextResponse.json(
-      { success: false, message: "取得使用者資料失敗" },
+      { success: false, message: '取得使用者資料失敗' },
       { status: 500 },
     );
   }
@@ -68,7 +68,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "無權限" },
+        { success: false, message: '無權限' },
         { status: 403 },
       );
     }
@@ -78,7 +78,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
@@ -152,9 +152,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Update user error:", error);
+    console.error('Update user error:', error);
     return NextResponse.json(
-      { success: false, message: "更新使用者資料失敗" },
+      { success: false, message: '更新使用者資料失敗' },
       { status: 500 },
     );
   }

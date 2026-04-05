@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { connectDB } from "@/lib/mongodb";
-import { withTransaction } from "@/lib/transaction";
-import { Experience, Image, Position, User } from "@/models";
-import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE } from "@/types";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { connectDB } from '@/lib/mongodb';
+import { withTransaction } from '@/lib/transaction';
+import { Experience, Image, Position, User } from '@/models';
+import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE } from '@/types';
 
 interface RouteParams {
   params: Promise<{ uId: string }>;
@@ -34,13 +34,13 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
 
     const experiences = await Experience.find({ userId: uId })
-      .populate("companyIcon", "_id url")
+      .populate('companyIcon', '_id url')
       .sort({ sn: -1 })
       .lean();
 
@@ -85,9 +85,9 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Get experiences error:", error);
+    console.error('Get experiences error:', error);
     return NextResponse.json(
-      { success: false, message: "取得工作經歷列表失敗" },
+      { success: false, message: '取得工作經歷列表失敗' },
       { status: 500 },
     );
   }
@@ -105,7 +105,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "無權限" },
+        { success: false, message: '無權限' },
         { status: 403 },
       );
     }
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
@@ -123,14 +123,14 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     if (!company) {
       return NextResponse.json(
-        { success: false, message: "公司名稱為必填欄位" },
+        { success: false, message: '公司名稱為必填欄位' },
         { status: 400 },
       );
     }
 
     if (!positions || !Array.isArray(positions) || positions.length === 0) {
       return NextResponse.json(
-        { success: false, message: "至少需要一個職位" },
+        { success: false, message: '至少需要一個職位' },
         { status: 400 },
       );
     }
@@ -173,7 +173,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
               startAt: position.startAt,
               endAt: position.endAt || null,
               isCurrent: position.isCurrent || false,
-              description: position.description || "",
+              description: position.description || '',
               sn: position.sn !== undefined ? position.sn : index,
             },
           ],
@@ -184,9 +184,9 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Create experience error:", error);
+    console.error('Create experience error:', error);
     return NextResponse.json(
-      { success: false, message: "建立工作經歷失敗" },
+      { success: false, message: '建立工作經歷失敗' },
       { status: 500 },
     );
   }

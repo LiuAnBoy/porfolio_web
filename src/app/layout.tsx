@@ -1,15 +1,15 @@
-import "./globals.css";
+import './globals.css';
 
-import { GoogleAnalytics } from "@next/third-parties/google";
-import type { Metadata } from "next";
-import { type ReactNode } from "react";
+import { GoogleAnalytics } from '@next/third-parties/google';
+import type { Metadata } from 'next';
+import { type ReactNode } from 'react';
 
-import { getUser, stripHtml } from "@/lib/getData";
-import MuiProvider from "@/providers/MuiProvider";
-import { ScrollToTop } from "@/shared/components";
-import { ScrollContainerProvider } from "@/shared/contexts";
+import { getUser, stripHtml } from '@/lib/getData';
+import MuiProvider from '@/providers/MuiProvider';
+import { ScrollToTop } from '@/shared/components';
+import { ScrollContainerProvider } from '@/shared/contexts';
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 
 const SITE_NAME = "An's Portfolio";
 
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const description = user?.bio
     ? stripHtml(user.bio)
-    : "Personal portfolio website";
+    : 'Personal portfolio website';
 
   return {
     title: {
@@ -30,17 +30,17 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description,
     openGraph: {
-      type: "website",
+      type: 'website',
       siteName: SITE_NAME,
       title: SITE_NAME,
       description,
-      images: [{ url: "/images/logo.png" }],
+      images: [{ url: '/images/logo.png' }],
     },
     twitter: {
-      card: "summary",
+      card: 'summary',
       title: SITE_NAME,
       description,
-      images: ["/images/logo.png"],
+      images: ['/images/logo.png'],
     },
   };
 }
@@ -58,7 +58,7 @@ export default async function RootLayout({
       <body>
         <MuiProvider>
           <ScrollContainerProvider>
-            <main style={{ height: "100%" }}>{children}</main>
+            <main style={{ height: '100%' }}>{children}</main>
             <ScrollToTop />
           </ScrollContainerProvider>
         </MuiProvider>

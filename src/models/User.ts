@@ -1,7 +1,7 @@
-import dayjs from "dayjs";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import dayjs from 'dayjs';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
-import { SOCIAL_PLATFORM, SocialPlatform } from "@/types/user";
+import { SOCIAL_PLATFORM, SocialPlatform } from '@/types/user';
 
 /** Social sub-document interface (Mongoose schema level) */
 export interface ISocial {
@@ -45,34 +45,34 @@ const UserSchema = new Schema<IUserDocument>(
   {
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [true, 'Email is required'],
       unique: true,
       lowercase: true,
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
       select: false,
     },
     avatar: {
       type: Schema.Types.ObjectId,
-      ref: "Image",
+      ref: 'Image',
       default: null,
     },
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, 'Name is required'],
       trim: true,
     },
     title: {
       type: String,
-      default: "",
+      default: '',
       trim: true,
     },
     bio: {
       type: String,
-      default: "",
+      default: '',
     },
     socials: {
       type: [SocialSchema],
@@ -93,13 +93,13 @@ const UserSchema = new Schema<IUserDocument>(
 /**
  * Update updatedAt on save (only for existing documents)
  */
-UserSchema.pre("save", function () {
+UserSchema.pre('save', function () {
   if (!this.isNew) {
     this.updatedAt = dayjs().unix();
   }
 });
 
 const User: Model<IUserDocument> =
-  mongoose.models.User || mongoose.model<IUserDocument>("User", UserSchema);
+  mongoose.models.User || mongoose.model<IUserDocument>('User', UserSchema);
 
 export default User;

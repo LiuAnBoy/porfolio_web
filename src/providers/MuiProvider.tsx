@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
-import type { ReactNode } from "react";
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import type { ReactNode } from 'react';
 
-import { theme } from "@/styles/theme";
+import { theme } from '@/styles/theme';
 
-import EmotionCacheProvider from "./EmotionCacheProvider";
+import EmotionCacheProvider from './EmotionCacheProvider';
 
 /**
  * MUI Theme Provider wrapper for Next.js App Router.

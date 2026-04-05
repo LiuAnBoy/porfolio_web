@@ -1,5 +1,5 @@
-import dayjs from "dayjs";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import dayjs from 'dayjs';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
 /** Experience document interface (Mongoose schema level) */
 export interface IExperience {
@@ -19,17 +19,17 @@ const ExperienceSchema = new Schema<IExperienceDocument>(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     company: {
       type: String,
-      required: [true, "Company name is required"],
+      required: [true, 'Company name is required'],
       trim: true,
     },
     companyIcon: {
       type: Schema.Types.ObjectId,
-      ref: "Image",
+      ref: 'Image',
       default: null,
     },
     sn: {
@@ -57,7 +57,7 @@ ExperienceSchema.index({ userId: 1, sn: 1 });
 /**
  * Update updatedAt on save (only for existing documents)
  */
-ExperienceSchema.pre("save", function () {
+ExperienceSchema.pre('save', function () {
   if (!this.isNew) {
     this.updatedAt = dayjs().unix();
   }
@@ -65,6 +65,6 @@ ExperienceSchema.pre("save", function () {
 
 const Experience: Model<IExperienceDocument> =
   mongoose.models.Experience ||
-  mongoose.model<IExperienceDocument>("Experience", ExperienceSchema);
+  mongoose.model<IExperienceDocument>('Experience', ExperienceSchema);
 
 export default Experience;

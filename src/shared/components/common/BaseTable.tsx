@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Box,
@@ -11,8 +11,8 @@ import {
   TablePagination,
   TableRow,
   Typography,
-} from "@mui/material";
-import { ReactNode } from "react";
+} from '@mui/material';
+import { ReactNode } from 'react';
 
 /** Column definition for BaseTable */
 export interface ColumnDef<T> {
@@ -23,7 +23,7 @@ export interface ColumnDef<T> {
   /** Column width (number in px or CSS string) */
   width?: number | string;
   /** Text alignment within the column */
-  align?: "left" | "center" | "right";
+  align?: 'left' | 'center' | 'right';
   /**
    * Render function for cell content
    * @param row - The data row
@@ -84,7 +84,7 @@ export function BaseTable<T>({
   onPageChange,
   onRowsPerPageChange,
   loading = false,
-  emptyMessage = "No data available",
+  emptyMessage = 'No data available',
   getRowKey,
 }: BaseTableProps<T>) {
   return (
@@ -96,7 +96,7 @@ export function BaseTable<T>({
               {columns.map((col) => (
                 <TableCell
                   key={col.key}
-                  align={col.align ?? "left"}
+                  align={col.align ?? 'left'}
                   style={{ width: col.width }}
                 >
                   {col.label}
@@ -106,7 +106,7 @@ export function BaseTable<T>({
           </TableHead>
           <TableBody>
             {loading ? (
-              (["skeleton-0", "skeleton-1", "skeleton-2"] as const).map(
+              (['skeleton-0', 'skeleton-1', 'skeleton-2'] as const).map(
                 (skeletonKey) => (
                   <TableRow key={skeletonKey}>
                     {columns.map((col) => (
@@ -139,7 +139,7 @@ export function BaseTable<T>({
                   }
                 >
                   {columns.map((col) => (
-                    <TableCell key={col.key} align={col.align ?? "left"}>
+                    <TableCell key={col.key} align={col.align ?? 'left'}>
                       {col.render(row)}
                     </TableCell>
                   ))}

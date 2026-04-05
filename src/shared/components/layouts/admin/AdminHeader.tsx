@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import LogoutIcon from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Box,
@@ -9,8 +9,8 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-} from "@mui/material";
-import { signOut } from "next-auth/react";
+} from '@mui/material';
+import { signOut } from 'next-auth/react';
 
 /** Props for the AdminHeader component. */
 export interface AdminHeaderProps {
@@ -30,7 +30,7 @@ export interface AdminHeaderProps {
 export function AdminHeader({ onMenuClick, userEmail }: AdminHeaderProps) {
   /** Handles sign-out and redirects to the admin login page. */
   const handleLogout = () => {
-    signOut({ callbackUrl: "/admin/login" });
+    signOut({ callbackUrl: '/admin/login' });
   };
 
   return (
@@ -38,9 +38,9 @@ export function AdminHeader({ onMenuClick, userEmail }: AdminHeaderProps) {
       position="fixed"
       elevation={0}
       sx={{
-        bgcolor: "background.paper",
-        borderBottom: "1px solid",
-        borderColor: "divider",
+        bgcolor: 'background.paper',
+        borderBottom: '1px solid',
+        borderColor: 'divider',
         zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
@@ -52,9 +52,9 @@ export function AdminHeader({ onMenuClick, userEmail }: AdminHeaderProps) {
           edge="start"
           onClick={onMenuClick}
           sx={{
-            display: { xs: "flex", md: "none" },
+            display: { xs: 'flex', md: 'none' },
             mr: 1,
-            color: "text.secondary",
+            color: 'text.secondary',
           }}
         >
           <MenuIcon />
@@ -64,13 +64,13 @@ export function AdminHeader({ onMenuClick, userEmail }: AdminHeaderProps) {
         <Box sx={{ flex: 1 }} />
 
         {/* User email + logout */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {userEmail && (
             <Typography
               variant="body2"
               sx={{
-                color: "text.secondary",
-                display: { xs: "none", sm: "block" },
+                color: 'text.secondary',
+                display: { xs: 'none', sm: 'block' },
               }}
             >
               {userEmail}
@@ -82,7 +82,7 @@ export function AdminHeader({ onMenuClick, userEmail }: AdminHeaderProps) {
               onClick={handleLogout}
               aria-label="logout"
               size="small"
-              sx={{ color: "text.secondary" }}
+              sx={{ color: 'text.secondary' }}
             >
               <LogoutIcon fontSize="small" />
             </IconButton>

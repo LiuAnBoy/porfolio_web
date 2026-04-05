@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { ImageTable } from "@/modules/admin/images/components/ImageTable";
+import { ImageTable } from '@/modules/admin/images/components/ImageTable';
 
 export const metadata: Metadata = {
-  title: "圖片管理",
-  robots: "noindex, nofollow",
+  title: '圖片管理',
+  robots: 'noindex, nofollow',
 };
 
 /**

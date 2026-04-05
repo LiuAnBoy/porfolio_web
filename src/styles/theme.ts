@@ -1,14 +1,14 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: 'dark',
   },
   components: {
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: "transparent",
+          backgroundColor: 'transparent',
         },
       },
     },

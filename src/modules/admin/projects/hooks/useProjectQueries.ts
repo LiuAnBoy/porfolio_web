@@ -1,6 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import type { ProjectListParams, ProjectPayload } from "@/types";
+import type { ProjectListParams, ProjectPayload } from '@/types';
 
 import {
   createProject,
@@ -8,10 +8,10 @@ import {
   getProjectDetail,
   getProjectList,
   updateProject,
-} from "../services/project";
+} from '../services/project';
 
 /** Query key for the project list */
-const PROJECT_LIST_KEY = ["projects"] as const;
+const PROJECT_LIST_KEY = ['projects'] as const;
 
 /**
  * Build query key for a single project detail.
@@ -19,7 +19,7 @@ const PROJECT_LIST_KEY = ["projects"] as const;
  * @param id - Project ID
  * @returns Tuple query key
  */
-const projectDetailKey = (id: string) => ["projects", id] as const;
+const projectDetailKey = (id: string) => ['projects', id] as const;
 
 /**
  * React Query hook to fetch the project list.

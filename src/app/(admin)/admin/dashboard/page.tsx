@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { DashboardContent } from "@/modules/admin/dashboard/components/DashboardContent";
+import { DashboardContent } from '@/modules/admin/dashboard/components/DashboardContent';
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  robots: "noindex, nofollow",
+  title: 'Dashboard',
+  robots: 'noindex, nofollow',
 };
 
 /**

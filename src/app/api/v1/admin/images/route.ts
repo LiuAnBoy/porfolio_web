@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { connectDB } from "@/lib/mongodb";
-import { Image } from "@/models";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { connectDB } from '@/lib/mongodb';
+import { Image } from '@/models';
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,22 +14,22 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const isPending = searchParams.get("isPending");
-    const model = searchParams.get("model");
-    const page = parseInt(searchParams.get("page") || "1", 10);
+    const isPending = searchParams.get('isPending');
+    const model = searchParams.get('model');
+    const page = parseInt(searchParams.get('page') || '1', 10);
     const page_size = Math.min(
-      parseInt(searchParams.get("page_size") || "20", 10),
+      parseInt(searchParams.get('page_size') || '20', 10),
       100,
     );
 
     const query: Record<string, unknown> = {};
 
     if (isPending !== null) {
-      query.isPending = isPending === "true";
+      query.isPending = isPending === 'true';
     }
 
     if (model) {
-      query["usage.model"] = model.toUpperCase();
+      query['usage.model'] = model.toUpperCase();
     }
 
     const skip = (page - 1) * page_size;
@@ -65,9 +65,9 @@ export async function GET(request: NextRequest) {
       page,
     });
   } catch (error) {
-    console.error("Get images error:", error);
+    console.error('Get images error:', error);
     return NextResponse.json(
-      { success: false, message: "取得圖片列表失敗" },
+      { success: false, message: '取得圖片列表失敗' },
       { status: 500 },
     );
   }

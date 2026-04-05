@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Box, Divider, Typography } from "@mui/material";
-import { ReactNode } from "react";
+import { Box, Divider, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 
 /** Props for PageHeader component */
 interface PageHeaderProps {
@@ -21,9 +21,9 @@ export function PageHeader({ title, action }: PageHeaderProps) {
     <Box sx={{ mb: 3 }}>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           mb: 1,
         }}
       >

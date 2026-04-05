@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { StackTable } from "@/modules/admin/stacks/components/StackTable";
+import { StackTable } from '@/modules/admin/stacks/components/StackTable';
 
 export const metadata: Metadata = {
-  title: "技術棧管理",
-  robots: "noindex, nofollow",
+  title: '技術棧管理',
+  robots: 'noindex, nofollow',
 };
 
 /**

@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose, { Mongoose } from 'mongoose';
 
 /**
  * Global mongoose connection cache to prevent multiple connections in development
@@ -24,7 +24,7 @@ if (!cached) {
  */
 export async function connectDB(): Promise<Mongoose> {
   if (!MONGODB_URI) {
-    throw new Error("Please define the MONGODB_URI environment variable");
+    throw new Error('Please define the MONGODB_URI environment variable');
   }
 
   if (cached.conn) {

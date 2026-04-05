@@ -1,10 +1,10 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: '/api',
   timeout: 10000,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
@@ -15,9 +15,9 @@ instance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      console.error("API Error:", error.response.data);
+      console.error('API Error:', error.response.data);
     } else if (error.request) {
-      console.error("Network Error:", error.message);
+      console.error('Network Error:', error.message);
     }
     return Promise.reject(error);
   },

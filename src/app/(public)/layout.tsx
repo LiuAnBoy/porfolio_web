@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
-import { getUser } from "@/lib/getData";
-import { Footer, Navbar } from "@/shared/components/layouts/public";
+import { getUser } from '@/lib/getData';
+import { Footer, Navbar } from '@/shared/components/layouts/public';
 
 /**
  * Layout for public pages (home, profile, projects) with navbar and footer.

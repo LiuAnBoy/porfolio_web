@@ -1,36 +1,36 @@
-"use client";
+'use client';
 
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useCallback, useEffect, useRef } from "react";
+import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useCallback, useEffect, useRef } from 'react';
 
-import type { Project } from "@/services/projects/types";
+import type { Project } from '@/services/projects/types';
 
-import ProjectCard from "./ProjectCard";
+import ProjectCard from './ProjectCard';
 
 const GridContainer = styled(Box)({
-  width: "100%",
+  width: '100%',
 });
 
 const LoadingContainer = styled(Box)({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "40px 0",
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '40px 0',
 });
 
 const EmptyState = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "80px 20px",
-  textAlign: "center",
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '80px 20px',
+  textAlign: 'center',
 });
 
 const LoadMoreTrigger = styled(Box)({
   height: 20,
-  width: "100%",
+  width: '100%',
 });
 
 interface ProjectGridProps {
@@ -72,7 +72,7 @@ const ProjectGrid = ({
 
     observerRef.current = new IntersectionObserver(handleObserver, {
       root: null,
-      rootMargin: "800px",
+      rootMargin: '800px',
       threshold: 0,
     });
 
@@ -88,7 +88,7 @@ const ProjectGrid = ({
   if (isLoading) {
     return (
       <LoadingContainer>
-        <CircularProgress sx={{ color: "rgba(255, 255, 255, 0.7)" }} />
+        <CircularProgress sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
       </LoadingContainer>
     );
   }
@@ -98,11 +98,11 @@ const ProjectGrid = ({
       <EmptyState>
         <Typography
           variant="h6"
-          sx={{ color: "rgba(255, 255, 255, 0.5)", mb: 1 }}
+          sx={{ color: 'rgba(255, 255, 255, 0.5)', mb: 1 }}
         >
           No projects found
         </Typography>
-        <Typography sx={{ color: "rgba(255, 255, 255, 0.3)" }}>
+        <Typography sx={{ color: 'rgba(255, 255, 255, 0.3)' }}>
           Try adjusting your filters
         </Typography>
       </EmptyState>
@@ -129,7 +129,7 @@ const ProjectGrid = ({
         <LoadingContainer>
           <CircularProgress
             size={32}
-            sx={{ color: "rgba(255, 255, 255, 0.5)" }}
+            sx={{ color: 'rgba(255, 255, 255, 0.5)' }}
           />
         </LoadingContainer>
       )}

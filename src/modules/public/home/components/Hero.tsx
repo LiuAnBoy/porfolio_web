@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Box, Button, useMediaQuery } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { useMemo } from "react";
+import { Box, Button, useMediaQuery } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { useMemo } from 'react';
 
-import { theme } from "@/styles/theme";
+import { theme } from '@/styles/theme';
 
 /**
  * Generate floating path data based on position.
@@ -53,73 +53,73 @@ const generateSmallPaths = (position: number) =>
   });
 
 const HeroContainer = styled(Box)({
-  position: "relative",
-  minHeight: "100vh",
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  overflow: "hidden",
-  backgroundColor: "#0a0a0a",
+  position: 'relative',
+  minHeight: '100vh',
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  overflow: 'hidden',
+  backgroundColor: '#0a0a0a',
 });
 
 const PathsContainer = styled(Box)({
-  position: "absolute",
+  position: 'absolute',
   inset: 0,
-  pointerEvents: "none",
+  pointerEvents: 'none',
 });
 
-const StyledSvg = styled("svg")({
-  width: "100%",
-  height: "100%",
-  color: "rgba(255, 255, 255, 0.8)",
+const StyledSvg = styled('svg')({
+  width: '100%',
+  height: '100%',
+  color: 'rgba(255, 255, 255, 0.8)',
 });
 
 const ContentContainer = styled(Box)({
-  position: "relative",
+  position: 'relative',
   zIndex: 10,
-  maxWidth: "56rem",
-  margin: "0 auto",
-  padding: "0 1rem",
-  textAlign: "center",
+  maxWidth: '56rem',
+  margin: '0 auto',
+  padding: '0 1rem',
+  textAlign: 'center',
 });
 
-const Title = styled("h1")({
-  fontSize: "clamp(3rem, 10vw, 6rem)",
+const Title = styled('h1')({
+  fontSize: 'clamp(3rem, 10vw, 6rem)',
   fontWeight: 700,
-  marginBottom: "2rem",
-  letterSpacing: "-0.05em",
+  marginBottom: '2rem',
+  letterSpacing: '-0.05em',
 });
 
 const StyledButton = styled(Button)({
-  borderRadius: "0.75rem",
-  padding: "0.625rem 1.25rem",
-  fontSize: "0.875rem",
+  borderRadius: '0.75rem',
+  padding: '0.625rem 1.25rem',
+  fontSize: '0.875rem',
   fontWeight: 600,
-  backdropFilter: "blur(12px)",
-  backgroundColor: "rgba(255, 255, 255, 0.95)",
-  color: "#000",
-  border: "1px solid rgba(0, 0, 0, 0.1)",
-  transition: "all 0.3s ease",
-  "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    transform: "translateY(-2px)",
-    boxShadow: "0 10px 40px rgba(255, 255, 255, 0.1)",
+  backdropFilter: 'blur(12px)',
+  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+  color: '#000',
+  border: '1px solid rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.3s ease',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    transform: 'translateY(-2px)',
+    boxShadow: '0 10px 40px rgba(255, 255, 255, 0.1)',
   },
 });
 
 const ButtonWrapper = styled(Box)({
-  display: "inline-block",
+  display: 'inline-block',
   background:
-    "linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(0,0,0,0.1))",
-  padding: "1px",
-  borderRadius: "0.85rem",
-  backdropFilter: "blur(12px)",
-  overflow: "hidden",
-  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.3)",
-  transition: "box-shadow 0.3s ease",
-  "&:hover": {
-    boxShadow: "0 8px 40px rgba(0, 0, 0, 0.4)",
+    'linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(0,0,0,0.1))',
+  padding: '1px',
+  borderRadius: '0.85rem',
+  backdropFilter: 'blur(12px)',
+  overflow: 'hidden',
+  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.3)',
+  transition: 'box-shadow 0.3s ease',
+  '&:hover': {
+    boxShadow: '0 8px 40px rgba(0, 0, 0, 0.4)',
   },
 });
 
@@ -133,9 +133,9 @@ interface FloatingPathsProps {
 const FloatingPaths = ({ position }: FloatingPathsProps) => {
   const paths = useMemo(() => generatePaths(position), [position]);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const xViewBox = isMobile ? "0 -100 696 316" : "40 -20 696 316";
+  const xViewBox = isMobile ? '0 -100 696 316' : '40 -20 696 316';
 
   return (
     <PathsContainer>
@@ -163,7 +163,7 @@ const FloatingPaths = ({ position }: FloatingPathsProps) => {
               duration: ANIMATION_DURATION,
               repeat: Infinity,
               delay: path.delay,
-              ease: "linear",
+              ease: 'linear',
             }}
           />
         ))}
@@ -178,19 +178,19 @@ const FloatingPaths = ({ position }: FloatingPathsProps) => {
 const SmallFloatingPaths = ({ position }: FloatingPathsProps) => {
   const paths = useMemo(() => generateSmallPaths(position), [position]);
 
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const left = isMobile ? -150 : -100;
 
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: 'absolute',
         top: 0,
         right: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
+        width: '100%',
+        height: '100%',
+        pointerEvents: 'none',
       }}
     >
       <StyledSvg
@@ -216,7 +216,7 @@ const SmallFloatingPaths = ({ position }: FloatingPathsProps) => {
               repeat: Infinity,
               repeatDelay: path.repeatDelay,
               delay: path.delay,
-              ease: "linear",
+              ease: 'linear',
             }}
           />
         ))}
@@ -232,12 +232,12 @@ interface HeroProps {
 /**
  * Hero section with animated floating paths background.
  */
-const Hero = ({ title = "" }: HeroProps) => {
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const fontSize = isMobile ? "80px" : "120px";
-  const words = title.split(" ").map((word, wordIndex) => ({
+const Hero = ({ title = '' }: HeroProps) => {
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const fontSize = isMobile ? '80px' : '120px';
+  const words = title.split(' ').map((word, wordIndex) => ({
     text: word,
-    letters: word.split("").map((letter, letterIndex) => ({
+    letters: word.split('').map((letter, letterIndex) => ({
       id: `${word}-${wordIndex}-${letterIndex}`,
       char: letter,
       delay: wordIndex * 0.1 + letterIndex * 0.03,
@@ -247,7 +247,7 @@ const Hero = ({ title = "" }: HeroProps) => {
   return (
     <HeroContainer>
       {/* Background paths */}
-      <Box sx={{ position: "absolute", inset: 0 }}>
+      <Box sx={{ position: 'absolute', inset: 0 }}>
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />
         <SmallFloatingPaths position={1} />
@@ -264,7 +264,7 @@ const Hero = ({ title = "" }: HeroProps) => {
             {words.map((word) => (
               <span
                 key={word.text}
-                style={{ display: "inline-block", marginRight: "1rem" }}
+                style={{ display: 'inline-block', marginRight: '1rem' }}
               >
                 {word.letters.map((letter) => (
                   <motion.span
@@ -273,17 +273,17 @@ const Hero = ({ title = "" }: HeroProps) => {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{
                       delay: letter.delay,
-                      type: "spring",
+                      type: 'spring',
                       stiffness: 150,
                       damping: 25,
                     }}
                     style={{
-                      display: "inline-block",
+                      display: 'inline-block',
                       background:
-                        "linear-gradient(to right, #fff, rgba(255,255,255,0.8))",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
+                        'linear-gradient(to right, #fff, rgba(255,255,255,0.8))',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
                       fontSize: fontSize,
                     }}
                   >
@@ -294,12 +294,12 @@ const Hero = ({ title = "" }: HeroProps) => {
             ))}
           </Title>
 
-          <Link href="/projects" style={{ textDecoration: "none" }}>
+          <Link href="/projects" style={{ textDecoration: 'none' }}>
             <ButtonWrapper>
               <StyledButton variant="contained" disableElevation>
                 <span style={{ opacity: 0.9 }}>Explore My Work</span>
                 <motion.span
-                  style={{ marginLeft: "0.5rem", display: "inline-block" }}
+                  style={{ marginLeft: '0.5rem', display: 'inline-block' }}
                   whileHover={{ x: 4 }}
                   transition={{ duration: 0.3 }}
                 >

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Box,
   Button,
@@ -11,22 +11,22 @@ import {
   Switch,
   TextField,
   Typography,
-} from "@mui/material";
-import { useEffect } from "react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+} from '@mui/material';
+import { useEffect } from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 
-import { BaseModal, FileUpload } from "@/shared/components/common";
-import { ImageValue, useNotification } from "@/shared/hooks";
+import { BaseModal, FileUpload } from '@/shared/components/common';
+import { ImageValue, useNotification } from '@/shared/hooks';
 import type {
   ExperiencePayload,
   ExperienceWithPositions,
   PositionPayload,
-} from "@/types";
+} from '@/types';
 
 import {
   useCreateExperience,
   useUpdateExperience,
-} from "../hooks/useUserQueries";
+} from '../hooks/useUserQueries';
 
 /** Props for ExperienceModal component */
 interface ExperienceModalProps {
@@ -59,11 +59,11 @@ interface ExperienceFormValues {
 
 /** Default empty position */
 const EMPTY_POSITION: PositionFormValue = {
-  title: "",
-  startAt: "",
-  endAt: "",
+  title: '',
+  startAt: '',
+  endAt: '',
   isCurrent: false,
-  description: "",
+  description: '',
 };
 
 /**
@@ -73,7 +73,7 @@ const EMPTY_POSITION: PositionFormValue = {
  * @returns Date string or empty string
  */
 function tsToDateStr(ts: number | null): string {
-  if (!ts) return "";
+  if (!ts) return '';
   return new Date(ts * 1000).toISOString().slice(0, 10);
 }
 
@@ -110,7 +110,7 @@ export function ExperienceModal({
   const { control, register, handleSubmit, reset } =
     useForm<ExperienceFormValues>({
       defaultValues: {
-        company: "",
+        company: '',
         companyIcon: null,
         positions: [{ ...EMPTY_POSITION }],
       },
@@ -118,7 +118,7 @@ export function ExperienceModal({
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "positions",
+    name: 'positions',
   });
 
   /** Reset form when modal opens or editData changes */
@@ -144,7 +144,7 @@ export function ExperienceModal({
         });
       } else {
         reset({
-          company: "",
+          company: '',
           companyIcon: null,
           positions: [{ ...EMPTY_POSITION }],
         });
@@ -181,17 +181,17 @@ export function ExperienceModal({
           expId: editData.id,
           payload,
         });
-        notify.success("經歷更新成功");
+        notify.success('經歷更新成功');
       } else {
         await createMutation.mutateAsync({ userId, payload });
-        notify.success("經歷建立成功");
+        notify.success('經歷建立成功');
       }
       handleClose();
     } catch (error) {
       const apiMessage = (
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
-      notify.error(apiMessage ?? (isEdit ? "經歷更新失敗" : "經歷建立失敗"));
+      notify.error(apiMessage ?? (isEdit ? '經歷更新失敗' : '經歷建立失敗'));
     }
   });
 
@@ -199,16 +199,16 @@ export function ExperienceModal({
     <BaseModal
       open={open}
       onClose={handleClose}
-      title={isEdit ? "編輯經歷" : "新增經歷"}
+      title={isEdit ? '編輯經歷' : '新增經歷'}
       onConfirm={onSubmit}
-      confirmText={isEdit ? "更新" : "建立"}
+      confirmText={isEdit ? '更新' : '建立'}
       loading={isPending}
       maxWidth="md"
     >
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
         {/* Company */}
         <TextField
-          {...register("company", { required: true })}
+          {...register('company', { required: true })}
           label="Company"
           fullWidth
           autoFocus
@@ -243,9 +243,9 @@ export function ExperienceModal({
         {/* Positions header */}
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
           <Typography variant="subtitle1" fontWeight={600}>
@@ -266,16 +266,16 @@ export function ExperienceModal({
             key={field.id}
             sx={{
               p: 2,
-              border: "1px solid",
-              borderColor: "divider",
+              border: '1px solid',
+              borderColor: 'divider',
               borderRadius: 1,
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 mb: 1.5,
               }}
             >
@@ -291,7 +291,7 @@ export function ExperienceModal({
               )}
             </Box>
 
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               <TextField
                 {...register(`positions.${index}.title`, { required: true })}
                 label="Title"
@@ -299,7 +299,7 @@ export function ExperienceModal({
                 size="small"
               />
 
-              <Box sx={{ display: "flex", gap: 2 }}>
+              <Box sx={{ display: 'flex', gap: 2 }}>
                 <TextField
                   {...register(`positions.${index}.startAt`, {
                     required: true,

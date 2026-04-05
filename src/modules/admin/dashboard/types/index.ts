@@ -5,4 +5,4 @@ export type {
   RecentProject,
   RecentStack,
   RecentTag,
-} from "@/types";
+} from '@/types';

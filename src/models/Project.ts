@@ -1,10 +1,10 @@
-import dayjs from "dayjs";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import dayjs from 'dayjs';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
-import { generateSlug } from "@/shared/utils/slug";
+import { generateSlug } from '@/shared/utils/slug';
 
 /** Project type */
-export type ProjectType = "WEB" | "APP" | "HYBRID";
+export type ProjectType = 'WEB' | 'APP' | 'HYBRID';
 
 /** Project document interface (Mongoose schema level) */
 export interface IProject {
@@ -44,20 +44,20 @@ export interface IProjectDocument extends IProject, Document {}
 /**
  * Project type enum values
  */
-export const PROJECT_TYPES: ProjectType[] = ["WEB", "APP", "HYBRID"];
+export const PROJECT_TYPES: ProjectType[] = ['WEB', 'APP', 'HYBRID'];
 
 const ProjectSchema = new Schema<IProjectDocument>(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
 
     // Basic info
     title: {
       type: String,
-      required: [true, "Title is required"],
+      required: [true, 'Title is required'],
       trim: true,
     },
     slug: {
@@ -68,26 +68,26 @@ const ProjectSchema = new Schema<IProjectDocument>(
     },
     description: {
       type: String,
-      required: [true, "Description is required"],
+      required: [true, 'Description is required'],
       trim: true,
     },
     type: {
       type: String,
       enum: PROJECT_TYPES,
-      required: [true, "Type is required"],
+      required: [true, 'Type is required'],
     },
 
     // Relations
     tags: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Tag",
+        ref: 'Tag',
       },
     ],
     stacks: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Stack",
+        ref: 'Stack',
       },
     ],
 
@@ -116,12 +116,12 @@ const ProjectSchema = new Schema<IProjectDocument>(
     // Images
     cover: {
       type: Schema.Types.ObjectId,
-      ref: "Image",
+      ref: 'Image',
       default: null,
     },
     gallery: {
       type: [Schema.Types.ObjectId],
-      ref: "Image",
+      ref: 'Image',
       default: [],
     },
 
@@ -145,13 +145,13 @@ ProjectSchema.index({ userId: 1 });
 ProjectSchema.index({ type: 1 });
 ProjectSchema.index({ isFeatured: 1 });
 ProjectSchema.index({ isVisible: 1 });
-ProjectSchema.index({ title: "text" });
+ProjectSchema.index({ title: 'text' });
 
 /**
  * Auto-generate slug from title before save
  */
-ProjectSchema.pre("save", function () {
-  if (this.isNew || this.isModified("title")) {
+ProjectSchema.pre('save', function () {
+  if (this.isNew || this.isModified('title')) {
     this.slug = generateSlug(this.title);
   }
   if (!this.isNew) {
@@ -161,6 +161,6 @@ ProjectSchema.pre("save", function () {
 
 const Project: Model<IProjectDocument> =
   mongoose.models.Project ||
-  mongoose.model<IProjectDocument>("Project", ProjectSchema);
+  mongoose.model<IProjectDocument>('Project', ProjectSchema);
 
 export default Project;

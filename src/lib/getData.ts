@@ -1,14 +1,14 @@
-import { unstable_cache } from "next/cache";
+import { unstable_cache } from 'next/cache';
 
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from '@/lib/mongodb';
 import {
   Experience,
   Position,
   Project as ProjectModel,
   User as UserModel,
-} from "@/models";
-import type { Project } from "@/services/projects/types";
-import type { User } from "@/services/user/types";
+} from '@/models';
+import type { Project } from '@/services/projects/types';
+import type { User } from '@/services/user/types';
 
 /**
  * Cache revalidation time in seconds.
@@ -30,7 +30,7 @@ const PAGE_LIMIT = 12;
  * Strip HTML tags from string.
  */
 export const stripHtml = (html: string): string => {
-  return html.replace(/<[^>]*>/g, "").trim();
+  return html.replace(/<[^>]*>/g, '').trim();
 };
 
 /**
@@ -63,8 +63,8 @@ export const getUser = unstable_cache(
     await connectDB();
 
     const user = await UserModel.findOne()
-      .select("-password")
-      .populate("avatar", "url")
+      .select('-password')
+      .populate('avatar', 'url')
       .lean();
 
     if (!user) {
@@ -72,7 +72,7 @@ export const getUser = unstable_cache(
     }
 
     const experiences = await Experience.find({ userId: user._id })
-      .populate("companyIcon", "url")
+      .populate('companyIcon', 'url')
       .sort({ sn: -1 })
       .lean();
 
@@ -84,7 +84,7 @@ export const getUser = unstable_cache(
       .lean();
 
     const positionsByExperience = positions.reduce<
-      Record<string, User["experiences"][number]["positions"]>
+      Record<string, User['experiences'][number]['positions']>
     >((acc, position) => {
       const experienceId = position.experienceId.toString();
       if (!acc[experienceId]) {
@@ -125,7 +125,7 @@ export const getUser = unstable_cache(
       })),
     };
   },
-  ["user-profile"],
+  ['user-profile'],
   { revalidate: CACHE_REVALIDATE_SECONDS },
 );
 
@@ -148,10 +148,10 @@ export const getInitialProjects = unstable_cache(
 
     // Step 1: Fetch all featured projects
     const featuredProjects = await ProjectModel.find(featuredQuery)
-      .populate("tags", "label slug")
-      .populate("stacks", "label slug")
-      .populate("cover", "url")
-      .populate("gallery", "url")
+      .populate('tags', 'label slug')
+      .populate('stacks', 'label slug')
+      .populate('cover', 'url')
+      .populate('gallery', 'url')
       .sort({ createdAt: -1 })
       .limit(100)
       .lean();
@@ -172,10 +172,10 @@ export const getInitialProjects = unstable_cache(
 
       const [projectRows, total] = await Promise.all([
         ProjectModel.find(nonFeaturedQuery)
-          .populate("tags", "label slug")
-          .populate("stacks", "label slug")
-          .populate("cover", "url")
-          .populate("gallery", "url")
+          .populate('tags', 'label slug')
+          .populate('stacks', 'label slug')
+          .populate('cover', 'url')
+          .populate('gallery', 'url')
           .sort({ createdAt: -1 })
           .limit(PAGE_LIMIT)
           .lean(),
@@ -280,6 +280,6 @@ export const getInitialProjects = unstable_cache(
       nonFeaturedTotal,
     };
   },
-  ["initial-projects"],
+  ['initial-projects'],
   { revalidate: CACHE_REVALIDATE_SECONDS },
 );

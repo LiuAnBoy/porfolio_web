@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Fab, Zoom } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useEffect, useState } from "react";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Fab, Zoom } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useEffect, useState } from 'react';
 
-import { useScrollContainer } from "@/shared/contexts";
+import { useScrollContainer } from '@/shared/contexts';
 
 const StyledFab = styled(Fab)({
-  position: "fixed",
+  position: 'fixed',
   bottom: 32,
   right: 32,
   width: 56,
   height: 56,
-  backgroundColor: "rgba(255, 255, 255, 0.08)",
-  border: "1px solid rgba(255, 255, 255, 0.1)",
-  color: "rgba(255, 255, 255, 0.7)",
-  "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.12)",
-    color: "#fff",
+  backgroundColor: 'rgba(255, 255, 255, 0.08)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  color: 'rgba(255, 255, 255, 0.7)',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    color: '#fff',
   },
-  "& svg": {
+  '& svg': {
     fontSize: 28,
   },
-  "@media (max-width: 767px)": {
+  '@media (max-width: 767px)': {
     bottom: 24,
     right: 24,
     width: 48,
     height: 48,
-    "& svg": {
+    '& svg': {
       fontSize: 24,
     },
   },
@@ -49,14 +49,14 @@ export default function ScrollToTop() {
       setVisible(container.scrollTop > 300);
     };
 
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handleScroll);
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
   }, [scrollContainerRef]);
 
   const handleClick = () => {
     const container = scrollContainerRef?.current;
     if (container) {
-      container.scrollTo({ top: 0, behavior: "smooth" });
+      container.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 

@@ -1,14 +1,14 @@
-import type { ImageRefData } from "./image";
+import type { ImageRefData } from './image';
 
 /**
  * Project type enum
  */
-export type ProjectType = "WEB" | "APP" | "HYBRID";
+export type ProjectType = 'WEB' | 'APP' | 'HYBRID';
 
 export const PROJECT_TYPE_OPTIONS: { label: string; value: ProjectType }[] = [
-  { label: "Web", value: "WEB" },
-  { label: "App", value: "APP" },
-  { label: "Hybrid", value: "HYBRID" },
+  { label: 'Web', value: 'WEB' },
+  { label: 'App', value: 'APP' },
+  { label: 'Hybrid', value: 'HYBRID' },
 ];
 
 /**
@@ -47,7 +47,7 @@ export interface ProjectData {
  */
 export type PublicProjectData = Omit<
   ProjectData,
-  "userId" | "createdAt" | "updatedAt"
+  'userId' | 'createdAt' | 'updatedAt'
 >;
 
 /**

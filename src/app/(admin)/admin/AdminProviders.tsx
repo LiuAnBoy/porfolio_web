@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { ThemeProvider } from "@mui/material/styles";
-import type { DehydratedState } from "@tanstack/react-query";
-import { HydrationBoundary } from "@tanstack/react-query";
-import type { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
-import { SnackbarProvider } from "notistack";
-import type { ReactNode } from "react";
+import { ThemeProvider } from '@mui/material/styles';
+import type { DehydratedState } from '@tanstack/react-query';
+import { HydrationBoundary } from '@tanstack/react-query';
+import type { Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
+import { SnackbarProvider } from 'notistack';
+import type { ReactNode } from 'react';
 
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
-import { AdminLayout } from "@/shared/components/layouts/admin";
-import { adminTheme } from "@/styles/adminTheme";
+import ReactQueryProvider from '@/providers/ReactQueryProvider';
+import { AdminLayout } from '@/shared/components/layouts/admin';
+import { adminTheme } from '@/styles/adminTheme';
 
 /** Props for the AdminProviders component. */
 interface AdminProvidersProps {

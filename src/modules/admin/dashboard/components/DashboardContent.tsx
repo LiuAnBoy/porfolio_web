@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import FolderIcon from "@mui/icons-material/Folder";
-import ImageIcon from "@mui/icons-material/Image";
-import LabelIcon from "@mui/icons-material/Label";
-import LayersIcon from "@mui/icons-material/Layers";
+import FolderIcon from '@mui/icons-material/Folder';
+import ImageIcon from '@mui/icons-material/Image';
+import LabelIcon from '@mui/icons-material/Label';
+import LayersIcon from '@mui/icons-material/Layers';
 import {
   Box,
   Card,
@@ -16,12 +16,12 @@ import {
   Paper,
   Skeleton,
   Typography,
-} from "@mui/material";
-import dayjs from "dayjs";
-import Link from "next/link";
-import { type ReactNode } from "react";
+} from '@mui/material';
+import dayjs from 'dayjs';
+import Link from 'next/link';
+import { type ReactNode } from 'react';
 
-import { useDashboardQuery } from "../hooks/useDashboardQuery";
+import { useDashboardQuery } from '../hooks/useDashboardQuery';
 
 /** Single stat card configuration */
 interface StatCard {
@@ -58,14 +58,14 @@ function StatCardItem({ label, count, icon, href, color }: StatCard) {
       component={Link}
       href={href}
       sx={{
-        display: "block",
-        textDecoration: "none",
-        transition: "box-shadow 0.2s",
-        "&:hover": { boxShadow: 6 },
+        display: 'block',
+        textDecoration: 'none',
+        transition: 'box-shadow 0.2s',
+        '&:hover': { boxShadow: 6 },
       }}
     >
       <CardContent>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
           <Box sx={{ color }}>{icon}</Box>
           <Typography variant="body2" color="text.secondary">
             {label}
@@ -93,32 +93,32 @@ export function DashboardContent() {
   const statCards: StatCard[] = data
     ? [
         {
-          label: "Projects",
+          label: 'Projects',
           count: data.counts.projects,
           icon: <FolderIcon />,
-          href: "/admin/projects",
-          color: "primary.main",
+          href: '/admin/projects',
+          color: 'primary.main',
         },
         {
-          label: "Tags",
+          label: 'Tags',
           count: data.counts.tags,
           icon: <LabelIcon />,
-          href: "/admin/tags",
-          color: "success.main",
+          href: '/admin/tags',
+          color: 'success.main',
         },
         {
-          label: "Stacks",
+          label: 'Stacks',
           count: data.counts.stacks,
           icon: <LayersIcon />,
-          href: "/admin/stacks",
-          color: "warning.main",
+          href: '/admin/stacks',
+          color: 'warning.main',
         },
         {
-          label: "Images",
+          label: 'Images',
           count: data.counts.images,
           icon: <ImageIcon />,
-          href: "/admin/images",
-          color: "info.main",
+          href: '/admin/images',
+          color: 'info.main',
         },
       ]
     : [];
@@ -162,7 +162,7 @@ export function DashboardContent() {
                   <ListItem key={p.id} disableGutters>
                     <ListItemText
                       primary={p.name}
-                      secondary={dayjs(p.updatedAt * 1000).format("YYYY-MM-DD")}
+                      secondary={dayjs(p.updatedAt * 1000).format('YYYY-MM-DD')}
                     />
                   </ListItem>
                 ))}
@@ -186,7 +186,7 @@ export function DashboardContent() {
                 <Skeleton key={i} variant="text" height={40} />
               ))
             ) : data && data.recentTags.length > 0 ? (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, pt: 1 }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, pt: 1 }}>
                 {data.recentTags.map((t) => (
                   <Chip key={t.id} label={t.label} size="small" />
                 ))}
@@ -210,7 +210,7 @@ export function DashboardContent() {
                 <Skeleton key={i} variant="text" height={40} />
               ))
             ) : data && data.recentStacks.length > 0 ? (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, pt: 1 }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, pt: 1 }}>
                 {data.recentStacks.map((s) => (
                   <Chip key={s.id} label={s.label} size="small" />
                 ))}

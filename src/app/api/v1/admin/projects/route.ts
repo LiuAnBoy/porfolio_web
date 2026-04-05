@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { connectDB } from "@/lib/mongodb";
-import { withTransaction } from "@/lib/transaction";
-import { Image, Project, Stack, Tag } from "@/models";
-import { PROJECT_TYPES } from "@/models/Project";
-import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE } from "@/types";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { connectDB } from '@/lib/mongodb';
+import { withTransaction } from '@/lib/transaction';
+import { Image, Project, Stack, Tag } from '@/models';
+import { PROJECT_TYPES } from '@/models/Project';
+import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE } from '@/types';
 
 function transformImage(image: { _id: unknown; url: string } | null) {
   if (!image) {
@@ -28,14 +28,14 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get("type");
-    const isFeatured = searchParams.get("isFeatured");
-    const isVisible = searchParams.get("isVisible");
-    const tagsParam = searchParams.get("tags");
-    const stacksParam = searchParams.get("stacks");
-    const page = parseInt(searchParams.get("page") || "1", 10);
+    const type = searchParams.get('type');
+    const isFeatured = searchParams.get('isFeatured');
+    const isVisible = searchParams.get('isVisible');
+    const tagsParam = searchParams.get('tags');
+    const stacksParam = searchParams.get('stacks');
+    const page = parseInt(searchParams.get('page') || '1', 10);
     const page_size = Math.min(
-      parseInt(searchParams.get("page_size") || "20", 10),
+      parseInt(searchParams.get('page_size') || '20', 10),
       100,
     );
 
@@ -45,25 +45,25 @@ export async function GET(request: NextRequest) {
       query.type = type;
     }
     if (isFeatured !== null) {
-      query.isFeatured = isFeatured === "true";
+      query.isFeatured = isFeatured === 'true';
     }
     if (isVisible !== null) {
-      query.isVisible = isVisible === "true";
+      query.isVisible = isVisible === 'true';
     }
 
     if (tagsParam) {
-      const tagSlugs = tagsParam.split(",").filter(Boolean);
+      const tagSlugs = tagsParam.split(',').filter(Boolean);
       if (tagSlugs.length > 0) {
-        const tags = await Tag.find({ slug: { $in: tagSlugs } }).select("_id");
+        const tags = await Tag.find({ slug: { $in: tagSlugs } }).select('_id');
         query.tags = { $all: tags.map((tag) => tag._id) };
       }
     }
 
     if (stacksParam) {
-      const stackSlugs = stacksParam.split(",").filter(Boolean);
+      const stackSlugs = stacksParam.split(',').filter(Boolean);
       if (stackSlugs.length > 0) {
         const stacks = await Stack.find({ slug: { $in: stackSlugs } }).select(
-          "_id",
+          '_id',
         );
         query.stacks = { $all: stacks.map((stack) => stack._id) };
       }
@@ -72,10 +72,10 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * page_size;
     const [projects, total] = await Promise.all([
       Project.find(query)
-        .populate("tags", "label slug")
-        .populate("stacks", "label slug")
-        .populate("cover", "_id url")
-        .populate("gallery", "_id url")
+        .populate('tags', 'label slug')
+        .populate('stacks', 'label slug')
+        .populate('cover', '_id url')
+        .populate('gallery', '_id url')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(page_size)
@@ -128,9 +128,9 @@ export async function GET(request: NextRequest) {
       page,
     });
   } catch (error) {
-    console.error("Get projects error:", error);
+    console.error('Get projects error:', error);
     return NextResponse.json(
-      { success: false, message: "取得專案列表失敗" },
+      { success: false, message: '取得專案列表失敗' },
       { status: 500 },
     );
   }
@@ -163,14 +163,14 @@ export async function POST(request: NextRequest) {
 
     if (!title) {
       return NextResponse.json(
-        { success: false, message: "標題為必填欄位" },
+        { success: false, message: '標題為必填欄位' },
         { status: 400 },
       );
     }
 
     if (!description) {
       return NextResponse.json(
-        { success: false, message: "描述為必填欄位" },
+        { success: false, message: '描述為必填欄位' },
         { status: 400 },
       );
     }
@@ -179,7 +179,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: "請提供有效的專案類型（WEB、APP、HYBRID）",
+          message: '請提供有效的專案類型（WEB、APP、HYBRID）',
         },
         { status: 400 },
       );
@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
       const tagCount = await Tag.countDocuments({ _id: { $in: tags } });
       if (tagCount !== tags.length) {
         return NextResponse.json(
-          { success: false, message: "部分標籤不存在" },
+          { success: false, message: '部分標籤不存在' },
           { status: 400 },
         );
       }
@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
       const stackCount = await Stack.countDocuments({ _id: { $in: stacks } });
       if (stackCount !== stacks.length) {
         return NextResponse.json(
-          { success: false, message: "部分技術棧不存在" },
+          { success: false, message: '部分技術棧不存在' },
           { status: 400 },
         );
       }
@@ -265,9 +265,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Create project error:", error);
+    console.error('Create project error:', error);
     return NextResponse.json(
-      { success: false, message: "建立專案失敗" },
+      { success: false, message: '建立專案失敗' },
       { status: 500 },
     );
   }

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Autocomplete,
@@ -14,33 +14,33 @@ import {
   Switch,
   TextField,
   Typography,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
-import { pinyin } from "pinyin-pro";
-import { useEffect } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+} from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { pinyin } from 'pinyin-pro';
+import { useEffect } from 'react';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 
-import { useStackList } from "@/modules/admin/stacks/hooks/useStackQueries";
-import { useTagList } from "@/modules/admin/tags/hooks/useTagQueries";
+import { useStackList } from '@/modules/admin/stacks/hooks/useStackQueries';
+import { useTagList } from '@/modules/admin/tags/hooks/useTagQueries';
 import {
   FileUpload,
   PageHeader,
   RichTextEditor,
-} from "@/shared/components/common";
-import { ImageValue, useNotification } from "@/shared/hooks";
-import type { PopulatedRef, ProjectPayload, ProjectType } from "@/types";
-import { PROJECT_TYPE_OPTIONS } from "@/types";
+} from '@/shared/components/common';
+import { ImageValue, useNotification } from '@/shared/hooks';
+import type { PopulatedRef, ProjectPayload, ProjectType } from '@/types';
+import { PROJECT_TYPE_OPTIONS } from '@/types';
 
 import {
   useCreateProject,
   useProjectDetail,
   useUpdateProject,
-} from "../hooks/useProjectQueries";
+} from '../hooks/useProjectQueries';
 
 /** Props for ProjectForm component */
 interface ProjectFormProps {
   /** Form mode */
-  mode: "create" | "edit";
+  mode: 'create' | 'edit';
   /** Project ID for edit mode */
   projectId?: string;
 }
@@ -68,10 +68,10 @@ interface ProjectFormValues {
  * @returns URL-friendly slug string
  */
 function generateSlug(title: string): string {
-  return pinyin(title, { toneType: "none", separator: "-" })
+  return pinyin(title, { toneType: 'none', separator: '-' })
     .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
 }
 
 /**
@@ -106,10 +106,10 @@ function toImageValues(refs: { id: string; url: string }[]): ImageValue[] {
 export function ProjectForm({ mode, projectId }: ProjectFormProps) {
   const router = useRouter();
   const { notify } = useNotification();
-  const isEdit = mode === "edit";
+  const isEdit = mode === 'edit';
 
   const { data: project, isLoading: isLoadingProject } = useProjectDetail(
-    projectId ?? "",
+    projectId ?? '',
   );
   const { data: tagOptions = [] } = useTagList();
   const { data: stackOptions = [] } = useStackList();
@@ -126,29 +126,29 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
     formState: { errors },
   } = useForm<ProjectFormValues>({
     defaultValues: {
-      title: "",
-      slug: "",
-      description: "",
-      type: "WEB",
+      title: '',
+      slug: '',
+      description: '',
+      type: 'WEB',
       cover: null,
       gallery: [],
       tags: [],
       stacks: [],
       isFeatured: false,
       isVisible: true,
-      link: "",
-      partner: "",
+      link: '',
+      partner: '',
     },
   });
 
-  const titleValue = useWatch({ control, name: "title" });
-  const slugValue = useWatch({ control, name: "slug" });
+  const titleValue = useWatch({ control, name: 'title' });
+  const slugValue = useWatch({ control, name: 'slug' });
 
   /** Auto-generate slug when title changes (only if slug hasn't been manually edited) */
   useEffect(() => {
     if (!isEdit && titleValue) {
       const generated = generateSlug(titleValue);
-      setValue("slug", generated);
+      setValue('slug', generated);
     }
   }, [titleValue, isEdit, setValue]);
 
@@ -166,8 +166,8 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
         stacks: project.stacks,
         isFeatured: project.isFeatured,
         isVisible: project.isVisible,
-        link: project.link ?? "",
-        partner: project.partner ?? "",
+        link: project.link ?? '',
+        partner: project.partner ?? '',
       });
     }
   }, [isEdit, project, reset]);
@@ -193,23 +193,23 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
     try {
       if (isEdit && projectId) {
         await updateMutation.mutateAsync({ id: projectId, payload });
-        notify.success("專案更新成功");
+        notify.success('專案更新成功');
       } else {
         await createMutation.mutateAsync(payload);
-        notify.success("專案建立成功");
+        notify.success('專案建立成功');
       }
-      router.push("/admin/projects");
+      router.push('/admin/projects');
     } catch (error) {
       const apiMessage = (
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
-      notify.error(apiMessage ?? (isEdit ? "專案更新失敗" : "專案建立失敗"));
+      notify.error(apiMessage ?? (isEdit ? '專案更新失敗' : '專案建立失敗'));
     }
   });
 
   if (isEdit && isLoadingProject) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
         <CircularProgress />
       </Box>
     );
@@ -217,16 +217,16 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
 
   return (
     <>
-      <PageHeader title={isEdit ? "編輯專案" : "新增專案"} />
+      <PageHeader title={isEdit ? '編輯專案' : '新增專案'} />
 
       <Box
         component="form"
         onSubmit={onSubmit}
-        sx={{ display: "flex", flexDirection: "column", gap: 3, maxWidth: 800 }}
+        sx={{ display: 'flex', flexDirection: 'column', gap: 3, maxWidth: 800 }}
       >
         {/* Title */}
         <TextField
-          {...register("title", { required: "Title is required" })}
+          {...register('title', { required: 'Title is required' })}
           label="Title"
           fullWidth
           error={Boolean(errors.title)}
@@ -235,7 +235,7 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
 
         {/* Slug */}
         <TextField
-          {...register("slug", { required: "Slug is required" })}
+          {...register('slug', { required: 'Slug is required' })}
           label="Slug"
           fullWidth
           error={Boolean(errors.slug)}
@@ -399,7 +399,7 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
         />
 
         {/* Switches row */}
-        <Box sx={{ display: "flex", gap: 4 }}>
+        <Box sx={{ display: 'flex', gap: 4 }}>
           <Controller
             name="isFeatured"
             control={control}
@@ -428,7 +428,7 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
 
         {/* Link */}
         <TextField
-          {...register("link")}
+          {...register('link')}
           label="Link (optional)"
           fullWidth
           placeholder="https://..."
@@ -436,13 +436,13 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
 
         {/* Partner */}
         <TextField
-          {...register("partner")}
+          {...register('partner')}
           label="Partner (optional)"
           fullWidth
         />
 
         {/* Actions */}
-        <Box sx={{ display: "flex", gap: 2, pt: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2, pt: 2 }}>
           <Button
             variant="contained"
             type="submit"
@@ -451,11 +451,11 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
               isPending ? <CircularProgress size={16} color="inherit" /> : null
             }
           >
-            {isEdit ? "更新" : "建立"}
+            {isEdit ? '更新' : '建立'}
           </Button>
           <Button
             variant="outlined"
-            onClick={() => router.push("/admin/projects")}
+            onClick={() => router.push('/admin/projects')}
             disabled={isPending}
           >
             取消

@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-import { auth } from "@/lib/auth";
+import { auth } from '@/lib/auth';
 
 /**
  * Validate admin session. Returns session user or 401 response.
@@ -16,7 +16,7 @@ export async function requireAdminAuth(): Promise<
 
   if (!session?.user?.id) {
     return NextResponse.json(
-      { success: false, message: "Unauthorized" },
+      { success: false, message: 'Unauthorized' },
       { status: 401 },
     );
   }

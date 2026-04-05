@@ -1,5 +1,5 @@
-import dayjs from "dayjs";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import dayjs from 'dayjs';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
 /** Position document interface (Mongoose schema level) */
 export interface IPosition {
@@ -22,17 +22,17 @@ const PositionSchema = new Schema<IPositionDocument>(
   {
     experienceId: {
       type: Schema.Types.ObjectId,
-      ref: "Experience",
+      ref: 'Experience',
       required: true,
     },
     title: {
       type: String,
-      required: [true, "Position title is required"],
+      required: [true, 'Position title is required'],
       trim: true,
     },
     startAt: {
       type: Number,
-      required: [true, "Start date is required"],
+      required: [true, 'Start date is required'],
     },
     endAt: {
       type: Number,
@@ -44,7 +44,7 @@ const PositionSchema = new Schema<IPositionDocument>(
     },
     description: {
       type: String,
-      default: "",
+      default: '',
     },
     sn: {
       type: Number,
@@ -72,7 +72,7 @@ PositionSchema.index({ experienceId: 1, title: 1 }, { unique: true });
 /**
  * Update updatedAt on save (only for existing documents)
  */
-PositionSchema.pre("save", function () {
+PositionSchema.pre('save', function () {
   if (!this.isNew) {
     this.updatedAt = dayjs().unix();
   }
@@ -80,6 +80,6 @@ PositionSchema.pre("save", function () {
 
 const Position: Model<IPositionDocument> =
   mongoose.models.Position ||
-  mongoose.model<IPositionDocument>("Position", PositionSchema);
+  mongoose.model<IPositionDocument>('Position', PositionSchema);
 
 export default Position;

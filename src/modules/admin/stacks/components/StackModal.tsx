@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { TextField } from "@mui/material";
-import { pinyin } from "pinyin-pro";
-import { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { TextField } from '@mui/material';
+import { pinyin } from 'pinyin-pro';
+import { useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 
-import { BaseModal } from "@/shared/components/common";
-import { useNotification } from "@/shared/hooks";
-import type { StackData } from "@/types";
+import { BaseModal } from '@/shared/components/common';
+import { useNotification } from '@/shared/hooks';
+import type { StackData } from '@/types';
 
-import { useCreateStack, useUpdateStack } from "../hooks/useStackQueries";
+import { useCreateStack, useUpdateStack } from '../hooks/useStackQueries';
 
 /** Props for StackModal component */
 interface StackModalProps {
@@ -33,9 +33,9 @@ interface StackFormValues {
  * @returns URL-friendly slug string
  */
 function generateSlug(label: string): string {
-  return pinyin(label, { toneType: "none", separator: "-" })
+  return pinyin(label, { toneType: 'none', separator: '-' })
     .toLowerCase()
-    .replace(/\s+/g, "-");
+    .replace(/\s+/g, '-');
 }
 
 /**
@@ -49,10 +49,10 @@ export function StackModal({ open, onClose, editData }: StackModalProps) {
   const isEdit = Boolean(editData);
 
   const { register, handleSubmit, control, reset } = useForm<StackFormValues>({
-    defaultValues: { label: editData?.label ?? "" },
+    defaultValues: { label: editData?.label ?? '' },
   });
 
-  const labelValue = useWatch({ control, name: "label" });
+  const labelValue = useWatch({ control, name: 'label' });
   const slugPreview = generateSlug(labelValue);
 
   const createMutation = useCreateStack();
@@ -63,7 +63,7 @@ export function StackModal({ open, onClose, editData }: StackModalProps) {
   // Reset form when modal opens/closes or editData changes
   useEffect(() => {
     if (open) {
-      reset({ label: editData?.label ?? "" });
+      reset({ label: editData?.label ?? '' });
     }
   }, [open, editData, reset]);
 
@@ -79,10 +79,10 @@ export function StackModal({ open, onClose, editData }: StackModalProps) {
           id: editData.id,
           payload: { label: values.label },
         });
-        notify.success("技術棧更新成功");
+        notify.success('技術棧更新成功');
       } else {
         await createMutation.mutateAsync({ label: values.label });
-        notify.success("技術棧建立成功");
+        notify.success('技術棧建立成功');
       }
       handleClose();
     } catch (error) {
@@ -90,7 +90,7 @@ export function StackModal({ open, onClose, editData }: StackModalProps) {
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
       notify.error(
-        apiMessage ?? (isEdit ? "技術棧更新失敗" : "技術棧建立失敗"),
+        apiMessage ?? (isEdit ? '技術棧更新失敗' : '技術棧建立失敗'),
       );
     }
   });
@@ -99,18 +99,18 @@ export function StackModal({ open, onClose, editData }: StackModalProps) {
     <BaseModal
       open={open}
       onClose={handleClose}
-      title={isEdit ? "編輯技術棧" : "新增技術棧"}
+      title={isEdit ? '編輯技術棧' : '新增技術棧'}
       onConfirm={onSubmit}
-      confirmText={isEdit ? "更新" : "建立"}
+      confirmText={isEdit ? '更新' : '建立'}
       loading={isPending}
       maxWidth="sm"
     >
       <TextField
-        {...register("label", { required: true })}
+        {...register('label', { required: true })}
         label="Label"
         fullWidth
         autoFocus
-        helperText={labelValue ? `Slug preview: ${slugPreview}` : " "}
+        helperText={labelValue ? `Slug preview: ${slugPreview}` : ' '}
         sx={{ mt: 1 }}
       />
     </BaseModal>

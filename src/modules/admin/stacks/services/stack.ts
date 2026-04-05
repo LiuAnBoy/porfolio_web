@@ -1,5 +1,5 @@
-import http from "@/services/client";
-import type { StackData, StackPayload } from "@/types";
+import http from '@/services/client';
+import type { StackData, StackPayload } from '@/types';
 
 /**
  * Fetch all stacks.
@@ -7,7 +7,7 @@ import type { StackData, StackPayload } from "@/types";
  * @returns Promise resolving to an array of StackData
  */
 export async function getStackList(): Promise<StackData[]> {
-  return http.get<StackData[]>("/v1/admin/stacks");
+  return http.get<StackData[]>('/v1/admin/stacks');
 }
 
 /**
@@ -17,7 +17,7 @@ export async function getStackList(): Promise<StackData[]> {
  * @returns Promise resolving to void
  */
 export async function createStack(payload: StackPayload): Promise<void> {
-  return http.post<void>("/v1/admin/stacks", payload);
+  return http.post<void>('/v1/admin/stacks', payload);
 }
 
 /**

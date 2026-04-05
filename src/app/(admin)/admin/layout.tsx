@@ -1,10 +1,10 @@
-import { dehydrate, QueryClient } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
-import type { ReactNode } from "react";
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { redirect } from 'next/navigation';
+import type { ReactNode } from 'react';
 
-import { auth } from "@/lib/auth";
+import { auth } from '@/lib/auth';
 
-import { AdminProviders } from "./AdminProviders";
+import { AdminProviders } from './AdminProviders';
 
 /** Props for the AdminRootLayout component. */
 interface AdminRootLayoutProps {
@@ -26,7 +26,7 @@ export default async function AdminRootLayout({
   const session = await auth();
 
   if (!session) {
-    redirect("/admin/login");
+    redirect('/admin/login');
   }
 
   const queryClient = new QueryClient();

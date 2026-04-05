@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import GitHubIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import { Box } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import TelegramIcon from '@mui/icons-material/Telegram';
+import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import type { Social, SocialPlatform } from "@/services/user/types";
+import type { Social, SocialPlatform } from '@/services/user/types';
 
-type SocialIconSize = "small" | "medium" | "large";
+type SocialIconSize = 'small' | 'medium' | 'large';
 
 const SIZE_CONFIG = {
   small: { button: 36, icon: 18, gap: 8 },
@@ -17,34 +17,34 @@ const SIZE_CONFIG = {
 } as const;
 
 const Container = styled(Box, {
-  shouldForwardProp: (prop) => prop !== "size",
+  shouldForwardProp: (prop) => prop !== 'size',
 })<{ size: SocialIconSize }>(({ size }) => ({
-  display: "flex",
+  display: 'flex',
   gap: SIZE_CONFIG[size].gap,
 }));
 
-const SocialButton = styled("a", {
-  shouldForwardProp: (prop) => prop !== "size",
+const SocialButton = styled('a', {
+  shouldForwardProp: (prop) => prop !== 'size',
 })<{ size: SocialIconSize }>(({ size }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   width: SIZE_CONFIG[size].button,
   height: SIZE_CONFIG[size].button,
-  borderRadius: "50%",
-  backgroundColor: "rgba(255, 255, 255, 0.05)",
-  border: "1px solid rgba(255, 255, 255, 0.1)",
-  color: "rgba(255, 255, 255, 0.7)",
-  transition: "all 0.2s ease",
-  textDecoration: "none",
-  "& svg": {
+  borderRadius: '50%',
+  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  color: 'rgba(255, 255, 255, 0.7)',
+  transition: 'all 0.2s ease',
+  textDecoration: 'none',
+  '& svg': {
     width: SIZE_CONFIG[size].icon,
     height: SIZE_CONFIG[size].icon,
   },
-  "&:hover": {
-    backgroundColor: "rgba(34, 211, 238, 0.15)",
-    borderColor: "rgba(34, 211, 238, 0.3)",
-    color: "#22d3ee",
+  '&:hover': {
+    backgroundColor: 'rgba(34, 211, 238, 0.15)',
+    borderColor: 'rgba(34, 211, 238, 0.3)',
+    color: '#22d3ee',
   },
 }));
 
@@ -70,7 +70,7 @@ const WeChatIcon = () => (
  * Ensure URL has a protocol prefix.
  */
 const ensureProtocol = (url: string): string => {
-  if (url.startsWith("http://") || url.startsWith("https://")) {
+  if (url.startsWith('http://') || url.startsWith('https://')) {
     return url;
   }
   return `https://${url}`;
@@ -81,15 +81,15 @@ const ensureProtocol = (url: string): string => {
  */
 const getSocialIcon = (platform: SocialPlatform) => {
   switch (platform) {
-    case "GITHUB":
+    case 'GITHUB':
       return <GitHubIcon />;
-    case "LINKEDIN":
+    case 'LINKEDIN':
       return <LinkedInIcon />;
-    case "TELEGRAM":
+    case 'TELEGRAM':
       return <TelegramIcon />;
-    case "LINE":
+    case 'LINE':
       return <LineIcon />;
-    case "WECHAT":
+    case 'WECHAT':
       return <WeChatIcon />;
     default:
       return null;
@@ -104,7 +104,7 @@ interface SocialIconsProps {
 /**
  * Social media icons component.
  */
-const SocialIcons = ({ socials, size = "medium" }: SocialIconsProps) => {
+const SocialIcons = ({ socials, size = 'medium' }: SocialIconsProps) => {
   if (socials.length === 0) return null;
 
   return (

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import createCache from "@emotion/cache";
-import { CacheProvider } from "@emotion/react";
-import { useServerInsertedHTML } from "next/navigation";
-import type { ReactNode } from "react";
-import { useState } from "react";
+import createCache from '@emotion/cache';
+import { CacheProvider } from '@emotion/react';
+import { useServerInsertedHTML } from 'next/navigation';
+import type { ReactNode } from 'react';
+import { useState } from 'react';
 
 /**
  * Emotion cache provider for Next.js App Router.
@@ -12,7 +12,7 @@ import { useState } from "react";
  */
 const EmotionCacheProvider = ({ children }: { children: ReactNode }) => {
   const [cache] = useState(() => {
-    const cache = createCache({ key: "mui" });
+    const cache = createCache({ key: 'mui' });
     cache.compat = true;
     return cache;
   });
@@ -22,14 +22,14 @@ const EmotionCacheProvider = ({ children }: { children: ReactNode }) => {
     if (entries.length === 0) return null;
 
     const names = entries
-      .filter(([, value]) => typeof value !== "boolean")
+      .filter(([, value]) => typeof value !== 'boolean')
       .map(([name]) => name)
-      .join(" ");
+      .join(' ');
 
     const styles = entries
-      .filter(([, value]) => typeof value !== "boolean")
+      .filter(([, value]) => typeof value !== 'boolean')
       .map(([, value]) => value)
-      .join("");
+      .join('');
 
     return (
       <style

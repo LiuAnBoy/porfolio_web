@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { LoginForm } from "@/modules/admin/auth/components/LoginForm";
+import { LoginForm } from '@/modules/admin/auth/components/LoginForm';
 
 export const metadata: Metadata = {
-  title: "Admin Login",
-  robots: "noindex, nofollow",
+  title: 'Admin Login',
+  robots: 'noindex, nofollow',
 };
 
 /**

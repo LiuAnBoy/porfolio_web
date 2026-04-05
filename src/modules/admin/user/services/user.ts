@@ -1,10 +1,10 @@
-import http from "@/services/client";
+import http from '@/services/client';
 import type {
   ExperiencePayload,
   ExperienceWithPositions,
   UserData,
   UserPayload,
-} from "@/types";
+} from '@/types';
 
 /**
  * Fetch a user by ID.

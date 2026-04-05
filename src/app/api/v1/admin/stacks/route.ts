@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { connectDB } from "@/lib/mongodb";
-import { Stack } from "@/models";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { connectDB } from '@/lib/mongodb';
+import { Stack } from '@/models';
 
 export async function GET() {
   try {
@@ -19,9 +19,9 @@ export async function GET() {
       stacks.map(({ _id, ...rest }) => ({ id: _id.toString(), ...rest })),
     );
   } catch (error) {
-    console.error("Get stacks error:", error);
+    console.error('Get stacks error:', error);
     return NextResponse.json(
-      { success: false, message: "取得技術棧列表失敗" },
+      { success: false, message: '取得技術棧列表失敗' },
       { status: 500 },
     );
   }
@@ -40,18 +40,18 @@ export async function POST(request: NextRequest) {
 
     if (!label) {
       return NextResponse.json(
-        { success: false, message: "技術棧名稱為必填欄位" },
+        { success: false, message: '技術棧名稱為必填欄位' },
         { status: 400 },
       );
     }
 
     const existingStack = await Stack.findOne({
-      label: { $regex: new RegExp(`^${label}$`, "i") },
+      label: { $regex: new RegExp(`^${label}$`, 'i') },
     });
 
     if (existingStack) {
       return NextResponse.json(
-        { success: false, message: "技術棧已存在" },
+        { success: false, message: '技術棧已存在' },
         { status: 409 },
       );
     }
@@ -60,9 +60,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Create stack error:", error);
+    console.error('Create stack error:', error);
     return NextResponse.json(
-      { success: false, message: "建立技術棧失敗" },
+      { success: false, message: '建立技術棧失敗' },
       { status: 500 },
     );
   }

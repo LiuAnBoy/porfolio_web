@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-import { ProjectTable } from "@/modules/admin/projects/components/ProjectTable";
+import { ProjectTable } from '@/modules/admin/projects/components/ProjectTable';
 
 export const metadata: Metadata = {
-  title: "作品管理",
-  robots: "noindex, nofollow",
+  title: '作品管理',
+  robots: 'noindex, nofollow',
 };
 
 /**

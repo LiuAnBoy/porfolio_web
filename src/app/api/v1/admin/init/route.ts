@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { connectDB } from "@/lib/mongodb";
-import { Image, Project, Stack, Tag } from "@/models";
-import type { DashboardInitData } from "@/types";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { connectDB } from '@/lib/mongodb';
+import { Image, Project, Stack, Tag } from '@/models';
+import type { DashboardInitData } from '@/types';
 
 /**
  * GET /api/v1/admin/init
@@ -28,22 +28,22 @@ export async function GET() {
     const [recentProjects, recentImages, recentTags, recentStacks] =
       await Promise.all([
         Project.find({ updatedAt: { $ne: null } })
-          .select("title updatedAt")
+          .select('title updatedAt')
           .sort({ updatedAt: -1 })
           .limit(5)
           .lean(),
         Image.find({ updatedAt: { $ne: null } })
-          .select("url updatedAt")
+          .select('url updatedAt')
           .sort({ updatedAt: -1 })
           .limit(5)
           .lean(),
         Tag.find({ updatedAt: { $ne: null } })
-          .select("label slug updatedAt")
+          .select('label slug updatedAt')
           .sort({ updatedAt: -1 })
           .limit(5)
           .lean(),
         Stack.find({ updatedAt: { $ne: null } })
-          .select("label slug updatedAt")
+          .select('label slug updatedAt')
           .sort({ updatedAt: -1 })
           .limit(5)
           .lean(),
@@ -82,9 +82,9 @@ export async function GET() {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Get init data error:", error);
+    console.error('Get init data error:', error);
     return NextResponse.json(
-      { success: false, message: "初始化資料取得失敗" },
+      { success: false, message: '初始化資料取得失敗' },
       { status: 500 },
     );
   }

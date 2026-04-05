@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { Button, IconButton } from "@mui/material";
-import dayjs from "dayjs";
-import { useState } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Button, IconButton } from '@mui/material';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 
 import {
   BaseTable,
   ColumnDef,
   ConfirmDialog,
   PageHeader,
-} from "@/shared/components/common";
-import { useNotification } from "@/shared/hooks";
-import type { TagData } from "@/types";
+} from '@/shared/components/common';
+import { useNotification } from '@/shared/hooks';
+import type { TagData } from '@/types';
 
-import { useDeleteTag, useTagList } from "../hooks/useTagQueries";
-import { TagModal } from "./TagModal";
+import { useDeleteTag, useTagList } from '../hooks/useTagQueries';
+import { TagModal } from './TagModal';
 
 /**
  * Tag management table with CRUD operations.
@@ -35,7 +35,7 @@ export function TagTable() {
   const [editData, setEditData] = useState<TagData | undefined>(undefined);
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [deleteLabel, setDeleteLabel] = useState("");
+  const [deleteLabel, setDeleteLabel] = useState('');
 
   const paginatedData = data.slice(
     page * rowsPerPage,
@@ -44,24 +44,24 @@ export function TagTable() {
 
   const columns: ColumnDef<TagData>[] = [
     {
-      key: "label",
-      label: "Label",
+      key: 'label',
+      label: 'Label',
       render: (row) => row.label,
     },
     {
-      key: "slug",
-      label: "Slug",
+      key: 'slug',
+      label: 'Slug',
       render: (row) => row.slug,
     },
     {
-      key: "createdAt",
-      label: "Created At",
-      render: (row) => dayjs(row.createdAt * 1000).format("YYYY-MM-DD"),
+      key: 'createdAt',
+      label: 'Created At',
+      render: (row) => dayjs(row.createdAt * 1000).format('YYYY-MM-DD'),
     },
     {
-      key: "actions",
-      label: "Actions",
-      align: "right",
+      key: 'actions',
+      label: 'Actions',
+      align: 'right',
       render: (row) => (
         <>
           <IconButton
@@ -94,15 +94,15 @@ export function TagTable() {
     if (!deleteId) return;
     try {
       await deleteMutation.mutateAsync(deleteId);
-      notify.success("標籤刪除成功");
+      notify.success('標籤刪除成功');
     } catch (error) {
       const apiMessage = (
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
-      notify.error(apiMessage ?? "標籤刪除失敗");
+      notify.error(apiMessage ?? '標籤刪除失敗');
     } finally {
       setDeleteId(null);
-      setDeleteLabel("");
+      setDeleteLabel('');
     }
   };
 
@@ -152,7 +152,7 @@ export function TagTable() {
         open={Boolean(deleteId)}
         onClose={() => {
           setDeleteId(null);
-          setDeleteLabel("");
+          setDeleteLabel('');
         }}
         onConfirm={handleDeleteConfirm}
         message={`確定要刪除標籤「${deleteLabel}」嗎？此操作無法復原。`}

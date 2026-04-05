@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 
-import http from "@/services/client";
+import http from '@/services/client';
 
 /** Represents an uploaded image with its identifier and public URL */
 export interface ImageValue {
@@ -13,7 +13,7 @@ export interface ImageValue {
 /** Configuration options for the useUpload hook */
 interface UseUploadOptions {
   /** The admin module this upload belongs to */
-  module: "projects" | "user" | "experiences";
+  module: 'projects' | 'user' | 'experiences';
   /**
    * Callback invoked with the uploaded image on success
    * @param image - The uploaded image data
@@ -56,7 +56,7 @@ export function useUpload(options: UseUploadOptions): {
       setIsUploading(true);
       try {
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append('file', file);
 
         const response = await http.post<{
           success: boolean;
@@ -65,7 +65,7 @@ export function useUpload(options: UseUploadOptions): {
           `/v1/admin/upload?type=image&module=${encodeURIComponent(module)}`,
           formData,
           {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { 'Content-Type': 'multipart/form-data' },
           },
         );
 

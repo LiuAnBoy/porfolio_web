@@ -1,4 +1,4 @@
-import { pinyin } from "pinyin-pro";
+import { pinyin } from 'pinyin-pro';
 
 /**
  * Check if string contains Chinese characters
@@ -15,14 +15,14 @@ function containsChinese(str: string): boolean {
 export function generateSlug(label: string): string {
   if (containsChinese(label)) {
     return pinyin(label, {
-      toneType: "none",
-      type: "array",
+      toneType: 'none',
+      type: 'array',
     })
-      .join("-")
+      .join('-')
       .toLowerCase();
   }
   return label
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }

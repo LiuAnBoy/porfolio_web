@@ -1,6 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import type { ExperiencePayload, UserPayload } from "@/types";
+import type { ExperiencePayload, UserPayload } from '@/types';
 
 import {
   createExperience,
@@ -10,14 +10,14 @@ import {
   reorderExperiences,
   updateExperience,
   updateUser,
-} from "../services/user";
+} from '../services/user';
 
 /** Query key for user data */
-const userKey = (id: string) => ["user", id] as const;
+const userKey = (id: string) => ['user', id] as const;
 
 /** Query key for user experiences */
 const experienceKey = (userId: string) =>
-  ["user", userId, "experiences"] as const;
+  ['user', userId, 'experiences'] as const;
 
 /**
  * React Query hook to fetch user data.

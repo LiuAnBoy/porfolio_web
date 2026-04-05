@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import AddIcon from "@mui/icons-material/Add";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { Button, IconButton } from "@mui/material";
-import { useState } from "react";
+import AddIcon from '@mui/icons-material/Add';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Button, IconButton } from '@mui/material';
+import { useState } from 'react';
 
 import {
   BaseTable,
   ColumnDef,
   ConfirmDialog,
-} from "@/shared/components/common";
-import { useNotification } from "@/shared/hooks";
-import type { ExperienceWithPositions } from "@/types";
+} from '@/shared/components/common';
+import { useNotification } from '@/shared/hooks';
+import type { ExperienceWithPositions } from '@/types';
 
 import {
   useDeleteExperience,
   useExperiences,
   useReorderExperiences,
-} from "../hooks/useUserQueries";
-import { ExperienceModal } from "./ExperienceModal";
+} from '../hooks/useUserQueries';
+import { ExperienceModal } from './ExperienceModal';
 
 /** Props for ExperienceTab component */
 interface ExperienceTabProps {
@@ -68,9 +68,9 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
    * @param index - Current index in the sorted array
    * @param direction - Direction to move ("up" or "down")
    */
-  const handleMove = (index: number, direction: "up" | "down") => {
+  const handleMove = (index: number, direction: 'up' | 'down') => {
     const ids = sorted.map((e) => e.id);
-    const targetIndex = direction === "up" ? index - 1 : index + 1;
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
     if (targetIndex < 0 || targetIndex >= ids.length) return;
 
     // Swap
@@ -83,7 +83,7 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
           const apiMessage = (
             error as { response?: { data?: { message?: string } } }
           ).response?.data?.message;
-          notify.error(apiMessage ?? "排序更新失敗");
+          notify.error(apiMessage ?? '排序更新失敗');
         },
       },
     );
@@ -91,28 +91,28 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
 
   const columns: ColumnDef<ExperienceWithPositions>[] = [
     {
-      key: "company",
-      label: "Company",
+      key: 'company',
+      label: 'Company',
       render: (row) => row.company,
     },
     {
-      key: "positions",
-      label: "Positions",
+      key: 'positions',
+      label: 'Positions',
       width: 100,
-      align: "center",
+      align: 'center',
       render: (row) => row.positions.length,
     },
     {
-      key: "sn",
-      label: "Order",
+      key: 'sn',
+      label: 'Order',
       width: 80,
-      align: "center",
+      align: 'center',
       render: (row) => row.sn,
     },
     {
-      key: "actions",
-      label: "Actions",
-      align: "right",
+      key: 'actions',
+      label: 'Actions',
+      align: 'right',
       width: 180,
       render: (row) => {
         const currentIndex = sorted.findIndex((e) => e.id === row.id);
@@ -121,7 +121,7 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
             <IconButton
               size="small"
               disabled={currentIndex === 0 || reorderMutation.isPending}
-              onClick={() => handleMove(currentIndex, "up")}
+              onClick={() => handleMove(currentIndex, 'up')}
               aria-label="move up"
             >
               <ArrowUpwardIcon fontSize="small" />
@@ -131,7 +131,7 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
               disabled={
                 currentIndex === sorted.length - 1 || reorderMutation.isPending
               }
-              onClick={() => handleMove(currentIndex, "down")}
+              onClick={() => handleMove(currentIndex, 'down')}
               aria-label="move down"
             >
               <ArrowDownwardIcon fontSize="small" />
@@ -169,12 +169,12 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
         userId,
         expId: deleteTarget.id,
       });
-      notify.success("經歷刪除成功");
+      notify.success('經歷刪除成功');
     } catch (error) {
       const apiMessage = (
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
-      notify.error(apiMessage ?? "經歷刪除失敗");
+      notify.error(apiMessage ?? '經歷刪除失敗');
     } finally {
       setDeleteTarget(null);
     }
@@ -224,7 +224,7 @@ export function ExperienceTab({ userId }: ExperienceTabProps) {
         open={Boolean(deleteTarget)}
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDeleteConfirm}
-        message={`確定要刪除「${deleteTarget?.company ?? ""}」的經歷嗎？此操作無法復原。`}
+        message={`確定要刪除「${deleteTarget?.company ?? ''}」的經歷嗎？此操作無法復原。`}
         loading={deleteMutation.isPending}
       />
     </>

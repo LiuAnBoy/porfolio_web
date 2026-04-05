@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from '@mui/icons-material/Close';
 import {
   Button,
   CircularProgress,
@@ -9,8 +9,8 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-} from "@mui/material";
-import { ReactNode } from "react";
+} from '@mui/material';
+import { ReactNode } from 'react';
 
 /** Props for BaseModal component */
 interface BaseModalProps {
@@ -31,7 +31,7 @@ interface BaseModalProps {
   /** Whether the confirm action is in progress */
   loading?: boolean;
   /** Maximum width of the dialog */
-  maxWidth?: "xs" | "sm" | "md" | "lg";
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
 /**
@@ -45,10 +45,10 @@ export function BaseModal({
   title,
   children,
   onConfirm,
-  confirmText = "確認",
-  cancelText = "取消",
+  confirmText = '確認',
+  cancelText = '取消',
   loading = false,
-  maxWidth = "sm",
+  maxWidth = 'sm',
 }: BaseModalProps) {
   return (
     <Dialog
@@ -63,7 +63,7 @@ export function BaseModal({
         <IconButton
           aria-label="close"
           onClick={onClose}
-          sx={{ position: "absolute", right: 8, top: 8 }}
+          sx={{ position: 'absolute', right: 8, top: 8 }}
         >
           <CloseIcon />
         </IconButton>

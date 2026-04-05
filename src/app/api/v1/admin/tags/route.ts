@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { connectDB } from "@/lib/mongodb";
-import { Tag } from "@/models";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { connectDB } from '@/lib/mongodb';
+import { Tag } from '@/models';
 
 export async function GET() {
   try {
@@ -19,9 +19,9 @@ export async function GET() {
       tags.map(({ _id, ...rest }) => ({ id: _id.toString(), ...rest })),
     );
   } catch (error) {
-    console.error("Get tags error:", error);
+    console.error('Get tags error:', error);
     return NextResponse.json(
-      { success: false, message: "取得標籤列表失敗" },
+      { success: false, message: '取得標籤列表失敗' },
       { status: 500 },
     );
   }
@@ -40,18 +40,18 @@ export async function POST(request: NextRequest) {
 
     if (!label) {
       return NextResponse.json(
-        { success: false, message: "標籤名稱為必填欄位" },
+        { success: false, message: '標籤名稱為必填欄位' },
         { status: 400 },
       );
     }
 
     const existingTag = await Tag.findOne({
-      label: { $regex: new RegExp(`^${label}$`, "i") },
+      label: { $regex: new RegExp(`^${label}$`, 'i') },
     });
 
     if (existingTag) {
       return NextResponse.json(
-        { success: false, message: "標籤已存在" },
+        { success: false, message: '標籤已存在' },
         { status: 409 },
       );
     }
@@ -60,9 +60,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Create tag error:", error);
+    console.error('Create tag error:', error);
     return NextResponse.json(
-      { success: false, message: "建立標籤失敗" },
+      { success: false, message: '建立標籤失敗' },
       { status: 500 },
     );
   }

@@ -1,8 +1,8 @@
-import { NextRequest } from "next/server";
+import { NextRequest } from 'next/server';
 
-import { handleOptions, jsonWithCors } from "@/lib/cors";
-import { connectDB } from "@/lib/mongodb";
-import { Project, Stack, Tag } from "@/models";
+import { handleOptions, jsonWithCors } from '@/lib/cors';
+import { connectDB } from '@/lib/mongodb';
+import { Project, Stack, Tag } from '@/models';
 
 export const OPTIONS = handleOptions;
 
@@ -15,14 +15,14 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get("type");
-    const isFeatured = searchParams.get("isFeatured");
-    const isVisible = searchParams.get("isVisible");
-    const tagsParam = searchParams.get("tags");
-    const stacksParam = searchParams.get("stacks");
-    const page = parseInt(searchParams.get("page") || "1", 10);
+    const type = searchParams.get('type');
+    const isFeatured = searchParams.get('isFeatured');
+    const isVisible = searchParams.get('isVisible');
+    const tagsParam = searchParams.get('tags');
+    const stacksParam = searchParams.get('stacks');
+    const page = parseInt(searchParams.get('page') || '1', 10);
     const page_size = Math.min(
-      parseInt(searchParams.get("page_size") || "20", 10),
+      parseInt(searchParams.get('page_size') || '20', 10),
       100,
     );
 
@@ -32,25 +32,25 @@ export async function GET(request: NextRequest) {
       query.type = type;
     }
     if (isFeatured !== null) {
-      query.isFeatured = isFeatured === "true";
+      query.isFeatured = isFeatured === 'true';
     }
     if (isVisible !== null) {
-      query.isVisible = isVisible === "true";
+      query.isVisible = isVisible === 'true';
     }
 
     if (tagsParam) {
-      const tagSlugs = tagsParam.split(",").filter(Boolean);
+      const tagSlugs = tagsParam.split(',').filter(Boolean);
       if (tagSlugs.length > 0) {
-        const tags = await Tag.find({ slug: { $in: tagSlugs } }).select("_id");
+        const tags = await Tag.find({ slug: { $in: tagSlugs } }).select('_id');
         query.tags = { $all: tags.map((tag) => tag._id) };
       }
     }
 
     if (stacksParam) {
-      const stackSlugs = stacksParam.split(",").filter(Boolean);
+      const stackSlugs = stacksParam.split(',').filter(Boolean);
       if (stackSlugs.length > 0) {
         const stacks = await Stack.find({ slug: { $in: stackSlugs } }).select(
-          "_id",
+          '_id',
         );
         query.stacks = { $all: stacks.map((stack) => stack._id) };
       }
@@ -59,10 +59,10 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * page_size;
     const [projects, total] = await Promise.all([
       Project.find(query)
-        .populate("tags", "label slug")
-        .populate("stacks", "label slug")
-        .populate("cover", "url")
-        .populate("gallery", "url")
+        .populate('tags', 'label slug')
+        .populate('stacks', 'label slug')
+        .populate('cover', 'url')
+        .populate('gallery', 'url')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(page_size)
@@ -128,9 +128,9 @@ export async function GET(request: NextRequest) {
 
     return jsonWithCors({ payload: data, total_count: total, page_size, page });
   } catch (error) {
-    console.error("Get public projects error:", error);
+    console.error('Get public projects error:', error);
     return jsonWithCors(
-      { success: false, message: "取得專案列表失敗" },
+      { success: false, message: '取得專案列表失敗' },
       { status: 500 },
     );
   }

@@ -1,9 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createTag, deleteTag, getTagList, updateTag } from "../services/tag";
+import { createTag, deleteTag, getTagList, updateTag } from '../services/tag';
 
 /** Query key for the tag list */
-const TAG_QUERY_KEY = ["tags"] as const;
+const TAG_QUERY_KEY = ['tags'] as const;
 
 /**
  * React Query hook to fetch the tag list.

@@ -1,1 +1,1 @@
-export type { StackData, StackPayload } from "@/types";
+export type { StackData, StackPayload } from '@/types';

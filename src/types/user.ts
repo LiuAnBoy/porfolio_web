@@ -2,11 +2,11 @@
  * Social platform enum
  */
 export const SOCIAL_PLATFORM = {
-  GITHUB: "GITHUB",
-  LINKEDIN: "LINKEDIN",
-  LINE: "LINE",
-  TELEGRAM: "TELEGRAM",
-  WECHAT: "WECHAT",
+  GITHUB: 'GITHUB',
+  LINKEDIN: 'LINKEDIN',
+  LINE: 'LINE',
+  TELEGRAM: 'TELEGRAM',
+  WECHAT: 'WECHAT',
 } as const;
 
 export type SocialPlatform =
@@ -54,7 +54,7 @@ export interface ExperienceWithPositions {
   id: string;
   userId: string;
   company: string;
-  companyIcon: import("./image").ImageRefData | null;
+  companyIcon: import('./image').ImageRefData | null;
   sn: number;
   createdAt: number;
   updatedAt: number | null;
@@ -66,7 +66,7 @@ export interface ExperienceWithPositions {
  */
 export type PublicExperienceData = Omit<
   ExperienceWithPositions,
-  "userId" | "createdAt" | "updatedAt"
+  'userId' | 'createdAt' | 'updatedAt'
 >;
 
 /**
@@ -85,7 +85,7 @@ export interface ExperiencePayload {
 export interface UserData {
   id: string;
   email: string;
-  avatar: import("./image").ImageRefData | null;
+  avatar: import('./image').ImageRefData | null;
   name: string;
   title: string;
   bio: string;
@@ -99,7 +99,7 @@ export interface UserData {
  */
 export type PublicUserData = Omit<
   UserData,
-  "email" | "createdAt" | "updatedAt"
+  'email' | 'createdAt' | 'updatedAt'
 >;
 
 /**

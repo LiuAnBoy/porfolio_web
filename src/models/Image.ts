@@ -1,12 +1,12 @@
-import dayjs from "dayjs";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import dayjs from 'dayjs';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
 import {
   IMAGE_USAGE_MODEL,
   IMAGE_USAGE_TYPE,
   ImageUsageModel,
   ImageUsageType,
-} from "@/types/image";
+} from '@/types/image';
 
 /** Image usage sub-document interface (Mongoose schema level) */
 export interface IImageUsage {
@@ -55,16 +55,16 @@ const ImageSchema = new Schema<IImageDocument>(
   {
     publicId: {
       type: String,
-      required: [true, "Cloudinary public ID is required"],
+      required: [true, 'Cloudinary public ID is required'],
       unique: true,
     },
     url: {
       type: String,
-      required: [true, "Image URL is required"],
+      required: [true, 'Image URL is required'],
     },
     hash: {
       type: String,
-      required: [true, "Image hash is required"],
+      required: [true, 'Image hash is required'],
     },
     isPending: {
       type: Boolean,
@@ -98,9 +98,9 @@ ImageSchema.index({ isPending: 1, uploadedAt: 1, createdAt: 1 });
 /**
  * Index for finding images by usage
  */
-ImageSchema.index({ "usage.model": 1, "usage.refId": 1 });
+ImageSchema.index({ 'usage.model': 1, 'usage.refId': 1 });
 
 const Image: Model<IImageDocument> =
-  mongoose.models.Image || mongoose.model<IImageDocument>("Image", ImageSchema);
+  mongoose.models.Image || mongoose.model<IImageDocument>('Image', ImageSchema);
 
 export default Image;

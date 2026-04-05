@@ -1,1 +1,1 @@
-export type { TagData, TagPayload } from "@/types";
+export type { TagData, TagPayload } from '@/types';

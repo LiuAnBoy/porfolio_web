@@ -1,6 +1,6 @@
-import { handleOptions, jsonWithCors } from "@/lib/cors";
-import { connectDB } from "@/lib/mongodb";
-import { Experience, Position, User } from "@/models";
+import { handleOptions, jsonWithCors } from '@/lib/cors';
+import { connectDB } from '@/lib/mongodb';
+import { Experience, Position, User } from '@/models';
 
 export const OPTIONS = handleOptions;
 
@@ -13,19 +13,19 @@ export async function GET() {
     await connectDB();
 
     const user = await User.findOne()
-      .select("-password")
-      .populate("avatar", "url")
+      .select('-password')
+      .populate('avatar', 'url')
       .lean();
 
     if (!user) {
       return jsonWithCors(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
 
     const experiences = await Experience.find({ userId: user._id })
-      .populate("companyIcon", "url")
+      .populate('companyIcon', 'url')
       .sort({ sn: -1 })
       .lean();
 
@@ -96,9 +96,9 @@ export async function GET() {
       experiences: experiencesData,
     });
   } catch (error) {
-    console.error("Get user error:", error);
+    console.error('Get user error:', error);
     return jsonWithCors(
-      { success: false, message: "取得使用者資料失敗" },
+      { success: false, message: '取得使用者資料失敗' },
       { status: 500 },
     );
   }

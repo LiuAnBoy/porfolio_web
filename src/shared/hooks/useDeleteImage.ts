@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 
-import http from "@/services/client";
+import http from '@/services/client';
 
 /**
  * Hook for deleting images via the admin images endpoint.

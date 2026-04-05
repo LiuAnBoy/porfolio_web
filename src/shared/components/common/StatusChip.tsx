@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { Chip } from "@mui/material";
+import { Chip } from '@mui/material';
 
 /** Props for StatusChip component */
 interface StatusChipProps {
   /** Text label to display */
   label: string;
   /** Color variant of the chip */
-  color?: "default" | "primary" | "success" | "warning" | "error" | "info";
+  color?: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info';
   /** Size of the chip */
-  size?: "small" | "medium";
+  size?: 'small' | 'medium';
 }
 
 /**
@@ -19,8 +19,8 @@ interface StatusChipProps {
  */
 export function StatusChip({
   label,
-  color = "default",
-  size = "small",
+  color = 'default',
+  size = 'small',
 }: StatusChipProps) {
   return <Chip label={label} color={color} size={size} />;
 }

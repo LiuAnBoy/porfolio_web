@@ -1,7 +1,7 @@
-import dayjs from "dayjs";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import dayjs from 'dayjs';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
-import { generateSlug } from "@/shared/utils/slug";
+import { generateSlug } from '@/shared/utils/slug';
 
 /** Tag document interface (Mongoose schema level) */
 export interface ITag {
@@ -19,7 +19,7 @@ const TagSchema = new Schema<ITagDocument>(
   {
     label: {
       type: String,
-      required: [true, "Label is required"],
+      required: [true, 'Label is required'],
       unique: true,
       trim: true,
     },
@@ -44,8 +44,8 @@ const TagSchema = new Schema<ITagDocument>(
 /**
  * Auto-generate slug from label before save
  */
-TagSchema.pre("save", function () {
-  if (this.isNew || this.isModified("label")) {
+TagSchema.pre('save', function () {
+  if (this.isNew || this.isModified('label')) {
     this.slug = generateSlug(this.label);
   }
   if (!this.isNew) {
@@ -54,6 +54,6 @@ TagSchema.pre("save", function () {
 });
 
 const Tag: Model<ITagDocument> =
-  mongoose.models.Tag || mongoose.model<ITagDocument>("Tag", TagSchema);
+  mongoose.models.Tag || mongoose.model<ITagDocument>('Tag', TagSchema);
 
 export default Tag;

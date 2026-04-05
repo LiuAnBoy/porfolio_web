@@ -1,18 +1,18 @@
-import crypto from "crypto";
-import dayjs from "dayjs";
-import { NextRequest, NextResponse } from "next/server";
+import crypto from 'crypto';
+import dayjs from 'dayjs';
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { deleteImage, uploadImage } from "@/lib/cloudinary";
-import { connectDB } from "@/lib/mongodb";
-import { Image } from "@/models";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { deleteImage, uploadImage } from '@/lib/cloudinary';
+import { connectDB } from '@/lib/mongodb';
+import { Image } from '@/models';
 
 interface RouteParams {
   params: Promise<{ id: string }>;
 }
 
 function generateHash(buffer: Buffer): string {
-  return crypto.createHash("md5").update(buffer).digest("hex");
+  return crypto.createHash('md5').update(buffer).digest('hex');
 }
 
 export async function GET(_request: NextRequest, { params }: RouteParams) {
@@ -28,7 +28,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const image = await Image.findById(id).lean();
     if (!image) {
       return NextResponse.json(
-        { success: false, message: "找不到圖片" },
+        { success: false, message: '找不到圖片' },
         { status: 404 },
       );
     }
@@ -47,9 +47,9 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       ...rest,
     });
   } catch (error) {
-    console.error("Get image error:", error);
+    console.error('Get image error:', error);
     return NextResponse.json(
-      { success: false, message: "取得圖片失敗" },
+      { success: false, message: '取得圖片失敗' },
       { status: 500 },
     );
   }
@@ -68,24 +68,24 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const image = await Image.findById(id);
     if (!image) {
       return NextResponse.json(
-        { success: false, message: "找不到圖片" },
+        { success: false, message: '找不到圖片' },
         { status: 404 },
       );
     }
 
     const formData = await request.formData();
-    const file = formData.get("file") as File | null;
+    const file = formData.get('file') as File | null;
 
     if (!file) {
       return NextResponse.json(
-        { success: false, message: "未提供檔案" },
+        { success: false, message: '未提供檔案' },
         { status: 400 },
       );
     }
 
-    if (!file.type.startsWith("image/")) {
+    if (!file.type.startsWith('image/')) {
       return NextResponse.json(
-        { success: false, message: "檔案必須是圖片格式" },
+        { success: false, message: '檔案必須是圖片格式' },
         { status: 400 },
       );
     }
@@ -111,9 +111,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Update image error:", error);
+    console.error('Update image error:', error);
     return NextResponse.json(
-      { success: false, message: "更新圖片失敗" },
+      { success: false, message: '更新圖片失敗' },
       { status: 500 },
     );
   }
@@ -132,7 +132,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const image = await Image.findById(id);
     if (!image) {
       return NextResponse.json(
-        { success: false, message: "找不到圖片" },
+        { success: false, message: '找不到圖片' },
         { status: 404 },
       );
     }
@@ -142,9 +142,9 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Delete image error:", error);
+    console.error('Delete image error:', error);
     return NextResponse.json(
-      { success: false, message: "刪除圖片失敗" },
+      { success: false, message: '刪除圖片失敗' },
       { status: 500 },
     );
   }

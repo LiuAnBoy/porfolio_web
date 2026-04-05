@@ -1,7 +1,7 @@
-import dayjs from "dayjs";
-import mongoose, { Document, Model, Schema, Types } from "mongoose";
+import dayjs from 'dayjs';
+import mongoose, { Document, Model, Schema, Types } from 'mongoose';
 
-import { generateSlug } from "@/shared/utils/slug";
+import { generateSlug } from '@/shared/utils/slug';
 
 /** Stack document interface (Mongoose schema level) */
 export interface IStack {
@@ -19,7 +19,7 @@ const StackSchema = new Schema<IStackDocument>(
   {
     label: {
       type: String,
-      required: [true, "Label is required"],
+      required: [true, 'Label is required'],
       unique: true,
       trim: true,
     },
@@ -44,8 +44,8 @@ const StackSchema = new Schema<IStackDocument>(
 /**
  * Auto-generate slug from label before save
  */
-StackSchema.pre("save", function () {
-  if (this.isNew || this.isModified("label")) {
+StackSchema.pre('save', function () {
+  if (this.isNew || this.isModified('label')) {
     this.slug = generateSlug(this.label);
   }
   if (!this.isNew) {
@@ -54,6 +54,6 @@ StackSchema.pre("save", function () {
 });
 
 const Stack: Model<IStackDocument> =
-  mongoose.models.Stack || mongoose.model<IStackDocument>("Stack", StackSchema);
+  mongoose.models.Stack || mongoose.model<IStackDocument>('Stack', StackSchema);
 
 export default Stack;

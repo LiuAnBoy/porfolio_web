@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { Box, Container, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Box, Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
   useCallback,
   useEffect,
   useRef,
   useState,
   useSyncExternalStore,
-} from "react";
+} from 'react';
 
-import { useProjectsStore } from "@/modules/public/projects/stores";
-import { getProjects } from "@/services/projects/api";
-import type { Project, ProjectType } from "@/services/projects/types";
-import { useScrollContainer } from "@/shared/contexts";
+import { useProjectsStore } from '@/modules/public/projects/stores';
+import { getProjects } from '@/services/projects/api';
+import type { Project, ProjectType } from '@/services/projects/types';
+import { useScrollContainer } from '@/shared/contexts';
 
-import ProjectDrawer from "./ProjectDrawer";
-import ProjectFilters from "./ProjectFilters";
-import ProjectGrid from "./ProjectGrid";
+import ProjectDrawer from './ProjectDrawer';
+import ProjectFilters from './ProjectFilters';
+import ProjectGrid from './ProjectGrid';
 
 const INITIAL_LOAD_COUNT = 15;
 const PAGE_LIMIT = 9;
 
 const PageContainer = styled(Box)({
-  height: "100%",
-  backgroundColor: "#0a0a0a",
+  height: '100%',
+  backgroundColor: '#0a0a0a',
   paddingTop: 80,
   paddingBottom: 60,
-  overflowY: "auto",
-  "@media (max-width: 767px)": {
+  overflowY: 'auto',
+  '@media (max-width: 767px)': {
     paddingTop: 72,
   },
 });
@@ -38,15 +38,15 @@ const PageHeader = styled(Box)({
 });
 
 const PageTitle = styled(Typography)({
-  color: "#fff",
+  color: '#fff',
   fontWeight: 700,
-  fontSize: "2.5rem",
+  fontSize: '2.5rem',
   marginBottom: 12,
 });
 
 const PageDescription = styled(Typography)({
-  color: "rgba(255, 255, 255, 0.5)",
-  fontSize: "1.125rem",
+  color: 'rgba(255, 255, 255, 0.5)',
+  fontSize: '1.125rem',
 });
 
 interface InitialData {
@@ -188,7 +188,7 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
         store.setFeaturedCount(newFeaturedCount);
         store.setNonFeaturedTotal(newNonFeaturedTotal);
       } catch (error) {
-        console.error("Failed to fetch projects:", error);
+        console.error('Failed to fetch projects:', error);
       }
     },
     [store],
@@ -216,7 +216,7 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
       // Add to store (store handles deduplication)
       store.addProjects(response.payload);
     } catch (error) {
-      console.error("Failed to fetch next page:", error);
+      console.error('Failed to fetch next page:', error);
     }
     setIsFetchingNextPage(false);
   }, [isFetchingNextPage, hasNextPage, nonFeaturedLoaded, selectedType, store]);

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Box } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import type { ReactNode } from "react";
+import { Box } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import type { ReactNode } from 'react';
 
-import { adminTheme } from "@/styles/adminTheme";
+import { adminTheme } from '@/styles/adminTheme';
 
 /** Props for the AuthLayout component. */
 interface AuthLayoutProps {
@@ -24,11 +24,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
     <ThemeProvider theme={adminTheme}>
       <Box
         sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          bgcolor: "background.default",
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          bgcolor: 'background.default',
         }}
       >
         {children}

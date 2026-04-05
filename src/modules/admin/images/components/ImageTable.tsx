@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import UploadIcon from "@mui/icons-material/Upload";
+import DeleteIcon from '@mui/icons-material/Delete';
+import UploadIcon from '@mui/icons-material/Upload';
 import {
   Box,
   Button,
@@ -12,9 +12,9 @@ import {
   Select,
   Tooltip,
   Typography,
-} from "@mui/material";
-import dayjs from "dayjs";
-import { useState } from "react";
+} from '@mui/material';
+import dayjs from 'dayjs';
+import { useState } from 'react';
 
 import {
   BaseModal,
@@ -24,18 +24,18 @@ import {
   FileUpload,
   PageHeader,
   StatusChip,
-} from "@/shared/components/common";
-import { ImageValue, useNotification } from "@/shared/hooks";
-import type { ImageData, ImageListParams, ImageUsageModel } from "@/types";
-import { IMAGE_USAGE_MODEL } from "@/types";
+} from '@/shared/components/common';
+import { ImageValue, useNotification } from '@/shared/hooks';
+import type { ImageData, ImageListParams, ImageUsageModel } from '@/types';
+import { IMAGE_USAGE_MODEL } from '@/types';
 
-import { useDeleteImage, useImageList } from "../hooks/useImageQueries";
+import { useDeleteImage, useImageList } from '../hooks/useImageQueries';
 
 /** Filter value for isPending select */
-type PendingFilter = "all" | "pending" | "used";
+type PendingFilter = 'all' | 'pending' | 'used';
 
 /** Filter value for model select */
-type ModelFilter = "all" | ImageUsageModel;
+type ModelFilter = 'all' | ImageUsageModel;
 
 /**
  * Image management table with filters, upload dialog, and delete.
@@ -45,17 +45,17 @@ export function ImageTable() {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
-  const [pendingFilter, setPendingFilter] = useState<PendingFilter>("all");
-  const [modelFilter, setModelFilter] = useState<ModelFilter>("all");
+  const [pendingFilter, setPendingFilter] = useState<PendingFilter>('all');
+  const [modelFilter, setModelFilter] = useState<ModelFilter>('all');
 
   /** Build query params from local filter state */
   const params: ImageListParams = {
     page: page + 1,
     page_size: rowsPerPage,
-    ...(pendingFilter !== "all" && {
-      isPending: pendingFilter === "pending",
+    ...(pendingFilter !== 'all' && {
+      isPending: pendingFilter === 'pending',
     }),
-    ...(modelFilter !== "all" && { model: modelFilter }),
+    ...(modelFilter !== 'all' && { model: modelFilter }),
   };
 
   const { data: result, isLoading, isError } = useImageList(params);
@@ -77,8 +77,8 @@ export function ImageTable() {
 
   const columns: ColumnDef<ImageData>[] = [
     {
-      key: "preview",
-      label: "Preview",
+      key: 'preview',
+      label: 'Preview',
       width: 80,
       render: (row) => (
         // eslint-disable-next-line @next/next/no-img-element
@@ -88,15 +88,15 @@ export function ImageTable() {
           style={{
             width: 56,
             height: 56,
-            objectFit: "cover",
+            objectFit: 'cover',
             borderRadius: 4,
           }}
         />
       ),
     },
     {
-      key: "url",
-      label: "URL",
+      key: 'url',
+      label: 'URL',
       render: (row) => (
         <Tooltip title={row.url}>
           <Typography variant="body2" noWrap sx={{ maxWidth: 280 }}>
@@ -106,19 +106,19 @@ export function ImageTable() {
       ),
     },
     {
-      key: "isPending",
-      label: "Status",
+      key: 'isPending',
+      label: 'Status',
       width: 100,
       render: (row) => (
         <StatusChip
-          label={row.isPending ? "Pending" : "Used"}
-          color={row.isPending ? "warning" : "success"}
+          label={row.isPending ? 'Pending' : 'Used'}
+          color={row.isPending ? 'warning' : 'success'}
         />
       ),
     },
     {
-      key: "model",
-      label: "Model",
+      key: 'model',
+      label: 'Model',
       width: 120,
       render: (row) =>
         row.usage ? (
@@ -130,15 +130,15 @@ export function ImageTable() {
         ),
     },
     {
-      key: "createdAt",
-      label: "Created At",
+      key: 'createdAt',
+      label: 'Created At',
       width: 120,
-      render: (row) => dayjs(row.createdAt * 1000).format("YYYY-MM-DD"),
+      render: (row) => dayjs(row.createdAt * 1000).format('YYYY-MM-DD'),
     },
     {
-      key: "actions",
-      label: "Actions",
-      align: "right",
+      key: 'actions',
+      label: 'Actions',
+      align: 'right',
       width: 80,
       render: (row) => (
         <IconButton
@@ -162,12 +162,12 @@ export function ImageTable() {
     if (!deleteId) return;
     try {
       await deleteMutation.mutateAsync(deleteId);
-      notify.success("圖片刪除成功");
+      notify.success('圖片刪除成功');
     } catch (error) {
       const apiMessage = (
         error as { response?: { data?: { message?: string } } }
       ).response?.data?.message;
-      notify.error(apiMessage ?? "圖片刪除失敗");
+      notify.error(apiMessage ?? '圖片刪除失敗');
     } finally {
       setDeleteId(null);
     }
@@ -189,7 +189,7 @@ export function ImageTable() {
       />
 
       {/* Filter row */}
-      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
         <FormControl size="small" sx={{ minWidth: 140 }}>
           <InputLabel>Status</InputLabel>
           <Select

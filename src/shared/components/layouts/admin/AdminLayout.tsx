@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Box } from "@mui/material";
-import { type ReactNode, useState } from "react";
+import { Box } from '@mui/material';
+import { type ReactNode, useState } from 'react';
 
-import { AdminHeader } from "./AdminHeader";
-import { AdminSidebar } from "./AdminSidebar";
+import { AdminHeader } from './AdminHeader';
+import { AdminSidebar } from './AdminSidebar';
 
 /** Props for the AdminLayout component. */
 export interface AdminLayoutProps {
@@ -33,7 +33,7 @@ export function AdminLayout({ children, userEmail }: AdminLayoutProps) {
   const handleSidebarClose = () => setMobileOpen(false);
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh" }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       {/* Sidebar */}
       <AdminSidebar open={mobileOpen} onClose={handleSidebarClose} />
 
@@ -45,12 +45,12 @@ export function AdminLayout({ children, userEmail }: AdminLayoutProps) {
         component="main"
         sx={{
           flex: 1,
-          marginLeft: { xs: 0, md: "240px" },
-          marginTop: "64px",
+          marginLeft: { xs: 0, md: '240px' },
+          marginTop: '64px',
           padding: { xs: 2, md: 3 },
-          height: "calc(100dvh - 64px)",
-          overflowY: "auto",
-          bgcolor: "background.default",
+          height: 'calc(100dvh - 64px)',
+          overflowY: 'auto',
+          bgcolor: 'background.default',
         }}
       >
         {children}

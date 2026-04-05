@@ -1,26 +1,26 @@
-"use client";
+'use client';
 
-import { Box, Container, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useEffect, useRef } from "react";
+import { Box, Container, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useEffect, useRef } from 'react';
 
-import type { User } from "@/services/user/types";
-import { useScrollContainer } from "@/shared/contexts";
+import type { User } from '@/services/user/types';
+import { useScrollContainer } from '@/shared/contexts';
 
-import ExperienceList from "./ExperienceList";
-import ProfileSection from "./ProfileSection";
+import ExperienceList from './ExperienceList';
+import ProfileSection from './ProfileSection';
 
 interface ProfilePageContentProps {
   user: User | null;
 }
 
 const PageContainer = styled(Box)({
-  height: "100%",
-  backgroundColor: "#0a0a0a",
+  height: '100%',
+  backgroundColor: '#0a0a0a',
   paddingTop: 80,
   paddingBottom: 60,
-  overflowY: "auto",
-  "@media (max-width: 767px)": {
+  overflowY: 'auto',
+  '@media (max-width: 767px)': {
     paddingTop: 72,
   },
 });
@@ -30,19 +30,19 @@ const PageHeader = styled(Box)({
 });
 
 const PageTitle = styled(Typography)({
-  color: "#fff",
+  color: '#fff',
   fontWeight: 700,
-  fontSize: "2.5rem",
+  fontSize: '2.5rem',
   marginBottom: 12,
 });
 
 const ErrorContainer = styled(Box)({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
   minHeight: 400,
-  textAlign: "center",
+  textAlign: 'center',
 });
 
 /**
@@ -65,11 +65,11 @@ export default function ProfilePageContent({ user }: ProfilePageContentProps) {
           <ErrorContainer>
             <Typography
               variant="h6"
-              sx={{ color: "rgba(255, 255, 255, 0.5)", mb: 1 }}
+              sx={{ color: 'rgba(255, 255, 255, 0.5)', mb: 1 }}
             >
               Failed to load profile
             </Typography>
-            <Typography sx={{ color: "rgba(255, 255, 255, 0.3)" }}>
+            <Typography sx={{ color: 'rgba(255, 255, 255, 0.3)' }}>
               Please try again later
             </Typography>
           </ErrorContainer>

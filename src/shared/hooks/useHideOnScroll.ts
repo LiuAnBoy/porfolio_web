@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { type RefObject, useEffect, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from 'react';
 
 interface UseHideOnScrollOptions {
   threshold?: number;
@@ -39,10 +39,10 @@ export function useHideOnScroll(
       lastScrollY.current = currentScrollY;
     };
 
-    container.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
-      container.removeEventListener("scroll", handleScroll);
+      container.removeEventListener('scroll', handleScroll);
     };
   }, [containerRef, threshold]);
 

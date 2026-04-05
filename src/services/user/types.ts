@@ -1,9 +1,9 @@
 export type SocialPlatform =
-  | "GITHUB"
-  | "LINKEDIN"
-  | "LINE"
-  | "TELEGRAM"
-  | "WECHAT";
+  | 'GITHUB'
+  | 'LINKEDIN'
+  | 'LINE'
+  | 'TELEGRAM'
+  | 'WECHAT';
 
 export interface Social {
   platform: SocialPlatform;

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { Box, Typography } from "@mui/material";
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { Box, Typography } from '@mui/material';
 
-import { BaseModal } from "./BaseModal";
+import { BaseModal } from './BaseModal';
 
 /** Props for ConfirmDialog component */
 interface ConfirmDialogProps {
@@ -31,7 +31,7 @@ export function ConfirmDialog({
   open,
   onClose,
   onConfirm,
-  title = "確認刪除",
+  title = '確認刪除',
   message,
   loading = false,
 }: ConfirmDialogProps) {
@@ -46,7 +46,7 @@ export function ConfirmDialog({
       loading={loading}
       maxWidth="xs"
     >
-      <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
         <WarningAmberIcon color="warning" sx={{ mt: 0.25 }} />
         <Typography variant="body1">{message}</Typography>
       </Box>

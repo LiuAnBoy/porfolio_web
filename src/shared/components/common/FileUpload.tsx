@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import DeleteIcon from "@mui/icons-material/Delete";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { Box, CircularProgress, IconButton, Typography } from "@mui/material";
-import { ChangeEvent, DragEvent, useRef, useState } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { Box, CircularProgress, IconButton, Typography } from '@mui/material';
+import { ChangeEvent, DragEvent, useRef, useState } from 'react';
 
-import { ImageValue, useDeleteImage, useUpload } from "@/shared/hooks";
+import { ImageValue, useDeleteImage, useUpload } from '@/shared/hooks';
 
 /** Maximum allowed file size in bytes (5 MB) */
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -22,7 +22,7 @@ interface FileUploadProps {
   /** Allow selecting multiple files */
   multiple?: boolean;
   /** Admin module scope for uploads */
-  module: "projects" | "user" | "experiences";
+  module: 'projects' | 'user' | 'experiences';
   /** Maximum number of files allowed when multiple is true */
   maxFiles?: number;
   /** Preview thumbnail size in pixels (default: 96) */
@@ -67,12 +67,12 @@ export function FileUpload({
     const fileArray = Array.from(files);
 
     for (const file of fileArray) {
-      if (!file.type.startsWith("image/")) {
-        setValidationError("Only image files are allowed.");
+      if (!file.type.startsWith('image/')) {
+        setValidationError('Only image files are allowed.');
         return;
       }
       if (file.size > MAX_FILE_SIZE) {
-        setValidationError("File size must be under 5 MB.");
+        setValidationError('File size must be under 5 MB.');
         return;
       }
     }
@@ -97,7 +97,7 @@ export function FileUpload({
         onChange(img);
       }
     } catch {
-      setValidationError("Upload failed. Please try again.");
+      setValidationError('Upload failed. Please try again.');
     }
   };
 
@@ -105,7 +105,7 @@ export function FileUpload({
     if (e.target.files && e.target.files.length > 0) {
       void handleFiles(e.target.files);
       // Reset input so re-selecting the same file triggers onChange
-      e.target.value = "";
+      e.target.value = '';
     }
   };
 
@@ -147,7 +147,7 @@ export function FileUpload({
         onChange(null);
       }
     } catch {
-      setValidationError("Failed to remove image. Please try again.");
+      setValidationError('Failed to remove image. Please try again.');
     }
   };
 
@@ -162,27 +162,27 @@ export function FileUpload({
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           sx={{
-            border: "2px dashed",
-            borderColor: isDragging ? "primary.main" : "divider",
+            border: '2px dashed',
+            borderColor: isDragging ? 'primary.main' : 'divider',
             borderRadius: 1,
             p: 3,
-            textAlign: "center",
-            cursor: "pointer",
-            transition: "border-color 0.2s",
-            "&:hover": { borderColor: "primary.main" },
+            textAlign: 'center',
+            cursor: 'pointer',
+            transition: 'border-color 0.2s',
+            '&:hover': { borderColor: 'primary.main' },
           }}
         >
           {isUploading ? (
             <CircularProgress size={32} />
           ) : (
             <>
-              <UploadFileIcon sx={{ fontSize: 40, color: "text.secondary" }} />
+              <UploadFileIcon sx={{ fontSize: 40, color: 'text.secondary' }} />
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                 Drag & drop or click to select
               </Typography>
               <Typography variant="caption" color="text.disabled">
                 Image files only · Max 5 MB
-                {multiple ? ` · Up to ${maxFiles} files` : ""}
+                {multiple ? ` · Up to ${maxFiles} files` : ''}
               </Typography>
             </>
           )}
@@ -194,7 +194,7 @@ export function FileUpload({
         type="file"
         accept="image/*"
         multiple={multiple}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         onChange={handleInputChange}
       />
 
@@ -202,19 +202,19 @@ export function FileUpload({
         <Typography
           variant="caption"
           color="error"
-          sx={{ mt: 0.5, display: "block" }}
+          sx={{ mt: 0.5, display: 'block' }}
         >
           {validationError}
         </Typography>
       )}
 
       {images.length > 0 && (
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 2 }}>
           {images.map((img, index) => (
             <Box
               key={img.imageId}
               sx={{
-                position: "relative",
+                position: 'relative',
                 width: previewSize,
                 height: previewSize,
               }}
@@ -224,9 +224,9 @@ export function FileUpload({
                 src={img.url}
                 alt={`Upload ${index + 1}`}
                 style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
                   borderRadius: 4,
                 }}
               />
@@ -235,15 +235,15 @@ export function FileUpload({
                 onClick={() => void handleRemove(index)}
                 disabled={isDeleting}
                 sx={{
-                  position: "absolute",
+                  position: 'absolute',
                   top: 2,
                   right: 2,
-                  backgroundColor: "rgba(0,0,0,0.6)",
-                  "&:hover": { backgroundColor: "rgba(0,0,0,0.8)" },
+                  backgroundColor: 'rgba(0,0,0,0.6)',
+                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.8)' },
                   p: 0.25,
                 }}
               >
-                <DeleteIcon sx={{ fontSize: 16, color: "#fff" }} />
+                <DeleteIcon sx={{ fontSize: 16, color: '#fff' }} />
               </IconButton>
             </Box>
           ))}

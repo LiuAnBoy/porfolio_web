@@ -1,5 +1,5 @@
-import http from "@/services/client";
-import type { DashboardInitData } from "@/types";
+import http from '@/services/client';
+import type { DashboardInitData } from '@/types';
 
 /**
  * Fetch dashboard initialization data including counts and recent items.
@@ -7,5 +7,5 @@ import type { DashboardInitData } from "@/types";
  * @returns Promise resolving to DashboardInitData
  */
 export async function getDashboardInit(): Promise<DashboardInitData> {
-  return http.get<DashboardInitData>("/v1/admin/init");
+  return http.get<DashboardInitData>('/v1/admin/init');
 }

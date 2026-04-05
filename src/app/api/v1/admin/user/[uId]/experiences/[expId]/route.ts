@@ -1,12 +1,12 @@
-import dayjs from "dayjs";
-import { NextRequest, NextResponse } from "next/server";
+import dayjs from 'dayjs';
+import { NextRequest, NextResponse } from 'next/server';
 
-import { isAuthError, requireAdminAuth } from "@/lib/admin-auth";
-import { deleteImage } from "@/lib/cloudinary";
-import { connectDB } from "@/lib/mongodb";
-import { withTransaction } from "@/lib/transaction";
-import { Experience, Image, Position, User } from "@/models";
-import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE } from "@/types";
+import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
+import { deleteImage } from '@/lib/cloudinary';
+import { connectDB } from '@/lib/mongodb';
+import { withTransaction } from '@/lib/transaction';
+import { Experience, Image, Position, User } from '@/models';
+import { IMAGE_USAGE_MODEL, IMAGE_USAGE_TYPE } from '@/types';
 
 interface RouteParams {
   params: Promise<{ uId: string; expId: string }>;
@@ -36,18 +36,18 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
 
     const experience = await Experience.findOne({ _id: expId, userId: uId })
-      .populate("companyIcon", "_id url")
+      .populate('companyIcon', '_id url')
       .lean();
 
     if (!experience) {
       return NextResponse.json(
-        { success: false, message: "找不到工作經歷" },
+        { success: false, message: '找不到工作經歷' },
         { status: 404 },
       );
     }
@@ -72,9 +72,9 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
       positions: transformedPositions,
     });
   } catch (error) {
-    console.error("Get experience error:", error);
+    console.error('Get experience error:', error);
     return NextResponse.json(
-      { success: false, message: "取得工作經歷失敗" },
+      { success: false, message: '取得工作經歷失敗' },
       { status: 500 },
     );
   }
@@ -92,7 +92,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "無權限" },
+        { success: false, message: '無權限' },
         { status: 403 },
       );
     }
@@ -100,7 +100,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
@@ -108,7 +108,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     const experience = await Experience.findOne({ _id: expId, userId: uId });
     if (!experience) {
       return NextResponse.json(
-        { success: false, message: "找不到工作經歷" },
+        { success: false, message: '找不到工作經歷' },
         { status: 404 },
       );
     }
@@ -187,7 +187,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
                   startAt: position.startAt,
                   endAt: position.endAt || null,
                   isCurrent: position.isCurrent || false,
-                  description: position.description || "",
+                  description: position.description || '',
                   sn: position.sn || 0,
                 },
               ],
@@ -201,7 +201,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
                 startAt: position.startAt,
                 endAt: position.endAt || null,
                 isCurrent: position.isCurrent || false,
-                description: position.description || "",
+                description: position.description || '',
                 sn: position.sn || 0,
                 updatedAt: now,
               },
@@ -214,9 +214,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Update experience error:", error);
+    console.error('Update experience error:', error);
     return NextResponse.json(
-      { success: false, message: "更新工作經歷失敗" },
+      { success: false, message: '更新工作經歷失敗' },
       { status: 500 },
     );
   }
@@ -234,7 +234,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
     if (authResult.user.id !== uId) {
       return NextResponse.json(
-        { success: false, message: "無權限" },
+        { success: false, message: '無權限' },
         { status: 403 },
       );
     }
@@ -242,7 +242,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const user = await User.findById(uId);
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "找不到使用者" },
+        { success: false, message: '找不到使用者' },
         { status: 404 },
       );
     }
@@ -250,7 +250,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
     const experience = await Experience.findOne({ _id: expId, userId: uId });
     if (!experience) {
       return NextResponse.json(
-        { success: false, message: "找不到工作經歷" },
+        { success: false, message: '找不到工作經歷' },
         { status: 404 },
       );
     }
@@ -285,9 +285,9 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Delete experience error:", error);
+    console.error('Delete experience error:', error);
     return NextResponse.json(
-      { success: false, message: "刪除工作經歷失敗" },
+      { success: false, message: '刪除工作經歷失敗' },
       { status: 500 },
     );
   }
