@@ -53,13 +53,12 @@ Copy `.env.example` to `.env` and fill in:
 
 ```
 MONGODB_URI=
-NEXTAUTH_SECRET=
-NEXTAUTH_URL=
+AUTH_SECRET=
+AUTH_URL=
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
-ADMIN_EMAIL=
-ADMIN_PASSWORD=
+NEXT_PUBLIC_GA_MEASUREMENT_ID=
 ```
 
 ---
@@ -71,6 +70,7 @@ src/
 ├── app/
 │   ├── (public)/          # Public-facing pages
 │   ├── (admin)/admin/     # Admin dashboard pages
+│   ├── (auth)/            # Auth pages (login)
 │   └── api/v1/            # API routes
 ├── modules/
 │   ├── public/            # Public page modules (hero, projects, profile)
@@ -78,10 +78,13 @@ src/
 ├── shared/
 │   ├── components/        # Shared UI components and layouts
 │   ├── hooks/             # Shared hooks (useUpload, useNotification, etc.)
-│   └── contexts/          # Shared contexts
+│   ├── contexts/          # Shared contexts
+│   ├── constants/         # Shared constants
+│   └── utils/             # Shared utility functions
 ├── models/                # Mongoose models
 ├── lib/                   # Server utilities (mongodb, auth, cloudinary)
 ├── services/              # Client-side API service functions
+├── styles/                # Global styles
 ├── types/                 # Shared TypeScript types
 └── providers/             # React providers
 ```
