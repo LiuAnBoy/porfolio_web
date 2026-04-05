@@ -67,6 +67,11 @@ NextAuth v5. Session provided via `SessionProvider` in `AdminProviders`. Server 
 
 ## Current Branch
 
-`feat/migration-dashboard-merge` — Phase 3 (Admin Dashboard MUI rewrite) complete.  
-Phase 4 (cleanup) is next: dead code removal, env docs, README update, full flow test.  
+`feat/migration-dashboard-merge` — Phase 4 (cleanup) steps 1–5 complete:
+- Removed unused deps (`@emotion/styled`, `jose`)
+- Deleted dead code (`proxy.ts`, `rate-limit.ts`, `types/api.ts`, stale TODO comment)
+- Cleaned env vars (`.env.example`, `README`)
+- Updated `README.md` (env vars, project structure)
+
+Remaining: Step 6 — Full Flow Test (public + admin).  
 See `todos/20260405_portfolio-merge-phases.md` for checklist.
