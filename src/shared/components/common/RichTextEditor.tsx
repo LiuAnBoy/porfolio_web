@@ -22,6 +22,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import Link from "@tiptap/extension-link";
+import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect, useState } from "react";
@@ -58,15 +59,11 @@ export function RichTextEditor({
         openOnClick: false,
         HTMLAttributes: { rel: "noopener noreferrer", target: "_blank" },
       }),
+      Placeholder.configure({ placeholder: placeholder ?? "" }),
     ],
     content: value,
     onUpdate({ editor: e }) {
       onChange(e.getHTML());
-    },
-    editorProps: {
-      attributes: {
-        "data-placeholder": placeholder ?? "",
-      },
     },
   });
 
