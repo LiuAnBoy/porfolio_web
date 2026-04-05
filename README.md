@@ -93,9 +93,13 @@ src/
 
 ## Documentation
 
+See [docs/README.md](./docs/README.md) for the full documentation index.
+
 | Doc | Description |
 |-----|-------------|
-| [docs/api/README.md](./docs/api/README.md) | API route overview and conventions |
+| [docs/admin-spec.md](./docs/admin-spec.md) | Admin dashboard architecture and design |
+| [docs/frontend-spec.md](./docs/frontend-spec.md) | Public frontend spec |
+| [docs/public-api.md](./docs/public-api.md) | Public API endpoints |
+| [docs/api/README.md](./docs/api/README.md) | API conventions and all routes |
 | [docs/database/README.md](./docs/database/README.md) | Database schema and relationships |
-| [docs/api-design.md](./docs/api-design.md) | API response format standards |
 | [CLAUDE.md](./CLAUDE.md) | AI assistant context and project notes |

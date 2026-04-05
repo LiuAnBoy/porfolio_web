@@ -15,6 +15,7 @@ Single-owner portfolio website. One user account (the site owner). Public visito
 | Doc | When to read |
 |-----|-------------|
 | [README.md](./README.md) | Tech stack, project structure, env vars |
+| [docs/README.md](./docs/README.md) | Full documentation index |
 | [docs/api/README.md](./docs/api/README.md) | API conventions and all route groups |
 | [docs/database/README.md](./docs/database/README.md) | MongoDB collections and relationships |
 | [docs/api-design.md](./docs/api-design.md) | Response format standards (GET/POST/PATCH/DELETE/Upload) |
