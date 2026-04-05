@@ -1,0 +1,293 @@
+"use client";
+
+import { Box, Container, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
+
+import { useProjectsStore } from "@/modules/public/projects/stores";
+import { getProjects } from "@/services/projects/api";
+import type { Project, ProjectType } from "@/services/projects/types";
+import { useScrollContainer } from "@/shared/contexts";
+
+import ProjectDrawer from "./ProjectDrawer";
+import ProjectFilters from "./ProjectFilters";
+import ProjectGrid from "./ProjectGrid";
+
+const INITIAL_LOAD_COUNT = 15;
+const PAGE_LIMIT = 9;
+
+const PageContainer = styled(Box)({
+  height: "100%",
+  backgroundColor: "#0a0a0a",
+  paddingTop: 80,
+  paddingBottom: 60,
+  overflowY: "auto",
+  "@media (max-width: 767px)": {
+    paddingTop: 72,
+  },
+});
+
+const PageHeader = styled(Box)({
+  marginBottom: 40,
+});
+
+const PageTitle = styled(Typography)({
+  color: "#fff",
+  fontWeight: 700,
+  fontSize: "2.5rem",
+  marginBottom: 12,
+});
+
+const PageDescription = styled(Typography)({
+  color: "rgba(255, 255, 255, 0.5)",
+  fontSize: "1.125rem",
+});
+
+interface InitialData {
+  projects: Project[];
+  featuredCount: number;
+  nonFeaturedLoaded: number;
+  nonFeaturedTotal: number;
+}
+
+interface ProjectsPageProps {
+  initialData: InitialData | null;
+}
+
+/**
+ * Projects page client component with filters, grid and drawer.
+ */
+const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
+  // Zustand store
+  const store = useProjectsStore();
+
+  // Local state for UI
+  const [isLoading, setIsLoading] = useState(!initialData);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const isHydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+
+  // Use SSR data for initial render, then switch to store after hydration
+  const projects =
+    isHydrated && store.projects.length > 0
+      ? store.projects
+      : (initialData?.projects ?? []);
+  const featuredCount =
+    isHydrated && store.projects.length > 0
+      ? store.featuredCount
+      : (initialData?.featuredCount ?? 0);
+  const nonFeaturedTotal =
+    isHydrated && store.projects.length > 0
+      ? store.nonFeaturedTotal
+      : (initialData?.nonFeaturedTotal ?? 0);
+  const selectedType = store.selectedType;
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { setScrollContainerRef } = useScrollContainer();
+
+  // Register scroll container for navbar hide-on-scroll
+  useEffect(() => {
+    setScrollContainerRef(containerRef);
+    return () => setScrollContainerRef(null);
+  }, [setScrollContainerRef]);
+
+  // Restore state from store after hydration
+  useEffect(() => {
+    // If store has cached data, restore scroll position
+    if (store.projects.length > 0 && containerRef.current) {
+      containerRef.current.scrollTop = store.scrollPosition;
+    } else if (initialData) {
+      // First visit: sync SSR data to store
+      store.setProjects(initialData.projects);
+      store.setFeaturedCount(initialData.featuredCount);
+      store.setNonFeaturedTotal(initialData.nonFeaturedTotal);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Save scroll position on unmount
+  useEffect(() => {
+    const container = containerRef.current;
+    return () => {
+      if (container) {
+        store.setScrollPosition(container.scrollTop);
+      }
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Calculate non-featured loaded and if there are more to load
+  const nonFeaturedLoaded = projects.length - featuredCount;
+  const hasNextPage = nonFeaturedLoaded < nonFeaturedTotal;
+
+  /**
+   * Fetch initial projects (featured + non-featured).
+   */
+  const fetchInitialProjects = useCallback(
+    async (type?: ProjectType) => {
+      try {
+        // Step 1: Fetch all featured projects
+        const featuredResponse = await getProjects({
+          isVisible: true,
+          isFeatured: true,
+          type,
+          page: 1,
+          page_size: 100,
+        });
+
+        const featuredProjects = featuredResponse.payload;
+        const newFeaturedCount = featuredProjects.length;
+
+        // Step 2: Calculate how many non-featured we need
+        const nonFeaturedNeeded = Math.max(
+          0,
+          INITIAL_LOAD_COUNT - newFeaturedCount,
+        );
+
+        let nonFeaturedProjects: Project[] = [];
+        let newNonFeaturedTotal = 0;
+
+        if (nonFeaturedNeeded > 0) {
+          const nonFeaturedResponse = await getProjects({
+            isVisible: true,
+            isFeatured: false,
+            type,
+            page: 1,
+            page_size: PAGE_LIMIT,
+          });
+
+          nonFeaturedProjects = nonFeaturedResponse.payload.slice(
+            0,
+            nonFeaturedNeeded,
+          );
+          newNonFeaturedTotal = nonFeaturedResponse.total_count;
+        } else {
+          const nonFeaturedResponse = await getProjects({
+            isVisible: true,
+            isFeatured: false,
+            type,
+            page: 1,
+            page_size: 1,
+          });
+          newNonFeaturedTotal = nonFeaturedResponse.total_count;
+        }
+
+        const allProjects = [...featuredProjects, ...nonFeaturedProjects];
+
+        // Update store
+        store.setProjects(allProjects);
+        store.setFeaturedCount(newFeaturedCount);
+        store.setNonFeaturedTotal(newNonFeaturedTotal);
+      } catch (error) {
+        console.error("Failed to fetch projects:", error);
+      }
+    },
+    [store],
+  );
+
+  /**
+   * Load next page of non-featured projects.
+   */
+  const fetchNextPage = useCallback(async () => {
+    if (isFetchingNextPage || !hasNextPage) return;
+
+    setIsFetchingNextPage(true);
+    try {
+      // Calculate next page based on how many non-featured we've loaded
+      const nextPage = Math.floor(nonFeaturedLoaded / PAGE_LIMIT) + 1;
+
+      const response = await getProjects({
+        isVisible: true,
+        isFeatured: false,
+        type: selectedType,
+        page: nextPage,
+        page_size: PAGE_LIMIT,
+      });
+
+      // Add to store (store handles deduplication)
+      store.addProjects(response.payload);
+    } catch (error) {
+      console.error("Failed to fetch next page:", error);
+    }
+    setIsFetchingNextPage(false);
+  }, [isFetchingNextPage, hasNextPage, nonFeaturedLoaded, selectedType, store]);
+
+  /**
+   * Handle filter type change.
+   */
+  const handleTypeChange = useCallback(
+    async (type: ProjectType | undefined) => {
+      store.setSelectedType(type);
+      store.setScrollPosition(0);
+      setIsLoading(true);
+      store.setProjects([]);
+      await fetchInitialProjects(type);
+      setIsLoading(false);
+
+      // Reset scroll position
+      if (containerRef.current) {
+        containerRef.current.scrollTop = 0;
+      }
+    },
+    [fetchInitialProjects, store],
+  );
+
+  const handleProjectClick = (project: Project) => {
+    setSelectedProject(project);
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
+  /**
+   * Fetch initial data if not provided via SSR.
+   */
+  useEffect(() => {
+    if (!initialData && !store.projects.length) {
+      fetchInitialProjects().then(() => setIsLoading(false));
+    }
+  }, [initialData, store.projects.length, fetchInitialProjects]);
+
+  return (
+    <PageContainer ref={containerRef}>
+      <Container maxWidth="lg">
+        <PageHeader>
+          <PageTitle>Projects</PageTitle>
+          <PageDescription>
+            A collection of projects I&apos;ve worked on
+          </PageDescription>
+        </PageHeader>
+
+        <ProjectFilters type={selectedType} onTypeChange={handleTypeChange} />
+
+        <ProjectGrid
+          projects={projects}
+          isLoading={isLoading}
+          isFetchingNextPage={isFetchingNextPage}
+          hasNextPage={hasNextPage}
+          fetchNextPage={fetchNextPage}
+          onProjectClick={handleProjectClick}
+        />
+      </Container>
+
+      <ProjectDrawer
+        project={selectedProject}
+        open={drawerOpen}
+        onClose={handleDrawerClose}
+      />
+    </PageContainer>
+  );
+};
+
+export default ProjectsPage;

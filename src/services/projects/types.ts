@@ -1,37 +1,19 @@
-/**
- * Project type enum.
- */
 export type ProjectType = "WEB" | "APP" | "HYBRID";
 
-/**
- * Tag associated with a project.
- */
-export interface Tag {
+export interface ProjectRef {
   id: string;
   label: string;
   slug: string;
 }
 
-/**
- * Technology stack used in a project.
- */
-export interface Stack {
-  id: string;
-  label: string;
-  slug: string;
-}
-
-/**
- * Project entity.
- */
 export interface Project {
   id: string;
   title: string;
   slug: string;
   description: string;
   type: ProjectType;
-  tags: Tag[];
-  stacks: Stack[];
+  tags: ProjectRef[];
+  stacks: ProjectRef[];
   isFeatured: boolean;
   isVisible: boolean;
   link: string | null;
@@ -40,34 +22,19 @@ export interface Project {
   gallery: string[];
 }
 
-/**
- * Query parameters for fetching projects.
- */
-export interface ProjectsParams {
-  type?: ProjectType;
+export interface GetProjectsParams {
+  type?: string;
   isFeatured?: boolean;
   isVisible?: boolean;
   tags?: string;
   stacks?: string;
   page?: number;
-  limit?: number;
+  page_size?: number;
 }
 
-/**
- * Paginated response for projects.
- */
-export interface ProjectsResponse {
-  success: boolean;
-  data: Project[];
+export interface GetProjectsResponse {
+  payload: Project[];
+  total_count: number;
+  page_size: number;
   page: number;
-  limit: number;
-  total: number;
-}
-
-/**
- * Error response format.
- */
-export interface ApiError {
-  success: false;
-  message: string;
 }

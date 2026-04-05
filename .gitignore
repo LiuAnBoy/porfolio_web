@@ -45,9 +45,10 @@ next-env.d.ts
 # export files
 export_files/
 
-# doc
-docs/
 
 # MCP
 .serena/
-.playwright-mcp/
+.playwright-mcp/todos/
+
+# Local todos (never in git)
+todos/

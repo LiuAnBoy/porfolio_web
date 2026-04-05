@@ -1,15 +1,9 @@
-import { apiClient } from "@/services/api/client";
+import http from "@/services/client";
 
-import type { ProjectsParams, ProjectsResponse } from "./types";
+import type { GetProjectsParams, GetProjectsResponse } from "./types";
 
-/**
- * Fetch projects with optional filters and pagination.
- */
-export const getProjects = async (
-  params?: ProjectsParams,
-): Promise<ProjectsResponse> => {
-  const response = await apiClient.get<ProjectsResponse>("/projects", {
-    params,
-  });
-  return response.data;
-};
+export async function getProjects(
+  params?: GetProjectsParams,
+): Promise<GetProjectsResponse> {
+  return http.get<GetProjectsResponse>("/v1/projects", { params });
+}
