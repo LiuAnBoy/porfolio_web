@@ -1,10 +1,10 @@
 "use client";
 
-import { HydrationBoundary } from "@tanstack/react-query";
-import type { DehydratedState } from "@tanstack/react-query";
 import { ThemeProvider } from "@mui/material/styles";
-import { SessionProvider } from "next-auth/react";
+import type { DehydratedState } from "@tanstack/react-query";
+import { HydrationBoundary } from "@tanstack/react-query";
 import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { SnackbarProvider } from "notistack";
 import type { ReactNode } from "react";
 

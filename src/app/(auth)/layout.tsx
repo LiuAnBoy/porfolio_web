@@ -1,7 +1,7 @@
 "use client";
 
-import { ThemeProvider } from "@mui/material/styles";
 import { Box } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 import type { ReactNode } from "react";
 
 import { adminTheme } from "@/styles/adminTheme";
