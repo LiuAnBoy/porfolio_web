@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
@@ -150,6 +151,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       await user.save({ session });
     });
 
+    revalidateTag('user-profile');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Update user error:', error);

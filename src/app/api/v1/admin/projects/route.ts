@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
@@ -263,6 +264,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    revalidateTag('initial-projects');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Create project error:', error);

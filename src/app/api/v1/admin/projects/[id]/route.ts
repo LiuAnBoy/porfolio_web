@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
@@ -285,6 +286,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       await project.save({ session });
     });
 
+    revalidateTag('initial-projects');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Update project error:', error);
@@ -348,6 +350,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
       await Project.findByIdAndDelete(id, { session });
     });
 
+    revalidateTag('initial-projects');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete project error:', error);

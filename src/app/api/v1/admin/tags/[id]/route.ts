@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
@@ -77,6 +78,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
     await tag.save();
 
+    revalidateTag('initial-projects');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Update tag error:', error);
@@ -107,6 +109,7 @@ export async function DELETE(_request: NextRequest, { params }: RouteParams) {
 
     await Tag.findByIdAndDelete(id);
 
+    revalidateTag('initial-projects');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Delete tag error:', error);

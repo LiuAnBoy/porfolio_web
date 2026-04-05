@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { isAuthError, requireAdminAuth } from '@/lib/admin-auth';
@@ -182,6 +183,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       }
     });
 
+    revalidateTag('user-profile');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Create experience error:', error);
