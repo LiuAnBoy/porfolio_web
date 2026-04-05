@@ -84,7 +84,11 @@ function StatCardItem({ label, count, icon, href, color }: StatCard) {
  * Displays stat cards and recent item lists.
  */
 export function DashboardContent() {
-  const { data, isLoading } = useDashboardQuery();
+  const { data, isLoading, isError } = useDashboardQuery();
+
+  if (isError) {
+    return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
+  }
 
   const statCards: StatCard[] = data
     ? [

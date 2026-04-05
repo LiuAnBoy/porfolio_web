@@ -57,18 +57,20 @@ export function useUpload(options: UseUploadOptions): {
       try {
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("module", module);
 
-        const image = await http.post<ImageValue>(
-          "/v1/admin/upload",
+        const response = await http.post<{
+          success: boolean;
+          data: ImageValue;
+        }>(
+          `/v1/admin/upload?type=image&module=${encodeURIComponent(module)}`,
           formData,
           {
             headers: { "Content-Type": "multipart/form-data" },
           },
         );
 
-        onSuccess?.(image);
-        return image;
+        onSuccess?.(response.data);
+        return response.data;
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
         onError?.(error);

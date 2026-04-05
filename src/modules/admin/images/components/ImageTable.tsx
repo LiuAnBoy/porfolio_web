@@ -1,7 +1,6 @@
 "use client";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import UploadIcon from "@mui/icons-material/Upload";
 import {
   Box,
@@ -11,7 +10,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -31,11 +29,7 @@ import { ImageValue, useNotification } from "@/shared/hooks";
 import type { ImageData, ImageListParams, ImageUsageModel } from "@/types";
 import { IMAGE_USAGE_MODEL } from "@/types";
 
-import {
-  useDeleteImage,
-  useImageList,
-  useUpdateImage,
-} from "../hooks/useImageQueries";
+import { useDeleteImage, useImageList } from "../hooks/useImageQueries";
 
 /** Filter value for isPending select */
 type PendingFilter = "all" | "pending" | "used";
@@ -44,7 +38,7 @@ type PendingFilter = "all" | "pending" | "used";
 type ModelFilter = "all" | ImageUsageModel;
 
 /**
- * Image management table with filters, upload dialog, edit alt, and delete.
+ * Image management table with filters, upload dialog, and delete.
  */
 export function ImageTable() {
   const { notify } = useNotification();
@@ -64,20 +58,16 @@ export function ImageTable() {
     ...(modelFilter !== "all" && { model: modelFilter }),
   };
 
-  const { data: result, isLoading } = useImageList(params);
+  const { data: result, isLoading, isError } = useImageList(params);
   const images = result?.data ?? [];
   const total = result?.total ?? 0;
 
   const deleteMutation = useDeleteImage();
-  const updateMutation = useUpdateImage();
 
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploadValue, setUploadValue] = useState<
     ImageValue | ImageValue[] | null
   >(null);
-
-  const [editImage, setEditImage] = useState<ImageData | null>(null);
-  const [editAlt, setEditAlt] = useState("");
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -149,46 +139,23 @@ export function ImageTable() {
       key: "actions",
       label: "Actions",
       align: "right",
-      width: 100,
+      width: 80,
       render: (row) => (
-        <>
-          <IconButton
-            size="small"
-            onClick={() => {
-              setEditImage(row);
-              setEditAlt("");
-            }}
-            aria-label="edit alt"
-          >
-            <EditIcon fontSize="small" />
-          </IconButton>
-          <IconButton
-            size="small"
-            color="error"
-            onClick={() => setDeleteId(row.id)}
-            aria-label="delete"
-          >
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-        </>
+        <IconButton
+          size="small"
+          color="error"
+          onClick={() => setDeleteId(row.id)}
+          aria-label="delete"
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
       ),
     },
   ];
 
-  /** Handle edit alt confirm */
-  const handleEditConfirm = async () => {
-    if (!editImage) return;
-    try {
-      await updateMutation.mutateAsync({
-        id: editImage.id,
-        payload: { alt: editAlt },
-      });
-      notify.success("Alt text updated");
-      setEditImage(null);
-    } catch {
-      notify.error("Failed to update alt text");
-    }
-  };
+  if (isError) {
+    return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
+  }
 
   /** Handle delete confirm */
   const handleDeleteConfirm = async () => {
@@ -288,26 +255,6 @@ export function ImageTable() {
           multiple
           module="projects"
           maxFiles={10}
-        />
-      </BaseModal>
-
-      {/* Edit alt modal */}
-      <BaseModal
-        open={Boolean(editImage)}
-        onClose={() => setEditImage(null)}
-        title="Edit Alt Text"
-        onConfirm={handleEditConfirm}
-        confirmText="儲存"
-        loading={updateMutation.isPending}
-        maxWidth="xs"
-      >
-        <TextField
-          autoFocus
-          label="Alt Text"
-          fullWidth
-          value={editAlt}
-          onChange={(e) => setEditAlt(e.target.value)}
-          sx={{ mt: 1 }}
         />
       </BaseModal>
 

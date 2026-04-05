@@ -41,6 +41,7 @@ export function FileUpload({
   maxFiles = 10,
 }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const sessionUploadIds = useRef(new Set<string>());
   const [isDragging, setIsDragging] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
@@ -83,11 +84,13 @@ export function FileUpload({
         const uploaded: ImageValue[] = [];
         for (const file of fileArray.slice(0, remaining)) {
           const img = await upload(file);
+          sessionUploadIds.current.add(img.imageId);
           uploaded.push(img);
         }
         onChange([...images, ...uploaded]);
       } else {
         const img = await upload(fileArray[0]);
+        sessionUploadIds.current.add(img.imageId);
         onChange(img);
       }
     } catch {
@@ -121,13 +124,19 @@ export function FileUpload({
   };
 
   /**
-   * Removes an image by its index, deleting it from the server.
+   * Removes an image by its index.
+   * Only calls deleteImage if the image was uploaded in the current session,
+   * preventing deletion of pre-existing images when form save fails.
+   *
    * @param index - Index of the image to remove
    */
   const handleRemove = async (index: number) => {
     const img = images[index];
     try {
-      await deleteImage(img.imageId);
+      if (sessionUploadIds.current.has(img.imageId)) {
+        await deleteImage(img.imageId);
+        sessionUploadIds.current.delete(img.imageId);
+      }
       if (multiple) {
         const updated = images.filter((_, i) => i !== index);
         onChange(updated.length > 0 ? updated : null);

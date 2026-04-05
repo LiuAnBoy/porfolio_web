@@ -39,9 +39,13 @@ export function ProjectTable() {
   const router = useRouter();
   const { notify } = useNotification();
 
-  const { data: result, isLoading } = useProjectList();
+  const { data: result, isLoading, isError } = useProjectList();
   const projects = result?.data ?? [];
   const total = result?.total ?? 0;
+
+  if (isError) {
+    return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
+  }
 
   const deleteMutation = useDeleteProject();
   const toggleFeatured = useToggleFeatured();

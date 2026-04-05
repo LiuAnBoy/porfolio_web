@@ -41,7 +41,7 @@ export function UserPage() {
   const { data: session, status: sessionStatus } = useSession();
   const userId = (session?.user as { id?: string } | undefined)?.id ?? "";
 
-  const { data: user, isLoading } = useUser(userId);
+  const { data: user, isLoading, isError } = useUser(userId);
 
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -51,6 +51,10 @@ export function UserPage() {
         <CircularProgress />
       </Box>
     );
+  }
+
+  if (isError) {
+    return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
   }
 
   if (!userId || !user) {

@@ -178,6 +178,7 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
   const onSubmit = handleSubmit(async (values) => {
     const payload: ProjectPayload = {
       title: values.title,
+      slug: values.slug,
       description: values.description,
       type: values.type,
       tags: values.tags.map((t) => t.id),
