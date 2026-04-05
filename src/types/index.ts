@@ -1,4 +1,3 @@
-export * from "./api";
 export * from "./dashboard";
 export * from "./image";
 export * from "./project";

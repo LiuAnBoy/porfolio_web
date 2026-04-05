@@ -31,10 +31,6 @@ export default async function AdminRootLayout({
 
   const queryClient = new QueryClient();
 
-  // TODO: prefetch tags and stacks once those modules are built
-  // await queryClient.prefetchQuery({ queryKey: ['tags'], queryFn: getTagList });
-  // await queryClient.prefetchQuery({ queryKey: ['stacks'], queryFn: getStackList });
-
   const dehydratedState = dehydrate(queryClient);
 
   return (
