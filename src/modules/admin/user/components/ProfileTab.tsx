@@ -132,6 +132,31 @@ export function ProfileTab({ user }: ProfileTabProps) {
       onSubmit={onSubmit}
       sx={{ display: "flex", flexDirection: "column", gap: 3, maxWidth: 700 }}
     >
+      {/* Avatar */}
+      <Box>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
+          Avatar
+        </Typography>
+        <Controller
+          name="avatar"
+          control={control}
+          render={({ field }) => (
+            <FileUpload
+              value={field.value}
+              onChange={(val) => {
+                if (Array.isArray(val)) {
+                  field.onChange(val[0] ?? null);
+                } else {
+                  field.onChange(val);
+                }
+              }}
+              module="user"
+              previewSize={160}
+            />
+          )}
+        />
+      </Box>
+
       {/* Name */}
       <TextField
         {...register("name", { required: "Name is required" })}
@@ -165,30 +190,6 @@ export function ProfileTab({ user }: ProfileTabProps) {
               value={field.value}
               onChange={field.onChange}
               placeholder="Write something about yourself..."
-            />
-          )}
-        />
-      </Box>
-
-      {/* Avatar */}
-      <Box>
-        <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          Avatar
-        </Typography>
-        <Controller
-          name="avatar"
-          control={control}
-          render={({ field }) => (
-            <FileUpload
-              value={field.value}
-              onChange={(val) => {
-                if (Array.isArray(val)) {
-                  field.onChange(val[0] ?? null);
-                } else {
-                  field.onChange(val);
-                }
-              }}
-              module="user"
             />
           )}
         />

@@ -25,6 +25,8 @@ interface FileUploadProps {
   module: "projects" | "user" | "experiences";
   /** Maximum number of files allowed when multiple is true */
   maxFiles?: number;
+  /** Preview thumbnail size in pixels (default: 96) */
+  previewSize?: number;
 }
 
 /**
@@ -39,6 +41,7 @@ export function FileUpload({
   multiple = false,
   module,
   maxFiles = 10,
+  previewSize = 96,
 }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const sessionUploadIds = useRef(new Set<string>());
@@ -210,7 +213,11 @@ export function FileUpload({
           {images.map((img, index) => (
             <Box
               key={img.imageId}
-              sx={{ position: "relative", width: 96, height: 96 }}
+              sx={{
+                position: "relative",
+                width: previewSize,
+                height: previewSize,
+              }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

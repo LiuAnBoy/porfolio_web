@@ -48,7 +48,7 @@ export function AdminLayout({ children, userEmail }: AdminLayoutProps) {
           marginLeft: { xs: 0, md: "240px" },
           marginTop: "64px",
           padding: { xs: 2, md: 3 },
-          minHeight: "calc(100vh - 64px)",
+          height: "calc(100dvh - 64px)",
           overflowY: "auto",
           bgcolor: "background.default",
         }}
