@@ -58,6 +58,15 @@ interface BaseTableProps<T> {
   loading?: boolean;
   /** Message to display when data is empty */
   emptyMessage?: string;
+  /**
+   * Optional function to derive a stable key for each row.
+   * When omitted, falls back to `row-{page}-{index}`.
+   *
+   * @param row - The data row
+   * @param index - Row index within the current page
+   * @returns A stable string or number key
+   */
+  getRowKey?: (row: T, index: number) => string | number;
 }
 
 /**
@@ -76,6 +85,7 @@ export function BaseTable<T>({
   onRowsPerPageChange,
   loading = false,
   emptyMessage = "No data available",
+  getRowKey,
 }: BaseTableProps<T>) {
   return (
     <Box>
@@ -122,7 +132,13 @@ export function BaseTable<T>({
             ) : (
               data.map((row, rowIndex) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <TableRow key={`row-${page}-${rowIndex}`}>
+                <TableRow
+                  key={
+                    getRowKey
+                      ? getRowKey(row, rowIndex)
+                      : `row-${page}-${rowIndex}`
+                  }
+                >
                   {columns.map((col) => (
                     <TableCell key={col.key} align={col.align ?? "left"}>
                       {col.render(row)}

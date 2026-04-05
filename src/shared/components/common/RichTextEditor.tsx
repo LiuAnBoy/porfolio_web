@@ -9,11 +9,22 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import RedoIcon from "@mui/icons-material/Redo";
 import TitleIcon from "@mui/icons-material/Title";
 import UndoIcon from "@mui/icons-material/Undo";
-import { Box, Divider, IconButton, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import Link from "@tiptap/extension-link";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /** Props for RichTextEditor component */
 interface RichTextEditorProps {
@@ -68,22 +79,31 @@ export function RichTextEditor({
     }
   }, [editor, value]);
 
+  const [linkDialogOpen, setLinkDialogOpen] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+
   if (!editor) return null;
 
-  const handleSetLink = () => {
-    const previous = editor.getAttributes("link").href as string | undefined;
-    const url = window.prompt("Enter URL", previous ?? "");
-    if (url === null) return;
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-    } else {
+  const handleLinkClick = () => {
+    const existing =
+      (editor.getAttributes("link").href as string | undefined) ?? "";
+    setLinkUrl(existing);
+    setLinkDialogOpen(true);
+  };
+
+  const handleLinkConfirm = () => {
+    if (linkUrl) {
       editor
         .chain()
         .focus()
         .extendMarkRange("link")
-        .setLink({ href: url })
+        .setLink({ href: linkUrl })
         .run();
+    } else {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run();
     }
+    setLinkDialogOpen(false);
+    setLinkUrl("");
   };
 
   return (
@@ -142,7 +162,7 @@ export function RichTextEditor({
         <Tooltip title="Link">
           <IconButton
             size="small"
-            onClick={handleSetLink}
+            onClick={handleLinkClick}
             color={editor.isActive("link") ? "primary" : "default"}
           >
             <InsertLinkIcon fontSize="small" />
@@ -236,6 +256,35 @@ export function RichTextEditor({
       >
         <EditorContent editor={editor} />
       </Box>
+
+      {/* Link insertion dialog */}
+      <Dialog
+        open={linkDialogOpen}
+        onClose={() => setLinkDialogOpen(false)}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>Insert Link</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            label="URL"
+            fullWidth
+            value={linkUrl}
+            onChange={(e) => setLinkUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleLinkConfirm();
+            }}
+            sx={{ mt: 1 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setLinkDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleLinkConfirm} variant="contained">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

@@ -73,21 +73,25 @@ export function FileUpload({
       }
     }
 
-    if (multiple) {
-      const remaining = maxFiles - images.length;
-      if (fileArray.length > remaining) {
-        setValidationError(`Maximum ${maxFiles} files allowed.`);
-        return;
+    try {
+      if (multiple) {
+        const remaining = maxFiles - images.length;
+        if (fileArray.length > remaining) {
+          setValidationError(`Maximum ${maxFiles} files allowed.`);
+          return;
+        }
+        const uploaded: ImageValue[] = [];
+        for (const file of fileArray.slice(0, remaining)) {
+          const img = await upload(file);
+          uploaded.push(img);
+        }
+        onChange([...images, ...uploaded]);
+      } else {
+        const img = await upload(fileArray[0]);
+        onChange(img);
       }
-      const uploaded: ImageValue[] = [];
-      for (const file of fileArray.slice(0, remaining)) {
-        const img = await upload(file);
-        uploaded.push(img);
-      }
-      onChange([...images, ...uploaded]);
-    } else {
-      const img = await upload(fileArray[0]);
-      onChange(img);
+    } catch {
+      setValidationError("Upload failed. Please try again.");
     }
   };
 
@@ -122,12 +126,16 @@ export function FileUpload({
    */
   const handleRemove = async (index: number) => {
     const img = images[index];
-    await deleteImage(img.imageId);
-    if (multiple) {
-      const updated = images.filter((_, i) => i !== index);
-      onChange(updated.length > 0 ? updated : null);
-    } else {
-      onChange(null);
+    try {
+      await deleteImage(img.imageId);
+      if (multiple) {
+        const updated = images.filter((_, i) => i !== index);
+        onChange(updated.length > 0 ? updated : null);
+      } else {
+        onChange(null);
+      }
+    } catch {
+      setValidationError("Failed to remove image. Please try again.");
     }
   };
 
