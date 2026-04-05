@@ -49,3 +49,6 @@ export_files/
 # MCP
 .serena/
 .playwright-mcp/todos/
+
+# Local todos (never in git)
+todos/
