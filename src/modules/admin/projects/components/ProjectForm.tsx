@@ -18,7 +18,7 @@ import {
 import { useRouter } from "next/navigation";
 import { pinyin } from "pinyin-pro";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { useStackList } from "@/modules/admin/stacks/hooks/useStackQueries";
 import { useTagList } from "@/modules/admin/tags/hooks/useTagQueries";
@@ -121,7 +121,6 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
     control,
     register,
     handleSubmit,
-    watch,
     setValue,
     reset,
     formState: { errors },
@@ -142,8 +141,8 @@ export function ProjectForm({ mode, projectId }: ProjectFormProps) {
     },
   });
 
-  const titleValue = watch("title");
-  const slugValue = watch("slug");
+  const titleValue = useWatch({ control, name: "title" });
+  const slugValue = useWatch({ control, name: "slug" });
 
   /** Auto-generate slug when title changes (only if slug hasn't been manually edited) */
   useEffect(() => {

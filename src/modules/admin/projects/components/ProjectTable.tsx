@@ -43,10 +43,6 @@ export function ProjectTable() {
   const projects = result?.payload ?? [];
   const total = result?.total_count ?? 0;
 
-  if (isError) {
-    return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
-  }
-
   const deleteMutation = useDeleteProject();
   const toggleFeatured = useToggleFeatured();
   const toggleVisible = useToggleVisible();
@@ -56,6 +52,10 @@ export function ProjectTable() {
 
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteTitle, setDeleteTitle] = useState("");
+
+  if (isError) {
+    return <Typography color="error">載入失敗，請重新整理頁面。</Typography>;
+  }
 
   const paginatedData = projects.slice(
     page * rowsPerPage,

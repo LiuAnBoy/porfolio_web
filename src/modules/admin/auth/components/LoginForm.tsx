@@ -63,7 +63,7 @@ export function LoginForm() {
         return;
       }
 
-      window.location.href = "/admin/dashboard";
+      router.push("/admin/dashboard");
     } catch {
       setServerError(
         "Network error. Please check your connection and try again.",

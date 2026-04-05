@@ -2,12 +2,18 @@
 
 import { Box, Container, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
+import { useProjectsStore } from "@/modules/public/projects/stores";
 import { getProjects } from "@/services/projects/api";
 import type { Project, ProjectType } from "@/services/projects/types";
 import { useScrollContainer } from "@/shared/contexts";
-import { useProjectsStore } from "@/modules/public/projects/stores";
 
 import ProjectDrawer from "./ProjectDrawer";
 import ProjectFilters from "./ProjectFilters";
@@ -66,7 +72,11 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const isHydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   // Use SSR data for initial render, then switch to store after hydration
   const projects =
@@ -92,10 +102,8 @@ const ProjectsPage = ({ initialData }: ProjectsPageProps) => {
     return () => setScrollContainerRef(null);
   }, [setScrollContainerRef]);
 
-  // Handle hydration and restore state from store
+  // Restore state from store after hydration
   useEffect(() => {
-    setIsHydrated(true);
-
     // If store has cached data, restore scroll position
     if (store.projects.length > 0 && containerRef.current) {
       containerRef.current.scrollTop = store.scrollPosition;

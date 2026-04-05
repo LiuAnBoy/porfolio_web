@@ -3,7 +3,7 @@
 import { TextField } from "@mui/material";
 import { pinyin } from "pinyin-pro";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { BaseModal } from "@/shared/components/common";
 import { useNotification } from "@/shared/hooks";
@@ -48,11 +48,11 @@ export function TagModal({ open, onClose, editData }: TagModalProps) {
   const { notify } = useNotification();
   const isEdit = Boolean(editData);
 
-  const { register, handleSubmit, watch, reset } = useForm<TagFormValues>({
+  const { register, handleSubmit, control, reset } = useForm<TagFormValues>({
     defaultValues: { label: editData?.label ?? "" },
   });
 
-  const labelValue = watch("label");
+  const labelValue = useWatch({ control, name: "label" });
   const slugPreview = generateSlug(labelValue);
 
   const createMutation = useCreateTag();

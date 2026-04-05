@@ -26,11 +26,11 @@ export async function generateMetadata(): Promise<Metadata> {
  * Profile page - SSR with cached data.
  */
 export default async function Profile() {
+  let user = null;
   try {
-    const user = await getUser();
-    return <ProfilePageContent user={user} />;
+    user = await getUser();
   } catch (error) {
     console.error("Failed to load profile:", error);
-    return <ProfilePageContent user={null} />;
   }
+  return <ProfilePageContent user={user} />;
 }
